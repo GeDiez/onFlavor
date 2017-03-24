@@ -1,6 +1,6 @@
 let bookshelf = require('../bookshelf');
 
 module.exports = bookshelf.model('Place', {
-  tableName: 'name',
+  tableName: 'places',
   hasTimestamps: true,
 });
