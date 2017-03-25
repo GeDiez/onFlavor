@@ -25,7 +25,7 @@ module.exports = {
             });
           }
           else {
-            reject({error: 'no existe pendeji'})
+            reject({error: 'Place not found'});
           }
         }).catch((error) => {reject(error)});
       }
@@ -37,6 +37,20 @@ module.exports = {
       Place.where('id', id).fetch().then(place => {
         resolve(place);
       });
+    })
+  },
+
+  deleteById: (placeId) => {
+    return new Promise((resolve, reject) => {
+      Place.where('id', placeId).fetch().then(place => {
+        if(place){
+          place.destroy();
+          resolve({message: 'Place deleted'});
+        }
+        else {
+          reject({error: 'Place not found'});
+        }
+      })
     })
   }
 

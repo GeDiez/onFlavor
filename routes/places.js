@@ -39,4 +39,10 @@ router.put('/:id', (req, res, next) => {
   })
 });
 
+router.delete('/:id', (req, res, next) => {
+  PlacesService.deleteById(req.params.id).then((placeDeleted) => {
+    res.json(placeDeleted);
+  })
+});
+
 module.exports = router;
