@@ -8,11 +8,14 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var foodcourt = require('./routes/foodcourt');
-var places = require('./routes/places');
+var places = require('./routes/places').api;
+var placesWeb = require('./routes/places').web;
 var users = require('./routes/users');
+var dishes = require('./routes/dishes');
+var groups = require('./routes/groups');
+var users_groups = require('./routes/users_groups');
 
 var app = express();
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -29,6 +32,10 @@ app.use('/', index);
 app.use('/api/users', users);
 app.use('/api/foodcourts', foodcourt);
 app.use('/api/places', places);
+app.use('/places', placesWeb);
+app.use('/api/dishes', dishes);
+app.use('/api/groups', groups);
+app.use('/api/users_groups', users_groups);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

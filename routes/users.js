@@ -26,4 +26,24 @@ router.post('/', (req, res, next) =>{
   });
 });
 
+router.put('/:id', (req, res, next) => {
+  const user = {
+    id: req.params.id,
+    name: req.body.name,
+    username: req.body.username,
+    password: req.body.password,
+  };
+  UsersService.createOrUpdateWithObj(user).then((newUser) => {
+    res.json(newUser)
+  }).catch((error) => {
+    res.status(500).json(error);
+  })
+});
+
+router.delete('/:id', (req, res, next) => {
+  UsersService.deleteById(req.params.id).then((userDeleted) => {
+    res.json(userDeleted);
+  })
+});
+
 module.exports = router;

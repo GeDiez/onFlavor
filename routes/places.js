@@ -1,20 +1,31 @@
 const express = require('express');
-const router = express.Router();
+const api = express.Router();
+const web = express.Router();
 const PlacesService = require('../services/places_service');
 /* GET home page. */
-router.get('/', (req, res, next) => {
+
+api.get('/', (req, res, next) => {
   PlacesService.fetch().then((places)=> {
     res.json(places);
   });
 });
 
-router.get('/:id', (req, res, next) => {
+web.get('/', function(req, res, next) {
+    PlacesService.fetch().then((newPlace) => {
+      res.render('../views/places/place', {
+        places: newPlace,
+      });
+    });    
+});
+
+api.get('/:id', (req, res, next) => {
   PlacesService.getById(req.params.id).then((response) => {
     res.json(response);
   })
 });
 
-router.post('/', (req, res, next) =>{
+api.post('/', (req, res, next) =>{
+  console.log(req.body.name);
   const place = {
     name: req.body.name,
     latitude: req.body.latitude,
@@ -25,7 +36,7 @@ router.post('/', (req, res, next) =>{
   });
 });
 
-router.put('/:id', (req, res, next) => {
+api.put('/:id', (req, res, next) => {
   const place = {
     name: req.body.name,
     latitude: req.body.latitude,
@@ -39,10 +50,14 @@ router.put('/:id', (req, res, next) => {
   })
 });
 
-router.delete('/:id', (req, res, next) => {
+api.delete('/:id', (req, res, next) => {
   PlacesService.deleteById(req.params.id).then((placeDeleted) => {
     res.json(placeDeleted);
   })
 });
 
-module.exports = router;
+//module.exports = api, web;
+module.exports = {
+    api: api,
+    web: web
+};

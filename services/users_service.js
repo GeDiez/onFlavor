@@ -38,5 +38,20 @@ module.exports = {
         }).catch((error) => {reject(error)});
       }
     })
+  },
+
+    deleteById: (userId) => {
+    return new Promise((resolve, reject) => {
+      User.where('id', userId).fetch().then(user => {
+        if(user){
+          user.destroy();
+          resolve({message: 'user deleted'});
+        }
+        else {
+          reject({error: 'user not found'});
+        }
+      })
+    })
   }
+
 }
