@@ -23,7 +23,7 @@ web.get('/new', function(req, res, next) {
 });
 
 web.get('/edit/:id', (req, res, next) => {
-  PlacesService.getById(req.params.id).then((place) => {
+  PlacesService.getById(Number(req.params.id)).then((place) => {
     res.render('../views/places/edit', {
       place: place.toJSON()
     });
