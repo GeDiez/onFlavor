@@ -4,7 +4,7 @@ module.exports = {
   development: {
     client: 'postgresql',
     debug: false,
-    connection: process.env.DATABASE_URL || 'postgres://127.0.0.1:5432/on_flavor_api',
+    connection: process.env.DATABASE_URL || 'postgres://127.0.0.1:5432/on_flavor',
     pool: {
       min: 2,
       max: 10
