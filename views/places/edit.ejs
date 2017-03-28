@@ -4,7 +4,7 @@
     <%- include("./partials/head", {title:"your_title"}) %>
   </head>
   <body>
-    <form action="http://localhost:3000/places/edit/<%= place.id %>" method="post" enctype="application/json" name="place">
+    <form action="http://localhost:3000/places/edit/"<%= place.id %>"" method="post" enctype="application/json" name="place">
       <fieldset>
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" value= <%= place.name %> />
