@@ -12,20 +12,39 @@ api.get('/', (req, res, next) => {
 
 web.get('/', function(req, res, next) {
     PlacesService.fetch().then((newPlace) => {
-      res.render('../views/places/place', {
+      res.render('../views/places/index', {
         places: newPlace,
       });
     });    
 });
 
+web.get('/new', function(req, res, next) {
+    res.render('../views/places/new');
+});
+
+web.get('/edit/:id', (req, res, next) => {
+  PlacesService.getById(req.params.id).then((place) => {
+    res.render('../views/places/edit', {
+      place: place.toJSON()
+    });
+  });
+});
+
 api.get('/:id', (req, res, next) => {
   PlacesService.getById(req.params.id).then((response) => {
     res.json(response);
-  })
+  });
+});
+
+web.get('/:id', (req, res, next) => {
+  PlacesService.getById(req.params.id).then((place) => {
+    res.render('../views/places/show', {
+      place: place.toJSON()
+    });
+  });
 });
 
 api.post('/', (req, res, next) =>{
-  console.log(req.body.name);
   const place = {
     name: req.body.name,
     latitude: req.body.latitude,
@@ -50,7 +69,27 @@ api.put('/:id', (req, res, next) => {
   })
 });
 
+web.post('/edit/:id', (req, res, next) => {
+  const place = {
+    name: req.body.name,
+    latitude: req.body.latitude,
+    longitude: req.body.longitude,
+    id: req.params.id
+  };
+  PlacesService.createOrUpdateWithObj(place).then((newPlace) => {
+    res.json(newPlace)
+  }).catch((error) => {
+    res.status(500).json(error);
+  })
+});
+
 api.delete('/:id', (req, res, next) => {
+  PlacesService.deleteById(req.params.id).then((placeDeleted) => {
+    res.json(placeDeleted);
+  })
+});
+
+web.delete('/places/:id', (req, res, next) => {
   PlacesService.deleteById(req.params.id).then((placeDeleted) => {
     res.json(placeDeleted);
   })
