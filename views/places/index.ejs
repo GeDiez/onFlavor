@@ -10,12 +10,13 @@
         <li>
           <%= places.name %>
           <a href="http://localhost:3000/places/edit/<%= places.id %>" class="btn btn-info" role="button">Edit</a>
-          <a href="" class="btn btn-danger" role="button">Delete</a>
+          <button class="btn btn-danger delete" data-place-id=<%= places.id %> role="button">Delete</button>
         </li>
         <% }); %>
     </ul>
     <a href="http://localhost:3000/places/new" class="btn btn-info" role="button">New Place</a>
     <script src="/javascripts/jquery.min.js"></script>
+    <script src="/javascripts/places.js"></script>
     <script src="/javascripts/bootstrap.min.js"></script>
   </body>
 </html>

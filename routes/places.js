@@ -7,7 +7,7 @@ const PlacesService = require('../services/places_service');
 api.get('/', (req, res, next) => {
   PlacesService.fetch().then((places)=> {
     res.json(places);
-  });
+  }).catch();
 });
 
 web.get('/', function(req, res, next) {
@@ -65,7 +65,7 @@ api.put('/:id', (req, res, next) => {
   PlacesService.createOrUpdateWithObj(place).then((newPlace) => {
     res.json(newPlace)
   }).catch((error) => {
-    res.status(500).json(error);
+    res.status(414).json(error);
   })
 });
 
