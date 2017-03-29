@@ -14,6 +14,10 @@ var users = require('./routes/users');
 var dishes = require('./routes/dishes');
 var groups = require('./routes/groups');
 var users_groups = require('./routes/users_groups');
+var orders = require('./routes/orders').api;
+var ordersWeb = require('./routes/orders').web;
+var events = require('./routes/events').api;
+var eventsWeb = require('./routes/events').web;
 
 var app = express();
 // view engine setup
@@ -32,10 +36,14 @@ app.use('/', index);
 app.use('/api/users', users);
 app.use('/api/foodcourts', foodcourt);
 app.use('/api/places', places);
-app.use('/places', placesWeb);
 app.use('/api/dishes', dishes);
 app.use('/api/groups', groups);
 app.use('/api/users_groups', users_groups);
+app.use('/api/orders', orders);
+app.use('/api/events', events);
+app.use('/places', placesWeb);
+app.use('/orders', ordersWeb);
+app.use('/events', eventsWeb);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
