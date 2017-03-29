@@ -15,7 +15,12 @@ module.exports = {
     return new Promise((resolve, reject) => {
       if (!dish.id) {
         new Dish().save(dish).then((dish) => {
-          resolve(dish);
+          if(dish){
+            resolve(dish);
+          }
+          else {
+            resolve({error: "Dish was not created"});
+          }
         });
       } else {
         Dish.where('id', dish.id).fetch().then((localDish) => {
@@ -27,7 +32,7 @@ module.exports = {
           else {
             reject({error: 'Dish not found'});
           }
-        }).catch((error) => {reject(error)});
+        }).catch((error) => {resolve(error)});
       }
     });
   },

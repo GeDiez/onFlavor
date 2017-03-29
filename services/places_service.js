@@ -1,5 +1,6 @@
 const bookshelf = require('../bookshelf');
 const Place = require('../models/Place');
+const Dish = require('../models/Dish');
 const knex = bookshelf.knex;
 
 module.exports = {
@@ -9,6 +10,19 @@ module.exports = {
         resolve(places.toJSON());
       });
     });
+  },
+
+  fetchPlaceDishes: () => {
+    return new Promise((resolve, reject) => {
+      Place.fetchAll({ withRelated: ['dishes']}).then(dishes => {
+        if(dishes){
+          resolve(dishes);
+        }
+        else {
+          resolve({error: "Not related dishes in that place"});
+        }
+      });
+    })
   },
 
   createOrUpdateWithObj: (place) => {
@@ -34,7 +48,7 @@ module.exports = {
 
   getById: (id) => {
     return new Promise((resolve, reject) => {
-      Place.where('id', id).fetch().then(place => {
+      Place.where('id', id).fetch({ withRelated:['dishes'] }).then(place => {
         if(place){
           resolve(place);
         }
@@ -47,9 +61,8 @@ module.exports = {
 
   deleteById: (placeId) => {
     return new Promise((resolve, reject) => {
-      Place.where('id', placeId).fetch().then(place => {
+      Place.where({ id: placeId }).destroy().then(place => {
         if(place){
-          place.destroy();
           resolve({message: 'Place deleted'});
         }
         else {

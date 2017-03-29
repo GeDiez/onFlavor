@@ -9,6 +9,7 @@
       <% places.forEach(function(places) { %>
         <li>
           <%= places.name %>
+          <a href="http://localhost:3000/places/<%= places.id %>" class="btn btn-info" role="button">View Place</a>
           <a href="http://localhost:3000/places/edit/<%= places.id %>" class="btn btn-info" role="button">Edit</a>
           <button class="btn btn-danger delete" data-place-id=<%= places.id %> role="button">Delete</button>
         </li>
