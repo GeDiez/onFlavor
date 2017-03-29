@@ -8,6 +8,12 @@
     <h4>Name: <%= place.name %> </h4>
     <h4>Latitude: <%= place.latitude %> </h4>
     <h4>Longitude: <%= place.longitude %> </h4>
+    <% place.dishes.forEach(function(dish) { %>
+      <li>
+        <%= dish.name %>
+      </li>
+    <% }); %>
+    <script src="/javascripts/jquery.min.js"></script>
     <script src="/javascripts/bootstrap.min.js"></script>
   </body>
 </html>

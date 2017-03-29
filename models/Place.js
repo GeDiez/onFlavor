@@ -5,7 +5,9 @@ module.exports = bookshelf.model('Place', {
   tableName: 'places',
   hasTimestamps: true,
 
-  dishes: () => {
+  dishes() {
     return this.hasMany('Dish');
   }
+},{
+  dependents: ['dishes']
 });

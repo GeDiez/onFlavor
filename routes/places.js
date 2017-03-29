@@ -4,8 +4,15 @@ const web = express.Router();
 const PlacesService = require('../services/places_service');
 /* GET home page. */
 
+// api.get('/', (req, res, next) => {
+//   PlacesService.fetch().then((places)=> {
+//     res.json(places);
+//   }).catch();
+// });
+
+//test
 api.get('/', (req, res, next) => {
-  PlacesService.fetch().then((places)=> {
+  PlacesService.fetchPlaceDishes().then((places)=> {
     res.json(places);
   }).catch();
 });

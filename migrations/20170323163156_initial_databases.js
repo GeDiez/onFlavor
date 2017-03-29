@@ -29,7 +29,7 @@ exports.up = (knex, Promise) => {
     t.timestamps();
   }).createTable('dishes', (t) => {
     t.increments('id').primary();
-    t.integer('place_id').references('places.id');
+    t.integer('place_id').references('places.id').notNullable();
     t.string('name', 20);
     t.string('price', 5);
     t.timestamps();
