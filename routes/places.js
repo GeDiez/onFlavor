@@ -2,6 +2,8 @@ const express = require('express');
 const api = express.Router();
 const web = express.Router();
 const PlacesService = require('../services/places_service');
+const helpers = require('../lib/helpers');
+
 /* GET home page. */
 
 // api.get('/', (req, res, next) => {
@@ -11,7 +13,7 @@ const PlacesService = require('../services/places_service');
 // });
 
 //test
-api.get('/', (req, res, next) => {
+api.get('/', helpers.requireAuthentication, (req, res, next) => {
   PlacesService.fetchPlaceDishes().then((places)=> {
     res.json(places);
   }).catch();
