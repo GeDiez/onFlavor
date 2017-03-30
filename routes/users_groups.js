@@ -9,12 +9,6 @@ router.get('/', function(req, res, next) {
   });
 });
 
-router.get('/:id', (req, res, next) => {
-  Users_groupsService.getById(req.params.id).then((response) => {
-    res.json(response);
-  })
-});
-
 router.post('/', (req, res, next) =>{
   const users_group = {
     group_id: req.body.group_id,
@@ -34,6 +28,12 @@ router.put('/:id', (req, res, next) => {
     res.json(newUser_group)
   }).catch((error) => {
     res.status(500).json(error);
+  })
+});
+
+router.get('/:id', (req, res, next) => {
+  Users_groupsService.getById(req.params.id).then((response) => {
+    res.json(response);
   })
 });
 

@@ -22,6 +22,19 @@ web.get('/', (req, res, next) => {
     });
 });
 
+api.post('/', (req, res, next) =>{
+  const event = {
+    place_id: Number(req.body.place_id),
+    group_id: Number(req.body.group_id),
+    name: req.body.name,
+    description: req.body.description,
+    date_time: req.body.date_time,
+  };
+  console.log(event);
+  EventsService.createOrUpdateWithObj(event).then((message) => {
+    res.json(message);
+  });
+});
 web.get('/edit/:id', (req, res, next) => {
   EventsService.getById(Number(req.params.id)).then((event) => {
     res.render('../views/events/edit', {
@@ -45,20 +58,6 @@ web.post('/edit/:id', (req, res, next) => {
   }).catch((error) => {
     res.status(500).json(error);
   })
-});
-
-api.post('/', (req, res, next) =>{
-  const event = {
-    place_id: Number(req.body.place_id),
-    group_id: Number(req.body.group_id),
-    name: req.body.name,
-    description: req.body.description,
-    date_time: req.body.date_time,
-  };
-  console.log(event);
-  EventsService.createOrUpdateWithObj(event).then((message) => {
-    res.json(message);
-  });
 });
 
 api.delete('/:id', (req, res, next) => {

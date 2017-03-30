@@ -43,7 +43,7 @@ app.use('/api/foodcourts', foodcourt);
 app.use('/api/places', places);
 app.use('/api/dishes', dishes);
 app.use('/api/groups', groups);
-app.use('/api/users_groups', users_groups);
+//app.use('/api/users_groups', users_groups);
 app.use('/api/orders', orders);
 app.use('/api/events', events);
 app.use('/places', placesWeb);

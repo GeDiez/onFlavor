@@ -17,11 +17,6 @@ web.get('/', function(req, res, next) {
     });    
 });
 
-api.get('/:id', (req, res, next) => {
-  DishesService.getById(req.params.id).then((response) => {
-    res.json(response);
-  })
-});
 
 api.post('/', (req, res, next) =>{
   const dish = {
@@ -86,6 +81,12 @@ api.put('/:id', (req, res, next) => {
 api.delete('/:id', (req, res, next) => {
   DishesService.deleteById(req.params.id).then((dishDeleted) => {
     res.json(dishDeleted);
+  })
+});
+
+api.get('/:id', (req, res, next) => {
+  DishesService.getById(req.params.id).then((response) => {
+    res.json(response);
   })
 });
 

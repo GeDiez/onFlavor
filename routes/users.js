@@ -26,50 +26,6 @@ web.get('/new', function(req, res, next) {
    res.render('../views/users/new');
 });
 
-web.get('/edit/:id', (req, res, next) => {
- UsersService.getById(Number(req.params.id)).then((user) => {
-   res.render('../views/users/edit', {
-     user: user.toJSON()
-   });
- });
-});
-
-api.get('/:id', (req, res, next) => {
- UsersService.getById(req.params.id).then((response) => {
-   res.json(response);
- })
-});
-
-
-
-web.get('/:id', (req, res, next) => {
- UsersService.getById(req.params.id).then((user) => {
-   res.render('../views/users/show', {
-     user: user.toJSON()
-   });
- });
-});
-
-web.post('/edit/:id', (req, res, next) => {
- const user = {
-   name: req.body.name,
-   username: req.body.username,
-   password: req.body.password,
-   id: req.params.id
- };
- UsersService.createOrUpdateWithObj(user).then((newUser) => {
-   res.json(newUser)
- }).catch((error) => {
-   res.status(500).json(error);
- })
-});
-
-api.delete('/:id', (req, res, next) => {
- UsersService.deleteById(req.params.id).then((userDeleted) => {
-   res.json(userDeleted);
- })
-});
-
 web.get('/login', (req, res, next) => {
   res.render('../views/users/index');
 });
@@ -153,6 +109,48 @@ api.put('/:id', (req, res, next) => {
   }).catch((error) => {
     res.status(500).json(error);
   })
+});
+
+web.post('/edit/:id', (req, res, next) => {
+ const user = {
+   name: req.body.name,
+   username: req.body.username,
+   password: req.body.password,
+   id: req.params.id
+ };
+ UsersService.createOrUpdateWithObj(user).then((newUser) => {
+   res.json(newUser)
+ }).catch((error) => {
+   res.status(500).json(error);
+ })
+});
+
+api.delete('/:id', (req, res, next) => {
+ UsersService.deleteById(req.params.id).then((userDeleted) => {
+   res.json(userDeleted);
+ })
+});
+
+web.get('/edit/:id', (req, res, next) => {
+ UsersService.getById(Number(req.params.id)).then((user) => {
+   res.render('../views/users/edit', {
+     user: user.toJSON()
+   });
+ });
+});
+
+api.get('/:id', (req, res, next) => {
+ UsersService.getById(req.params.id).then((response) => {
+   res.json(response);
+ })
+});
+
+web.get('/:id', (req, res, next) => {
+ UsersService.getById(req.params.id).then((user) => {
+   res.render('../views/users/show', {
+     user: user.toJSON()
+   });
+ });
 });
 
 module.exports = {

@@ -17,13 +17,15 @@ web.get('/', function(req, res, next) {
     });    
 });
 
-web.get('/edit/:id', (req, res, next) => {
-  GroupsService.getById(Number(req.params.id)).then((group) => {
-    res.render('../views/groups/edit', {
-      group: group.toJSON()
-    });
+api.post('/', (req, res, next) =>{
+  const group = {
+    name: req.body.name,
+  };
+  GroupsService.createOrUpdateWithObj(group).then((message) => {
+    res.json(message);
   });
 });
+
 
 web.get('/new', function(req, res, next) {
     res.render('../views/groups/new');
@@ -32,6 +34,14 @@ web.get('/new', function(req, res, next) {
 web.get('/:id', (req, res, next) => {
   GroupsService.getById(req.params.id).then((group) => {
     res.render('../views/groups/show', {
+      group: group.toJSON()
+    });
+  });
+});
+
+web.get('/edit/:id', (req, res, next) => {
+  GroupsService.getById(Number(req.params.id)).then((group) => {
+    res.render('../views/groups/edit', {
       group: group.toJSON()
     });
   });
@@ -55,14 +65,7 @@ api.get('/:id', (req, res, next) => {
   })
 });
 
-api.post('/', (req, res, next) =>{
-  const group = {
-    name: req.body.name,
-  };
-  GroupsService.createOrUpdateWithObj(group).then((message) => {
-    res.json(message);
-  });
-});
+
 
 api.put('/:id', (req, res, next) => {
   const group = {
