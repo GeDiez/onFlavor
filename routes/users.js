@@ -64,8 +64,7 @@ api.post('/', function (req, res, next) {
 
 });
 
-api.post('/authorize', function (req, res, next) {
-  console.log(req.body);
+api.post('/authorize', (req, res, next) => {
   knex('users').where({ username: req.body.username }).then((rows) => {
     if (rows.error) return next(rows.error);
     let user = rows[0];
@@ -94,6 +93,39 @@ api.post('/authorize', function (req, res, next) {
         res.status(401).json({ errors: ['Invalid email or password'] });
       }
     });
+  });
+});
+
+web.post('/authorize', (req, res, next) => {
+  knex('users').where({ username: req.body.username }).then((rows) => {
+    if (rows.error) return next(rows.error);
+    let user = rows[0];
+    if (!user) {
+      return res.status(401).json({ errors: ['Invalid username or password'] });
+    }
+
+    bcrypt.compare(req.body.password, user.password_digest, function (err, valid) {
+      if (err) return next(err);
+      if (valid) {
+        if (!user.confirmed_at) {
+          res.status(409).json({ errors: ['Email not confirmed'] });
+        } else {
+          var token = authToken.encode({
+            user_id: user.id
+          });
+          req.session.user = Object.assign(user, { token: token});
+          res.redirect('/places');
+        }
+      } else {
+        res.status(401).json({ errors: ['Invalid email or password'] });
+      }
+    });
+  });
+});
+
+web.get('/logout', (req, res, next) => {
+  req.session.destroy(err => {
+    res.redirect('/users/login');
   });
 });
 
