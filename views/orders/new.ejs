@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include("./partials/head", {title:"Orders"}) %>
+  </head>
+  <body>
+    <form action="http://localhost:3000/api/orders" method="post" enctype="application/json" >
+      <fieldset>
+
+        <input type="submit" class="btn btn-info" value="New Order" />
+      </fieldset>
+    </form>
+  </body>
+</html>

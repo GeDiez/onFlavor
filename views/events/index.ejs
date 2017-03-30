@@ -4,17 +4,18 @@
     <%- include("./partials/head", { title: "On flavor" }) %>
   </head>
   <body>
-    <h2>Orders</h2>
+    <h2>Events</h2>
     <ul>
       <% events.forEach(function(event) { %>
         <li>
           <%= event.name %>
-          <a href="http://localhost:3000/orders/edit/<%= event.id %>" class="btn btn-info" role="button">Edit</a>
-          <button class="btn btn-danger delete" data-place-id="<%= event.id %>" role="button">Delete</button>
+          <a href="http://localhost:3000/events/<%= event.id %>" class="btn btn-info" role="button">View Event</a>
+          <a href="http://localhost:3000/events/edit/<%= event.id %>" class="btn btn-info" role="button">Edit</a>
+          <button class="btn btn-danger deleteEvent" data-place-id="<%= event.id %>" role="button">Delete</button>
         </li>
         <% }); %>
     </ul>
-    <a href="http://localhost:3000/event/new" class="btn btn-info" role="button">New Order</a>
+    <a href="http://localhost:3000/events/new" class="btn btn-info" role="button">New Event</a>
     <script src="/javascripts/jquery.min.js"></script>
     <script src="/javascripts/places.js"></script>
     <script src="/javascripts/bootstrap.min.js"></script>

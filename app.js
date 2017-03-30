@@ -6,17 +6,21 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
-var users = require('./routes/users');
 var foodcourt = require('./routes/foodcourt');
-var places = require('./routes/places').api;
-var placesWeb = require('./routes/places').web;
-var users = require('./routes/users');
-var dishes = require('./routes/dishes');
-var groups = require('./routes/groups');
 var users_groups = require('./routes/users_groups');
+
+var dishes = require('./routes/dishes').api;
+var users = require('./routes/users').api;
+var places = require('./routes/places').api;
+var groups = require('./routes/groups').api;
 var orders = require('./routes/orders').api;
-var ordersWeb = require('./routes/orders').web;
 var events = require('./routes/events').api;
+
+var dishesWeb = require('./routes/dishes').web;
+var usersWeb = require('./routes/users').web;
+var placesWeb = require('./routes/places').web;
+var groupsWeb = require('./routes/groups').web;
+var ordersWeb = require('./routes/orders').web;
 var eventsWeb = require('./routes/events').web;
 
 var app = express();
@@ -44,6 +48,9 @@ app.use('/api/events', events);
 app.use('/places', placesWeb);
 app.use('/orders', ordersWeb);
 app.use('/events', eventsWeb);
+app.use('/groups', groupsWeb);
+app.use('/users', usersWeb);
+app.use('/dishes', dishesWeb);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

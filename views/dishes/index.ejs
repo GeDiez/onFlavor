@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include("./partials/head",{title:"Dishes"}) %>
+  </head>
+  <body>
+    <h2>Dishes</h2>
+    <ul>
+      <% dishes.forEach(function(dish) { %>
+        <li>
+          <%= dish.name %>
+          <a href="http://localhost:3000/dishes/<%= dish.id %>" class="btn btn-info" role="button">View Place</a>
+          <a href="http://localhost:3000/dishes/edit/<%= dish.id %>" class="btn btn-info" role="button">Edit</a>
+          <button class="btn btn-danger deleteDish" data-place-id="<%= dish.id %>" role="button">Delete</button>
+        </li>
+        <% }); %>
+    </ul>
+    <a href="http://localhost:3000/dishes/new" class="btn btn-info" role="button">New Dish</a>
+    <script src="/javascripts/jquery.min.js"></script>
+    <script src="/javascripts/places.js"></script>
+    <script src="/javascripts/bootstrap.min.js"></script>
+  </body>
+</html>
