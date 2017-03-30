@@ -1,3 +1,5 @@
+require('dotenv').load();
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -7,7 +9,6 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var foodcourt = require('./routes/foodcourt');
-var users_groups = require('./routes/users_groups');
 
 var dishes = require('./routes/dishes').api;
 var users = require('./routes/users').api;
