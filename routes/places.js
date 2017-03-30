@@ -4,15 +4,6 @@ const web = express.Router();
 const PlacesService = require('../services/places_service');
 const helpers = require('../lib/helpers');
 
-/* GET home page. */
-
-// api.get('/', (req, res, next) => {
-//   PlacesService.fetch().then((places)=> {
-//     res.json(places);
-//   }).catch();
-// });
-
-//test
 api.get('/', helpers.requireAuthentication, (req, res, next) => {
   PlacesService.fetchPlaceDishes().then((places)=> {
     res.json(places);
@@ -20,9 +11,9 @@ api.get('/', helpers.requireAuthentication, (req, res, next) => {
 });
 
 web.get('/', function(req, res, next) {
-    PlacesService.fetch().then((newPlace) => {
+    PlacesService.fetch().then((places) => {
       res.render('../views/places/index', {
-        places: newPlace,
+        places: places,
       });
     });    
 });

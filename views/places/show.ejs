@@ -8,6 +8,8 @@
     <h4>Name: <%= place.name %> </h4>
     <h4>Latitude: <%= place.latitude %> </h4>
     <h4>Longitude: <%= place.longitude %> </h4>
+    <br>
+    <h5>Dishes:</h5>
     <% place.dishes.forEach(function(dish) { %>
       <li>
         <%= dish.name %>

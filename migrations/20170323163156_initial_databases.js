@@ -2,13 +2,13 @@ exports.up = (knex, Promise) => {
   return knex.schema
   .createTable('places', (t)=> {
     t.increments('id').primary();
-    t.string('name', 25);
+    t.string('name', 50);
     t.string('latitude', 11);
     t.string('longitude', 11);
     t.timestamps();
   }).createTable('groups', (t) => {
     t.increments('id').primary();
-    t.string('name', 25);
+    t.string('name', 50);
     t.timestamps();
   }).createTable('events', (t) => {
     t.increments('id').primary();
@@ -18,7 +18,7 @@ exports.up = (knex, Promise) => {
     t.timestamps();
   }).createTable('users', (t) => {
     t.increments('id').primary();
-    t.string('name', 25);
+    t.string('name', 50);
     t.string('username', 25);
     t.string('password', 25);
     t.timestamps();
@@ -30,7 +30,7 @@ exports.up = (knex, Promise) => {
   }).createTable('dishes', (t) => {
     t.increments('id').primary();
     t.integer('place_id').references('places.id').notNullable();
-    t.string('name', 20);
+    t.string('name', 50);
     t.string('price', 5);
     t.timestamps();
   }).createTable('orders', (t) => {
