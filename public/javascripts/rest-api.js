@@ -1,4 +1,4 @@
-$(document).ready(function() {
+/*$(document).ready(function() {
   $('form').on('submit', function(ev) {
     ev.preventDefault();
     $.ajax({
@@ -13,4 +13,4 @@ $(document).ready(function() {
       }
     });
   });
-});
+});*/

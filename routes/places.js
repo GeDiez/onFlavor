@@ -10,7 +10,7 @@ api.get('/', helpers.requireAuthentication, (req, res, next) => {
   }).catch();
 });
 
-web.get('/', function(req, res, next) {
+web.get('/', helpers.requireAuthentication, function(req, res, next) {
     PlacesService.fetch().then((places) => {
       res.render('../views/places/index', {
         places: places,
