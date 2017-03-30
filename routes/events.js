@@ -12,8 +12,6 @@ web.get('/new', function(req, res, next) {
     res.render('../views/events/new');
 });
 
-
-
 web.get('/', (req, res, next) => {
     EventsService.fetch().then((events) => {
       res.render('../views/events/index', {
@@ -23,12 +21,13 @@ web.get('/', (req, res, next) => {
 });
 
 api.post('/', (req, res, next) =>{
+  console.log("DATA place group" + req.body.placeid+" "+ req.body.groupid );
   const event = {
-    place_id: Number(req.body.place_id),
-    group_id: Number(req.body.group_id),
+    place_id: req.body.placeid,
+    group_id: req.body.groupid,
     name: req.body.name,
     description: req.body.description,
-    date_time: req.body.date_time,
+    date_time: req.body.datetime,
   };
   console.log(event);
   EventsService.createOrUpdateWithObj(event).then((message) => {
@@ -50,7 +49,7 @@ web.post('/edit/:id', (req, res, next) => {
     group_id: Number(req.body.groupid),
     name: req.body.name,
     description: req.body.description,
-    date_time: req.body.date_time,
+    date_time: req.body.datetime,
   };
   console.log(event);
   EventsService.createOrUpdateWithObj(event).then((event) => {
@@ -73,7 +72,6 @@ web.get('/:id', (req, res, next) => {
     });
   });
 });
-
 
 module.exports = {
     api: api,

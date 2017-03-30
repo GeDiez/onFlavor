@@ -31,14 +31,13 @@ web.get('/login', (req, res, next) => {
 });
 
 api.post('/', function (req, res, next) {
-  req.body.user.company_id = req.body.user.company_id == '' ? null : req.body.user.company_id;
   if (req.user && req.user.is_staff && req.body.role == 'admin') {
     return next({ status: 409 });
   }
 
-  const user = req.body.user;
+  const user = req.body;
 
-  bcrypt.hash(req.body.user.password, 8, (err, hash) => {
+  bcrypt.hash(req.body.password, 8, (err, hash) => {
     if (err) return next(err);
 
     knex('users').insert({
