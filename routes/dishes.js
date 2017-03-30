@@ -20,7 +20,7 @@ web.get('/', function(req, res, next) {
 
 api.post('/', (req, res, next) =>{
   const dish = {
-    place_id: req.body.place_id,
+    place_id: req.body.placeid,
     name: req.body.name,
     price: req.body.price,
   };
