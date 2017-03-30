@@ -1,3 +1,5 @@
+require('dotenv').load();
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -10,7 +12,8 @@ var users = require('./routes/users');
 var foodcourt = require('./routes/foodcourt');
 var places = require('./routes/places').api;
 var placesWeb = require('./routes/places').web;
-var users = require('./routes/users');
+var users = require('./routes/users').api;
+var usersWeb = require('./routes/users').web;
 var dishes = require('./routes/dishes');
 var groups = require('./routes/groups');
 var users_groups = require('./routes/users_groups');
@@ -44,6 +47,7 @@ app.use('/api/events', events);
 app.use('/places', placesWeb);
 app.use('/orders', ordersWeb);
 app.use('/events', eventsWeb);
+app.use('/users', usersWeb);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
