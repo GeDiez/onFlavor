@@ -1,42 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title>Hellogenio</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
-    <link rel='stylesheet' href='/stylesheets/bootstrap.min.css' />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
   </head>
   <body>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-12">
-          <h2>On Flavor</h2>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-12">
-          <p>An app where you can create and add food orders</p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-12">
-          <ul>
-            <li>
-              <a href="/places">Places list</a>
-            </li>
-            <li>
-              <a href="/orders">Orders</a>
-            </li>
-            <li>
-              <a href="/groups">Groups</a>
-            </li>
-            <li>
-              <a href="/events">Events</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <%= JSON.stringify(session.user.token) %>
-    <script src="/javascripts/jquery.min.js"></script>
-    <script src="/javascripts/bootstrap.min.js"></script>
+    <div id="content"></div>
+    <script src="/javascripts/bundle.js"></script>
   </body>
 </html>
