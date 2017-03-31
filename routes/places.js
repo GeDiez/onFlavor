@@ -18,7 +18,7 @@ web.get('/', helpers.requireAuthentication, function(req, res, next) {
     });    
 });
 
-web.get('/new', function(req, res, next) {
+web.get('/new', helpers.requireAuthentication, function(req, res, next) {
     res.render('../views/places/new');
 });
 
@@ -47,7 +47,7 @@ api.put('/:id', (req, res, next) => {
   })
 });
 
-web.post('/edit/:id', (req, res, next) => {
+web.post('/edit/:id', helpers.requireAuthentication, (req, res, next) => {
   const place = {
     name: req.body.name,
     latitude: req.body.latitude,
@@ -67,13 +67,13 @@ api.delete('/:id', (req, res, next) => {
   })
 });
 
-web.delete('/places/:id', (req, res, next) => {
+web.delete('/places/:id', helpers.requireAuthentication, (req, res, next) => {
   PlacesService.deleteById(req.params.id).then((placeDeleted) => {
     res.json(placeDeleted);
   })
 });
 
-web.get('/edit/:id', (req, res, next) => {
+web.get('/edit/:id', helpers.requireAuthentication, (req, res, next) => {
   PlacesService.getById(Number(req.params.id)).then((place) => {
     res.render('../views/places/edit', {
       place: place.toJSON()
@@ -87,7 +87,7 @@ api.get('/:id', (req, res, next) => {
   });
 });
 
-web.get('/:id', (req, res, next) => {
+web.get('/:id', helpers.requireAuthentication, (req, res, next) => {
   PlacesService.getById(req.params.id).then((place) => {
     res.render('../views/places/show', {
       place: place.toJSON()
