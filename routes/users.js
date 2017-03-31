@@ -39,8 +39,9 @@ api.post('/', function (req, res, next) {
 
   bcrypt.hash(req.body.password, 8, (err, hash) => {
     if (err) return next(err);
-
-    knex('users').insert({
+    console.log(user);
+    
+    UsersService.createOrUpdateWithObj({
       full_name: user.full_name,
       username: user.username,
       email: user.email,
