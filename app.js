@@ -20,7 +20,7 @@ var events = require('./routes/events').api;
 
 var dishesWeb = require('./routes/dishes').web;
 var usersWeb = require('./routes/users').web;
-//var placesWeb = require('./routes/places').web;
+var placesWeb = require('./routes/places').web;
 var groupsWeb = require('./routes/groups').web;
 var ordersWeb = require('./routes/orders').web;
 var eventsWeb = require('./routes/events').web;
@@ -57,7 +57,7 @@ app.use('/api/groups', groups);
 //app.use('/api/users_groups', users_groups);
 app.use('/api/orders', orders);
 app.use('/api/events', events);
-//app.use('/places', placesWeb);
+app.use('/places', places);
 app.use('/orders', ordersWeb);
 app.use('/events', eventsWeb);
 app.use('/groups', groupsWeb);

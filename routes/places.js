@@ -12,9 +12,11 @@ var Place = require('../models/Place');
 //   }).catch();
 // });
 api.get('/', function(req, res, next) {
-  //console.log('/all')
+  res.render('index');
+});
+
+api.get('/all', function(req, res, next) {
   Place.fetchAll().then(function(places){
-    console.log("Route: "+ places);
     res.json(places);
   });
 });

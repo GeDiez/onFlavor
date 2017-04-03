@@ -19,7 +19,7 @@ const PlacesStore = Object.assign({}, EventEmitter.prototype, {
 
   fetchPlaces(callback) {
     let ajaxReq = request
-      .get(`/api/places`)
+      .get(`/api/places/all`)
       .end((err, res) => {
         if (err || !res.ok) {
           callback('error');

@@ -2,18 +2,19 @@ import React from 'react';
 import { browserHistory } from 'react-router';
 import PlacesStore from '../../stores/PlacesStore';
 
-const WellcomeContainer = React.createClass ({
-  getInitialState() {
-    return {
+export default class WellcomeContainer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       places: [],
     };
-  },
+  }
 
   componentWillMount(){
     PlacesStore.fetchPlaces((places) =>{
       this.setState({places: places});
     });
-  },
+  }
 
   render() {
     let places = this.state.places.map(place =>{
@@ -50,6 +51,4 @@ const WellcomeContainer = React.createClass ({
       </div>
     </div>;
   }
-});
-
-export default WellcomeContainer;
+}
