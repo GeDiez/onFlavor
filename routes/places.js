@@ -2,16 +2,26 @@ const express = require('express');
 const api = express.Router();
 const web = express.Router();
 const PlacesService = require('../services/places_service');
+var bookshelf = require('../bookshelf');
 const helpers = require('../lib/helpers');
+var Place = require('../models/Place');
 
-api.get('/', helpers.requireAuthentication, (req, res, next) => {
-  PlacesService.fetchPlaceDishes().then((places)=> {
+// api.get('/', helpers.requireAuthentication, (req, res, next) => {
+//   PlacesService.fetchPlaceDishes().then((places)=> {
+//     res.json(places);
+//   }).catch();
+// });
+api.get('/', function(req, res, next) {
+  //console.log('/all')
+  Place.fetchAll().then(function(places){
+    console.log("Route: "+ places);
     res.json(places);
-  }).catch();
+  });
 });
 
-web.get('/', helpers.requireAuthentication, function(req, res, next) {
-    PlacesService.fetch().then((places) => {
+web.get('/', function(req, res, next) {
+    PlacesService.fetchPlaces().then((places) => {
+      console.log("Route: "+ places);
       res.render('../views/places/index', {
         places: places,
       });

@@ -7,7 +7,7 @@ const helpers = require('../lib/helpers');
 //router.get('/', helpers.requireAuthentication, (req, res, next) => {
 
 router.get('/', (req, res, next) => {
-    PlacesService.fetch().then((newPlace) => {
+    PlacesService.fetchPlaces().then((newPlace) => {
       res.render('../views/index', {
         places: newPlace,
       });

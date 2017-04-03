@@ -4,7 +4,7 @@ const Dish = require('../models/Dish');
 const knex = bookshelf.knex;
 
 module.exports = {
-  fetch: () => {
+  fetchPlaces: () => {
     return new Promise((resolve, reject)=>{
       Place.fetchAll().then((places)=>{
         resolve(places.toJSON());
