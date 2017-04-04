@@ -19,7 +19,7 @@ web.get('/', function(req, res, next) {
      res.render('../views/users/index', {
        users: users,
      });
-   });    
+   });
 });
 
 web.get('/new', function(req, res, next) {
@@ -40,7 +40,7 @@ api.post('/', function (req, res, next) {
   bcrypt.hash(req.body.password, 8, (err, hash) => {
     if (err) return next(err);
     console.log(user);
-    
+
     UsersService.createOrUpdateWithObj({
       full_name: user.full_name,
       username: user.username,
@@ -65,14 +65,6 @@ api.post('/', function (req, res, next) {
 });
 
 api.post('/authorize', (req, res, next) => {
-  authorize(req, res, next);
-});
-
-web.post('/authorize', (req, res, next) => {
-  authorize(req, res, next);
-});
-
-function authorize(req, res, next) {
   knex('users').where({ username: req.body.username }).then((rows) => {
     if (rows.error) return next(rows.error);
     let user = rows[0];
@@ -89,24 +81,23 @@ function authorize(req, res, next) {
           var token = authToken.encode({
             user_id: user.id
           });
-          if (req.xhr) {
-            res.json({
-              id: user.id,
-              full_name: user.full_name,
-              email: user.email,
-              token: token,
-              role: user.role
-            });
-          } else {
-            req.session.user = Object.assign(user, { token: token});
-            res.redirect('/');
-          }
+          res.json({
+            id: user.id,
+            full_name: user.full_name,
+            email: user.email,
+            token: token,
+            role: user.role
+          });
         // }
       } else {
         res.status(401).json({ errors: ['Invalid email or password'] });
       }
     });
   });
+});
+
+function authorize(req, res, next) {
+
 }
 
 web.get('/logout', (req, res, next) => {
