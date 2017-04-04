@@ -2,16 +2,28 @@ const express = require('express');
 const api = express.Router();
 const web = express.Router();
 const PlacesService = require('../services/places_service');
+var bookshelf = require('../bookshelf');
 const helpers = require('../lib/helpers');
+var Place = require('../models/Place');
 
-api.get('/', helpers.requireAuthentication, (req, res, next) => {
-  PlacesService.fetchPlaceDishes().then((places)=> {
-    res.json(places);
-  }).catch();
+// api.get('/', helpers.requireAuthentication, (req, res, next) => {
+//   PlacesService.fetchPlaceDishes().then((places)=> {
+//     res.json(places);
+//   }).catch();
+// });
+api.get('/', function(req, res, next) {
+  res.render('index');
 });
 
-web.get('/', helpers.requireAuthentication, function(req, res, next) {
-    PlacesService.fetch().then((places) => {
+api.get('/all', function(req, res, next) {
+  Place.fetchAll().then(function(places){
+    res.json(places);
+  });
+});
+
+web.get('/', function(req, res, next) {
+    PlacesService.fetchPlaces().then((places) => {
+      console.log("Route: "+ places);
       res.render('../views/places/index', {
         places: places,
       });
@@ -26,7 +38,8 @@ api.post('/', (req, res, next) =>{
   const place = {
     name: req.body.name,
     latitude: req.body.latitude,
-    longitude: req.body.longitude
+    longitude: req.body.longitude,
+    description: req.body.description,
   };
   PlacesService.createOrUpdateWithObj(place).then((message) => {
     res.json(message);
@@ -38,7 +51,8 @@ api.put('/:id', (req, res, next) => {
     name: req.body.name,
     latitude: req.body.latitude,
     longitude: req.body.longitude,
-    id: req.params.id
+    id: req.params.id,
+    description: req.body.description,
   };
   PlacesService.createOrUpdateWithObj(place).then((newPlace) => {
     res.json(newPlace)
@@ -52,7 +66,8 @@ web.post('/edit/:id', helpers.requireAuthentication, (req, res, next) => {
     name: req.body.name,
     latitude: req.body.latitude,
     longitude: req.body.longitude,
-    id: req.params.id
+    id: req.params.id,
+    description: req.body.description,
   };
   PlacesService.createOrUpdateWithObj(place).then((newPlace) => {
     res.json(newPlace)
