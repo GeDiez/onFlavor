@@ -38,7 +38,8 @@ api.post('/', (req, res, next) =>{
   const place = {
     name: req.body.name,
     latitude: req.body.latitude,
-    longitude: req.body.longitude
+    longitude: req.body.longitude,
+    description: req.body.description,
   };
   PlacesService.createOrUpdateWithObj(place).then((message) => {
     res.json(message);
@@ -50,7 +51,8 @@ api.put('/:id', (req, res, next) => {
     name: req.body.name,
     latitude: req.body.latitude,
     longitude: req.body.longitude,
-    id: req.params.id
+    id: req.params.id,
+    description: req.body.description,
   };
   PlacesService.createOrUpdateWithObj(place).then((newPlace) => {
     res.json(newPlace)
@@ -64,7 +66,8 @@ web.post('/edit/:id', helpers.requireAuthentication, (req, res, next) => {
     name: req.body.name,
     latitude: req.body.latitude,
     longitude: req.body.longitude,
-    id: req.params.id
+    id: req.params.id,
+    description: req.body.description,
   };
   PlacesService.createOrUpdateWithObj(place).then((newPlace) => {
     res.json(newPlace)

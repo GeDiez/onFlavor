@@ -31,6 +31,38 @@ const PlacesStore = Object.assign({}, EventEmitter.prototype, {
     ajaxRequests.push(ajaxReq);
   },
 
+  getById(id, callback){
+    let ajaxReq = request
+    .get(`/api/places/${id}`)
+    .end((err, res) => {
+      if (err || !res.ok) {
+        callback('error');
+      } else {
+        callback(res.body);
+      }
+    });
+    ajaxRequests.push(ajaxReq);
+  },
+
+  savePlace(place, callback){
+    let ajaxReq = request
+    .post(`/places`)
+    .send({ 
+      place_id: place.placeid,
+      name: place.name,
+      latitude: place.latitude,
+      longitude: place.longitude,
+    })
+    .end((err, res) => {
+        if (err || !res.ok) {
+          callback('error');
+        } else {
+          callback(res.body);
+        }
+      })
+    ajaxRequests.push(ajaxReq);
+  },
+
   unsuscribe() {
     ajaxRequests.forEach(req => {
       if (req.hasOwnProperty('abort')) {

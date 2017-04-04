@@ -6,37 +6,63 @@ export default class EditPlaces extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      places: [],
+      placeid: this.props.params.id,
+      place: [],
+      name: '',
+      latitude: '',
+      longitude: ''
     };
-    this._editPlace = this._editPlace.bind(this);
+    this._handleChange = this._handleChange.bind(this);
+    this._savePlace = this._savePlace.bind(this);
   }
 
   componentWillMount(){
-    PlacesStore.fetchPlaces((places) =>{
-      this.setState({places: places});
+    PlacesStore.getById(this.props.params.id, (place) => {
+      this.setState({
+        name: place.name,
+        latitude: place.latitude,
+        longitude: place.longitude,
+      });
     });
+
   }
 
-  _editPlace() {
+  // _setPlaceId(value) {
+  //   this.setState({ placeid: value});
+  // }
+
+  _savePlace() {
+    console.log("click save");
+  }
+
+  _handleChange(e) {
+    var change = {}
+    change[e.target.name] = e.target.value
+    this.setState(change)
   }
 
   render() {
-    let places = this.state.places.map(place =>{
-      return <div key={place.id} className="row"> 
-        <h5 className="col-sm-2">{place.name}</h5> 
-        <Link to="/" className="btn btn-danger col-sm-1" params={{ placeid: place.id }}>Create Idea</Link>
-        <button type="button" className="btn btn-info col-sm-1">Delete</button>
-      </div>
-    });
-
     return <div>
       <div className="container-fluid">
         <div className="row">
           <div className="col-sm-6">
             <h1>On flavor App:</h1>
+            <input type="hidden" name="placeid" value={this.state.placeid}/>
+            <div className="form-group">
+              <label htmlFor="name">Name:</label>
+              <input type="text" name="name" value={this.state.name} onChange={this._handleChange}/>
+            </div>
+            <div className="form-group">
+              <label htmlFor="latitude">Latitude:</label>
+              <input type="text" name="latitude" value={this.state.latitude} onChange={this._handleChange}/>
+            </div>
+            <div className="form-group">
+              <label htmlFor="longitude">Longitude:</label>
+              <input type="text" name="longitude" value={this.state.longitude} onChange={this._handleChange}/>
+            </div>
+            <input type="submit" value="Save" className="btn btn-primary" onClick={this._savePlace}/>
           </div>
         </div>
-        {places}
       </div>
     </div>;
   }
