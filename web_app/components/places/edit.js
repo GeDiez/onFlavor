@@ -10,7 +10,8 @@ export default class EditPlaces extends React.Component {
       place: [],
       name: '',
       latitude: '',
-      longitude: ''
+      longitude: '',
+      description: ''
     };
     this._handleChange = this._handleChange.bind(this);
     this._savePlace = this._savePlace.bind(this);
@@ -22,6 +23,7 @@ export default class EditPlaces extends React.Component {
         name: place.name,
         latitude: place.latitude,
         longitude: place.longitude,
+        description: place.description,
       });
     });
 
@@ -32,7 +34,13 @@ export default class EditPlaces extends React.Component {
   // }
 
   _savePlace() {
-    console.log("click save");
+    PlacesStore.savePlace({
+      placeid: this.state.placeid,
+      name: this.state.name,
+      latitude: this.state.latitude,
+      longitude: this.state.longitude,
+      description: this.state.description,
+    })
   }
 
   _handleChange(e) {
@@ -59,6 +67,10 @@ export default class EditPlaces extends React.Component {
             <div className="form-group">
               <label htmlFor="longitude">Longitude:</label>
               <input type="text" name="longitude" value={this.state.longitude} onChange={this._handleChange}/>
+            </div>
+            <div className="form-group">
+              <label htmlFor="description">Description:</label>
+              <input type="text" name="description" value={this.state.description} onChange={this._handleChange}/>
             </div>
             <input type="submit" value="Save" className="btn btn-primary" onClick={this._savePlace}/>
           </div>

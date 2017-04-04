@@ -19,7 +19,7 @@ const PlacesStore = Object.assign({}, EventEmitter.prototype, {
 
   fetchPlaces(callback) {
     let ajaxReq = request
-      .get(`/api/places/all`)
+      .get(`/api/places/`)
       .end((err, res) => {
         if (err || !res.ok) {
           callback('error');
@@ -48,10 +48,11 @@ const PlacesStore = Object.assign({}, EventEmitter.prototype, {
     let ajaxReq = request
     .post(`/places`)
     .send({ 
-      place_id: place.placeid,
+      placeid: place.placeid,
       name: place.name,
       latitude: place.latitude,
       longitude: place.longitude,
+      description: place.description,
     })
     .end((err, res) => {
         if (err || !res.ok) {
