@@ -11,11 +11,11 @@ var Place = require('../models/Place');
 //     res.json(places);
 //   }).catch();
 // });
-api.get('/', function(req, res, next) {
+web.get('/', function(req, res, next) {
   res.render('index');
 });
 
-api.get('/all', function(req, res, next) {
+api.get('/', function(req, res, next) {
   Place.fetchAll().then(function(places){
     res.json(places);
   });
@@ -40,6 +40,7 @@ api.post('/', (req, res, next) =>{
     latitude: req.body.latitude,
     longitude: req.body.longitude,
     description: req.body.description,
+    id: req.body.placeid,
   };
   PlacesService.createOrUpdateWithObj(place).then((message) => {
     res.json(message);
