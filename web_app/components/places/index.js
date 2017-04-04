@@ -8,25 +8,32 @@ export default class PlacesContainer extends React.Component {
     this.state = {
       places: [],
     };
-    this._editPlace = this._editPlace.bind(this);
+    this._deletePlace = this._deletePlace.bind(this);
+    this._updatePlacesFromStore = this._updatePlacesFromStore.bind(this);
   }
 
-  componentWillMount(){
+  componentWillMount() {
+    this._updatePlacesFromStore();
+  }
+
+  _updatePlacesFromStore(){
     PlacesStore.fetchPlaces((places) =>{
       this.setState({places: places});
     });
   }
 
-  _editPlace() {
-    browserHistory.push('/');
+  _deletePlace(place_id) {
+    PlacesStore.deletePlace((place_id),(message)=>{
+      this._updatePlacesFromStore();
+    });
   }
 
   render() {
     let places = this.state.places.map(place =>{
       return <div key={place.id} className="row"> 
         <h5 className="col-sm-2">{place.name}</h5> 
-        <Link to={'/places/'+place.id } className="btn btn-danger col-sm-1">Edit</Link>
-        <button type="button" className="btn btn-info col-sm-1">Delete</button>
+        <Link to={'/places/'+place.id+'/edit' } className="btn btn-danger col-sm-1">Edit</Link>
+        <button type="button" className="btn btn-info col-sm-1" onClick={() => this._deletePlace(place.id)} >Delete</button>
       </div>
     });
 

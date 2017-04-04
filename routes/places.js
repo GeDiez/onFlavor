@@ -21,17 +21,10 @@ api.get('/', function(req, res, next) {
   });
 });
 
-web.get('/', function(req, res, next) {
-    PlacesService.fetchPlaces().then((places) => {
-      console.log("Route: "+ places);
-      res.render('../views/places/index', {
-        places: places,
-      });
-    });    
-});
 
-web.get('/new', helpers.requireAuthentication, function(req, res, next) {
-    res.render('../views/places/new');
+//web.get('/new', helpers.requireAuthentication, function(req, res, next) {
+web.get('/new', function(req, res, next) {
+    res.render('index');
 });
 
 api.post('/', (req, res, next) =>{
@@ -103,12 +96,15 @@ api.get('/:id', (req, res, next) => {
   });
 });
 
-web.get('/:id', helpers.requireAuthentication, (req, res, next) => {
-  PlacesService.getById(req.params.id).then((place) => {
-    res.render('../views/places/show', {
-      place: place.toJSON()
-    });
-  });
+// web.get('/:id', helpers.requireAuthentication, (req, res, next) => {
+//   PlacesService.getById(req.params.id).then((place) => {
+//     res.render('../views/places/show', {
+//       place: place.toJSON()
+//     });
+//   });
+// });
+web.get('/:id', function(req, res, next) {
+    res.render('index');
 });
 
 //module.exports = api, web;
