@@ -8,6 +8,8 @@ import PlacesContainer from './components/places';
 import EditPlaces from './components/places/edit';
 import ShowPlaces from './components/places/show';
 import Login from './components/Login';
+import Events from './components/Events';
+
 
 import App from './App';
 
@@ -20,11 +22,13 @@ function requireAuth (nextState, replace, callback) {
 }
 
 ReactDOM.render((<Router history={browserHistory}>
+
 <Route path="/" component={App}>
   <IndexRoute components={{content: WellcomeContainer}} onEnter={requireAuth}/>
   <Route path="/wellcome" components={{content: WellcomeContainer}} onEnter={requireAuth} />
-  <Route path="/places" components={{content: PlacesContainer}} onEnter={requireAuth} />
   <Route path="/login" components={{content: Login}} />
+  <Route path="/events" components={{content: Events}} />
+  <Route path="/places" components={{content: PlacesContainer}} onEnter={requireAuth} />
   <Route path="/places/new" components={{content: EditPlaces}} onEnter={requireAuth} />
   <Route path="/places/:id" components={{content: ShowPlaces}} onEnter={requireAuth} />
   <Route path="/places/:id/edit" components={{content: EditPlaces}} onEnter={requireAuth} />

@@ -1,5 +1,7 @@
 import React from 'react';
 import { browserHistory, Link } from 'react-router';
+
+import Navbar from '../Navbar';
 import PlacesStore from '../../stores/PlacesStore';
 
 export default class ShowPlaces extends React.Component {
@@ -29,13 +31,14 @@ export default class ShowPlaces extends React.Component {
 
   render() {
     let dishes = this.state.dishes.map((dish) => {
-      return <div key={dish.id}> 
+      return <div key={dish.id}>
         <label htmlFor="Name">Name: </label>
         <span>{dish.name}</span>
       </div>
     });
 
     return <div>
+      <Navbar />
       <div className="container-fluid">
         <div className="row">
           <div className="col-sm-6">

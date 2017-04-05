@@ -1,5 +1,7 @@
 import React from 'react';
 import { browserHistory, Link } from 'react-router';
+
+import Navbar from '../Navbar';
 import PlacesStore from '../../stores/PlacesStore';
 
 export default class WellcomeContainer extends React.Component {
@@ -17,8 +19,8 @@ export default class WellcomeContainer extends React.Component {
   }
 
   render() {
-
     return <div>
+      <Navbar />
       <div className="container-fluid">
         <div className="row">
           <div className="col-sm-12">
@@ -33,7 +35,7 @@ export default class WellcomeContainer extends React.Component {
         <div className="row">
           <div className="col-sm-12">
             <ul>
-              <li><Link to={`/places`} activeClassName="active">Places</Link></li> 
+              <li><Link to={`/places`} activeClassName="active">Places</Link></li>
 
             </ul>
           </div>

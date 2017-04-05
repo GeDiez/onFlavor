@@ -1,5 +1,7 @@
 import React from 'react';
 import { browserHistory, Link } from 'react-router';
+
+import Navbar from '../Navbar';
 import PlacesStore from '../../stores/PlacesStore';
 
 export default class EditPlaces extends React.Component {
@@ -19,10 +21,10 @@ export default class EditPlaces extends React.Component {
   componentWillMount(){
     PlacesStore.getById(this.props.params.id, (place) => {
       this.setState({
-        name: place.name,
-        latitude: place.latitude,
-        longitude: place.longitude,
-        description: place.description,
+        name: place.name || '',
+        latitude: place.latitude || '',
+        longitude: place.longitude || '',
+        description: place.description || '',
       });
     });
   }
@@ -47,6 +49,7 @@ export default class EditPlaces extends React.Component {
 
   render() {
     return <div>
+      <Navbar />
       <div className="container-fluid">
         <div className="row">
           <div className="col-sm-6">
