@@ -31,9 +31,10 @@ export default class PlacesContainer extends React.Component {
   render() {
     let places = this.state.places.map(place =>{
       return <div key={place.id} className="row"> 
-        <label className="col-md-2">{place.name}</label> 
-        <Link to={'/places/'+place.id+'/edit' } className="btn btn-danger col-md-1">Edit</Link>
-        <button type="button" className="btn btn-info col-md-1" onClick={() => this._deletePlace(place.id)} >Delete</button>
+        <label className="col-md-2">{place.name}</label>
+        <Link to={'/places/'+place.id } className="btn btn-primary col-md-1">Show</Link>
+        <Link to={'/places/'+place.id+'/edit' } className="btn btn-info col-md-1">Edit</Link>
+        <button type="button" className="btn btn-danger col-md-1" onClick={() => this._deletePlace(place.id)} >Delete</button>
       </div>
     });
 

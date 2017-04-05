@@ -27,7 +27,19 @@ const PlacesStore = Object.assign({}, EventEmitter.prototype, {
           callback(res.body);
         }
       });
-      //console.log("Store: "+ places);
+    ajaxRequests.push(ajaxReq);
+  },
+
+  fetchPlaceDishes(id, callback) {
+    let ajaxReq = request
+      .get(`/api/places/${id}/dishes`)
+      .end((err, res) => {
+        if (err || !res.ok) {
+          callback('error');
+        } else {
+          callback(res.body);
+        }
+      });
     ajaxRequests.push(ajaxReq);
   },
 

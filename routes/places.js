@@ -6,11 +6,6 @@ var bookshelf = require('../bookshelf');
 const helpers = require('../lib/helpers');
 var Place = require('../models/Place');
 
-// api.get('/', helpers.requireAuthentication, (req, res, next) => {
-//   PlacesService.fetchPlaceDishes().then((places)=> {
-//     res.json(places);
-//   }).catch();
-// });
 web.get('/', function(req, res, next) {
   res.render('index');
 });
@@ -22,7 +17,6 @@ api.get('/', function(req, res, next) {
 });
 
 
-//web.get('/new', helpers.requireAuthentication, function(req, res, next) {
 web.get('/new', function(req, res, next) {
     res.render('index');
 });
@@ -96,13 +90,6 @@ api.get('/:id', (req, res, next) => {
   });
 });
 
-// web.get('/:id', helpers.requireAuthentication, (req, res, next) => {
-//   PlacesService.getById(req.params.id).then((place) => {
-//     res.render('../views/places/show', {
-//       place: place.toJSON()
-//     });
-//   });
-// });
 web.get('/:id', function(req, res, next) {
     res.render('index');
 });

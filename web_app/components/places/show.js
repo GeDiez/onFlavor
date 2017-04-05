@@ -10,7 +10,8 @@ export default class ShowPlaces extends React.Component {
       name: '',
       latitude: '',
       longitude: '',
-      description: ''
+      description: '',
+      dishes:[],
     }
   }
 
@@ -21,18 +22,26 @@ export default class ShowPlaces extends React.Component {
         latitude: place.latitude,
         longitude: place.longitude,
         description: place.description,
+        dishes: place.dishes,
       });
     });
   }
 
   render() {
+    let dishes = this.state.dishes.map((dish) => {
+      return <div key={dish.id}> 
+        <label htmlFor="Name">Name: </label>
+        <span>{dish.name}</span>
+      </div>
+    });
+
     return <div>
       <div className="container-fluid">
         <div className="row">
           <div className="col-sm-6">
             <h1>On flavor App:</h1>
             <div className="form-group">
-              <label htmlFor="name">Name:</label>
+              <label htmlFor="name"> Name:</label>
               <span name="name"> {this.state.name} </span>
             </div>
             <div className="form-group">
@@ -46,6 +55,10 @@ export default class ShowPlaces extends React.Component {
             <div className="form-group">
               <label htmlFor="description">Description:</label>
               <span name="description"> {this.state.description} </span>
+            </div>
+            <div className="form-group">
+              <label htmlFor="dishes">Dishes: </label>
+              {dishes}
             </div>
           </div>
         </div>
