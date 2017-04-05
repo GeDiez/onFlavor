@@ -1,9 +1,10 @@
 var path = require('path');
 var webpack = require('webpack');
+require('babel-polyfill');
 
 module.exports = {
   entry: [
-    './web_app/main'
+    'babel-polyfill', './web_app/main'
   ],
   devtool: 'eval-source-map',
   output: {
