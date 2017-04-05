@@ -46,7 +46,7 @@ const PlacesStore = Object.assign({}, EventEmitter.prototype, {
 
   savePlace(place, callback){
     let ajaxReq = request
-    .post(`/places`)
+    .post(`/api/places`)
     .send({ 
       placeid: place.placeid,
       name: place.name,
@@ -73,9 +73,9 @@ const PlacesStore = Object.assign({}, EventEmitter.prototype, {
     ajaxRequests = [];
   },
 
-  getDate(callback) {
+  deletePlace(id, callback) {
     let ajaxReq = request
-      .get(`/second/date`)
+      .delete(`/api/places/${id}`)
       .end((err, res) => {
         if (err || !res.ok) {
           callback('error');

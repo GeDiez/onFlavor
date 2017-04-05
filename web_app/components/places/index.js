@@ -8,36 +8,46 @@ export default class PlacesContainer extends React.Component {
     this.state = {
       places: [],
     };
-    this._editPlace = this._editPlace.bind(this);
+    this._deletePlace = this._deletePlace.bind(this);
+    this._updatePlacesFromStore = this._updatePlacesFromStore.bind(this);
   }
 
-  componentWillMount(){
+  componentWillMount() {
+    this._updatePlacesFromStore();
+  }
+
+  _updatePlacesFromStore(){
     PlacesStore.fetchPlaces((places) =>{
       this.setState({places: places});
     });
   }
 
-  _editPlace() {
-    browserHistory.push('/');
+  _deletePlace(place_id) {
+    PlacesStore.deletePlace((place_id),(message)=>{
+      this._updatePlacesFromStore();
+    });
   }
 
   render() {
     let places = this.state.places.map(place =>{
       return <div key={place.id} className="row"> 
-        <h5 className="col-sm-2">{place.name}</h5> 
-        <Link to={'/places/'+place.id } className="btn btn-danger col-sm-1">Edit</Link>
-        <button type="button" className="btn btn-info col-sm-1">Delete</button>
+        <label className="col-md-2">{place.name}</label> 
+        <Link to={'/places/'+place.id+'/edit' } className="btn btn-danger col-md-1">Edit</Link>
+        <button type="button" className="btn btn-info col-md-1" onClick={() => this._deletePlace(place.id)} >Delete</button>
       </div>
     });
 
     return <div>
       <div className="container-fluid">
         <div className="row">
-          <div className="col-sm-6">
+          <div className="col-md-6">
             <h1>On flavor App:</h1>
           </div>
         </div>
         {places}
+        <div className="row">
+          <Link to={'/places/new' } className="btn btn-success col-md-1">New</Link>
+        </div>
       </div>
     </div>;
   }

@@ -2,7 +2,7 @@ import React from 'react';
 import { browserHistory, Link } from 'react-router';
 import PlacesStore from '../../stores/PlacesStore';
 
-export default class EditPlaces extends React.Component {
+export default class ShowPlaces extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -11,9 +11,7 @@ export default class EditPlaces extends React.Component {
       latitude: '',
       longitude: '',
       description: ''
-    };
-    this._handleChange = this._handleChange.bind(this);
-    this._savePlace = this._savePlace.bind(this);
+    }
   }
 
   componentWillMount(){
@@ -27,48 +25,28 @@ export default class EditPlaces extends React.Component {
     });
   }
 
-  _savePlace() {
-    PlacesStore.savePlace(({
-      placeid: this.state.placeid,
-      name: this.state.name,
-      latitude: this.state.latitude,
-      longitude: this.state.longitude,
-      description: this.state.description,
-    }), (message) => {
-      browserHistory.push('/places');
-    });
-  }
-
-  _handleChange(e) {
-    var change = {}
-    change[e.target.name] = e.target.value
-    this.setState(change)
-  }
-
   render() {
     return <div>
       <div className="container-fluid">
         <div className="row">
           <div className="col-sm-6">
             <h1>On flavor App:</h1>
-            <input type="hidden" name="placeid" value={this.state.placeid}/>
             <div className="form-group">
               <label htmlFor="name">Name:</label>
-              <input type="text" name="name" value={this.state.name} onChange={this._handleChange}/>
+              <span name="name"> {this.state.name} </span>
             </div>
             <div className="form-group">
               <label htmlFor="latitude">Latitude:</label>
-              <input type="text" name="latitude" value={this.state.latitude} onChange={this._handleChange}/>
+              <span name="latitude"> {this.state.latitude} </span>
             </div>
             <div className="form-group">
               <label htmlFor="longitude">Longitude:</label>
-              <input type="text" name="longitude" value={this.state.longitude} onChange={this._handleChange}/>
+              <span name="longitude"> {this.state.longitude} </span>
             </div>
             <div className="form-group">
               <label htmlFor="description">Description:</label>
-              <input type="text" name="description" value={this.state.description} onChange={this._handleChange}/>
+              <span name="description"> {this.state.description} </span>
             </div>
-            <input type="submit" value="Save" className="btn btn-primary" onClick={this._savePlace}/>
           </div>
         </div>
       </div>

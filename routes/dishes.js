@@ -20,7 +20,7 @@ web.get('/', function(req, res, next) {
 
 api.post('/', (req, res, next) =>{
   const dish = {
-    place_id: req.body.placeid,
+    place_id: req.body.place_id,
     name: req.body.name,
     price: req.body.price,
   };
@@ -43,7 +43,7 @@ web.get('/:id', (req, res, next) => {
 
 web.post('/edit/:id', (req, res, next) => {
   const dish = {
-    place_id: Number(req.body.placeid),
+    place_id: Number(req.body.place_id),
     id: Number(req.params.id),
     name: req.body.name,
     price: req.body.price,
