@@ -1,5 +1,5 @@
 import React from 'react';
-import { browserHistory } from 'react-router';
+import { browserHistory, Link } from 'react-router';
 import PlacesStore from '../../stores/PlacesStore';
 
 export default class WellcomeContainer extends React.Component {
@@ -17,12 +17,6 @@ export default class WellcomeContainer extends React.Component {
   }
 
   render() {
-    let places = this.state.places.map(place =>{
-      return <div key={place.id}> 
-        <h4>Name: {place.name}</h4>
-        <button type="button" className="btn btn-danger">Delete</button>
-      </div>
-    });
 
     return <div>
       <div className="container-fluid">
@@ -39,15 +33,11 @@ export default class WellcomeContainer extends React.Component {
         <div className="row">
           <div className="col-sm-12">
             <ul>
-              <li> <a href=""></a> </li>
-              <li> <a href=""></a> </li>
-              <li> <a href=""></a> </li>
-              <li> <a href=""></a> </li>
+              <li><Link to={`/places`} activeClassName="active">Places</Link></li> 
+
             </ul>
           </div>
         </div>
-        <h4>{places}</h4>
-
       </div>
     </div>;
   }
