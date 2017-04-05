@@ -86,7 +86,8 @@ api.post('/authorize', (req, res, next) => {
             full_name: user.full_name,
             email: user.email,
             token: token,
-            role: user.role
+            role: user.role,
+            username: user.username
           });
         // }
       } else {
