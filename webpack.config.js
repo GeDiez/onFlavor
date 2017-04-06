@@ -1,6 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
 require('babel-polyfill');
+// require('react-date-picker/index.css');
 
 module.exports = {
   entry: [
@@ -22,6 +23,10 @@ module.exports = {
       {
         test: /\.json$/,
         loader: 'json-loader'
+      },
+      {
+        test: /\.css$/, // Only .css files
+        loader: 'style!css' // Run both loaders
       }
     ]
   },
