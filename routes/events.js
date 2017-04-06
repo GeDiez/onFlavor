@@ -13,11 +13,7 @@ web.get('/new', function(req, res, next) {
 });
 
 web.get('/', (req, res, next) => {
-    EventsService.fetch().then((events) => {
-      res.render('../views/events/index', {
-        events: events
-      });
-    });
+  res.render('index');
 });
 
 api.post('/', (req, res, next) =>{

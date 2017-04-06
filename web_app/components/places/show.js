@@ -82,6 +82,8 @@ export default class ShowPlaces extends React.Component {
   }
 
   render() {
+    let isEnabled = this.state.dishName.length > 0 && this.state.dishPrice.length > 0;
+
     let dishes = this.state.dishes.map((dish) => {
       return <div key={dish.id}>
         <label htmlFor="Name">Name: </label>
@@ -97,6 +99,8 @@ export default class ShowPlaces extends React.Component {
         <div className="row">
           <div className="col-sm-6">
             <h1>On flavor App:</h1>
+
+            {/* Place info */}
             <div className="form-group">
               <label htmlFor="name"> Name:</label>
               <span name="name"> {this.state.name} </span>
@@ -117,10 +121,11 @@ export default class ShowPlaces extends React.Component {
               <label htmlFor="dishes">Dishes: </label>
               {dishes}
             </div>
+            {/* -------- */}
+
+            {/* Modal form */}
             <div className="form-group">
               <button type="button" className="btn btn-success col-md-2" onClick={this._openModal}>Add dish</button>
-
-              {/* Modal form */}
               <Modal isOpen={this.state.isOpen} onRequestHide={this._hideModal}>
                 <ModalHeader>
                   <ModalClose onClick={this._hideModal}/>
@@ -141,14 +146,13 @@ export default class ShowPlaces extends React.Component {
                   <button className='btn btn-default' onClick={this._hideModal}>
                     Close
                   </button>
-                  <button className='btn btn-primary' onClick={this._saveDish}>
+                  <button className='btn btn-primary' onClick={this._saveDish} disabled={!isEnabled}>
                     Save dish
                   </button>
                 </ModalFooter>
               </Modal>
-              {/* ---------------- */}
-
             </div>
+            {/* ---------------- */}
           </div>
         </div>
       </div>
