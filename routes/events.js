@@ -11,7 +11,7 @@ api.get('/', helpers.requireAuthentication, (req, res, next) => {
 });
 
 web.get('/new', function(req, res, next) {
-    res.render('../views/events/new');
+    res.render('index');
 });
 
 web.get('/', (req, res, next) => {
@@ -33,28 +33,7 @@ api.post('/', helpers.requireAuthentication, (req, res, next) =>{
   });
 });
 web.get('/edit/:id', (req, res, next) => {
-  EventsService.getById(Number(req.params.id)).then((event) => {
-    res.render('../views/events/edit', {
-      event: event.toJSON()
-    });
-  });
-});
-
-web.post('/edit/:id', (req, res, next) => {
-  const event = {
-    id: Number(req.params.id),
-    place_id: Number(req.body.placeid),
-    group_id: Number(req.body.groupid),
-    name: req.body.name,
-    description: req.body.description,
-    date_time: req.body.datetime,
-  };
-  console.log(event);
-  EventsService.createOrUpdateWithObj(event).then((event) => {
-    res.json(event)
-  }).catch((error) => {
-    res.status(500).json(error);
-  })
+  res.render('index');
 });
 
 api.delete('/:id', helpers.requireAuthentication, (req, res, next) => {
@@ -64,11 +43,7 @@ api.delete('/:id', helpers.requireAuthentication, (req, res, next) => {
 });
 
 web.get('/:id', (req, res, next) => {
-  EventsService.getById(req.params.id).then((event) => {
-    res.render('../views/events/show', {
-      event: event.toJSON()
-    });
-  });
+  res.render('index');
 });
 
 module.exports = {

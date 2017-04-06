@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 import request from 'superagent';
 
-const CHANGE_EVENT = 'change'; 
+const CHANGE_EVENT = 'change';
 let ajaxRequests = [];
 
 const DishStore = Object.assign({}, EventEmitter.prototype, {
@@ -17,22 +17,20 @@ const DishStore = Object.assign({}, EventEmitter.prototype, {
     this.removeListener(CHANGE_EVENT, callback);
   },
 
-  fetchPlaces(callback) {
-    let ajaxReq = request
-      .get(`/api/places/`)
-      .end((err, res) => {
-        if (err || !res.ok) {
-          callback('error');
-        } else {
-          callback(res.body);
-        }
-      });
-    ajaxRequests.push(ajaxReq);
+  unsuscribe() {
+    ajaxRequests.forEach(req => {
+      if (req.hasOwnProperty('abort')) {
+        req.abort();
+      }
+    });
+    ajaxRequests = [];
   },
 
   fetchPlaceDishes(id, callback) {
-    let ajaxReq = request
+    const token = localStorage.getItem('token');
+    const ajaxReq = request
       .get(`/api/places/${id}/dishes`)
+      .set('Authorization', `Bearer: ${token}`)
       .end((err, res) => {
         if (err || !res.ok) {
           callback('error');
@@ -43,23 +41,12 @@ const DishStore = Object.assign({}, EventEmitter.prototype, {
     ajaxRequests.push(ajaxReq);
   },
 
-  getById(id, callback){
-    let ajaxReq = request
-    .get(`/api/places/${id}`)
-    .end((err, res) => {
-      if (err || !res.ok) {
-        callback('error');
-      } else {
-        callback(res.body);
-      }
-    });
-    ajaxRequests.push(ajaxReq);
-  },
-
-  saveDish(dish, callback){
-    let ajaxReq = request
+  saveDish(dish, callback) {
+    const token = localStorage.getItem('token');
+    const ajaxReq = request
     .post(`/api/dishes`)
-    .send({ 
+    .set('Authorization', `Bearer: ${token}`)
+    .send({
       place_id: dish.place_id,
       name: dish.name,
       price: dish.price,
@@ -74,18 +61,12 @@ const DishStore = Object.assign({}, EventEmitter.prototype, {
     ajaxRequests.push(ajaxReq);
   },
 
-  unsuscribe() {
-    ajaxRequests.forEach(req => {
-      if (req.hasOwnProperty('abort')) {
-        req.abort();
-      }
-    });
-    ajaxRequests = [];
-  },
 
   deletePlace(id, callback) {
-    let ajaxReq = request
+    const token = localStorage.getItem('token');
+    const ajaxReq = request
       .delete(`/api/places/${id}`)
+      .set('Authorization', `Bearer: ${token}`)
       .end((err, res) => {
         if (err || !res.ok) {
           callback('error');

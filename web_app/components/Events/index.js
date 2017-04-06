@@ -3,7 +3,7 @@ import { browserHistory, Link } from 'react-router';
 
 import Navbar from '../Navbar';
 import LoginStore from '../../stores/LoginStore';
-import EventStore from '../../stores/EventStore';
+import EventsStore from '../../stores/EventsStore';
 
 export default class Events extends React.Component {
   constructor(props) {
@@ -34,6 +34,11 @@ export default class Events extends React.Component {
         <Navbar />
         Events:
         {events}
+        <div className="container-fluid">
+          <div className="row">
+            <Link to="/events/new" className="btn btn-success col-md-1">Add</Link>
+          </div>
+        </div>
 			</div>
     );
   }
