@@ -7,6 +7,7 @@ const bookshelf = require('../bookshelf');
 const knex = bookshelf.knex;
 const UsersService = require('../services/users_service');
 
+
 /* GET users listing. */
 api.get('/', function(req, res, next) {
  UsersService.fetch().then((users)=> {

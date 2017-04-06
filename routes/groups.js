@@ -2,8 +2,9 @@ const express = require('express');
 const api = express.Router();
 const web = express.Router();
 const GroupsService = require('../services/groups_service');
+const helpers = require('../lib/helpers');
 /* GET home page. */
-api.get('/', (req, res, next) => {
+api.get('/', helpers.requireAuthentication, (req, res, next) => {
   GroupsService.fetch().then((groups)=> {
     res.json(groups);
   });
@@ -17,7 +18,7 @@ web.get('/', function(req, res, next) {
     });    
 });
 
-api.post('/', (req, res, next) =>{
+api.post('/', helpers.requireAuthentication, (req, res, next) =>{
   const group = {
     name: req.body.name,
   };
@@ -59,7 +60,7 @@ web.post('/edit/:id', (req, res, next) => {
   })
 });
 
-api.get('/:id', (req, res, next) => {
+api.get('/:id', helpers.requireAuthentication, (req, res, next) => {
   GroupsService.getById(req.params.id).then((response) => {
     res.json(response);
   })
@@ -67,7 +68,7 @@ api.get('/:id', (req, res, next) => {
 
 
 
-api.put('/:id', (req, res, next) => {
+api.put('/:id', helpers.requireAuthentication, (req, res, next) => {
   const group = {
     id: req.params.id,
     name: req.body.name,
@@ -79,7 +80,7 @@ api.put('/:id', (req, res, next) => {
   })
 });
 
-api.delete('/:id', (req, res, next) => {
+api.delete('/:id', helpers.requireAuthentication, (req, res, next) => {
   GroupsService.deleteById(req.params.id).then((groupDeleted) => {
     res.json(groupDeleted);
   })

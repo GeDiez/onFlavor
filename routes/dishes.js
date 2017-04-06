@@ -2,8 +2,9 @@ const express = require('express');
 const api = express.Router();
 const web = express.Router();
 const DishesService = require('../services/dishes_service');
+const helpers = require('../lib/helpers');
 /* GET home page. */
-api.get('/', (req, res, next) => {
+api.get('/', helpers.requireAuthentication, (req, res, next) => {
   DishesService.fetch().then((dishes)=> {
     res.json(dishes);
   });
@@ -18,7 +19,7 @@ web.get('/', function(req, res, next) {
 });
 
 
-api.post('/', (req, res, next) =>{
+api.post('/', helpers.requireAuthentication, (req, res, next) =>{
   const dish = {
     place_id: req.body.place_id,
     name: req.body.name,
@@ -63,7 +64,7 @@ web.get('/edit/:id', (req, res, next) => {
   });
 });
 
-api.put('/:id', (req, res, next) => {
+api.put('/:id', helpers.requireAuthentication, (req, res, next) => {
   const dish = {
     id: Number(req.params.id),
     place_id: Number(req.body.place_id),
@@ -78,13 +79,13 @@ api.put('/:id', (req, res, next) => {
   })
 });
 
-api.delete('/:id', (req, res, next) => {
+api.delete('/:id', helpers.requireAuthentication, (req, res, next) => {
   DishesService.deleteById(req.params.id).then((dishDeleted) => {
     res.json(dishDeleted);
   })
 });
 
-api.get('/:id', (req, res, next) => {
+api.get('/:id', helpers.requireAuthentication, (req, res, next) => {
   DishesService.getById(req.params.id).then((response) => {
     res.json(response);
   })

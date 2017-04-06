@@ -2,8 +2,9 @@ const express = require('express');
 const api = express.Router();
 const web = express.Router();
 const EventsService = require('../services/events_service');
+const helpers = require('../lib/helpers');
 
-api.get('/', (req, res, next) => {
+api.get('/', helpers.requireAuthentication, (req, res, next) => {
   EventsService.fetch().then((events)=> {
     res.json(events);
   }).catch();
@@ -17,7 +18,7 @@ web.get('/', (req, res, next) => {
   res.render('index');
 });
 
-api.post('/', (req, res, next) =>{
+api.post('/', helpers.requireAuthentication, (req, res, next) =>{
   console.log("DATA place group" + req.body.placeid+" "+ req.body.groupid );
   const event = {
     place_id: req.body.placeid,
@@ -56,7 +57,7 @@ web.post('/edit/:id', (req, res, next) => {
   })
 });
 
-api.delete('/:id', (req, res, next) => {
+api.delete('/:id', helpers.requireAuthentication, (req, res, next) => {
   EventsService.deleteById(req.params.id).then((eventDeleted) => {
     res.json(eventDeleted);
   })
