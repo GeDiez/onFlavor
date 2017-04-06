@@ -2,14 +2,15 @@ const express = require('express');
 const api = express.Router();
 const web = express.Router();
 const OrdersService = require('../services/orders_service');
+const helpers = require('../lib/helpers');
 
-api.get('/', (req, res, next) => {
+api.get('/', helpers.requireAuthentication, (req, res, next) => {
   OrdersService.fetch().then((orders)=> {
     res.json(orders);
   }).catch();
 });
 
-api.post('/', (req, res, next) =>{
+api.post('/', helpers.requireAuthentication, (req, res, next) =>{
   const order = {
     event_id: Number(req.body.eventid),
     dish_id: Number(req.body.dishid),
