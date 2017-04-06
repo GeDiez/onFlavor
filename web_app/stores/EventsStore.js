@@ -28,7 +28,7 @@ const EventsStore = Object.assign({}, EventEmitter.prototype, {
 
   async fetchEvents(callback) {
     const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:3000/api/events/', {
+    const response = await fetch('/api/events/', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',

@@ -20,7 +20,7 @@ const PlacesStore = Object.assign({}, EventEmitter.prototype, {
   async register(values) {
     console.log(values);
      if (values) {
-      const response = await fetch('http://localhost:3000/api/users', {
+      const response = await fetch('/api/users', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -41,7 +41,7 @@ const PlacesStore = Object.assign({}, EventEmitter.prototype, {
 
   async login(values) {
     if (values) {
-      const response = await fetch('http://localhost:3000/api/users/authorize', {
+      const response = await fetch('/api/users/authorize', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',

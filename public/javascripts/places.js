@@ -4,7 +4,7 @@
     let $parent = $(this).parents('li');
     event.preventDefault();
      $.ajax({
-       url: 'http://localhost:3000/api/places/'+id,
+       url: '/api/places/'+id,
        type: 'DELETE',
        dataType: 'json',
        success: function (data, textStatus, xhr) {
@@ -22,7 +22,7 @@
     let $parent = $(this).parents('li');
     event.preventDefault();
      $.ajax({
-       url: 'http://localhost:3000/api/events/'+id,
+       url: '/api/events/'+id,
        type: 'DELETE',
        dataType: 'json',
        success: function (data, textStatus, xhr) {
@@ -40,7 +40,7 @@
     let $parent = $(this).parents('li');
     event.preventDefault();
      $.ajax({
-       url: 'http://localhost:3000/api/groups/'+id,
+       url: '/api/groups/'+id,
        type: 'DELETE',
        dataType: 'json',
        success: function (data, textStatus, xhr) {
@@ -58,7 +58,7 @@
     let $parent = $(this).parents('li');
     event.preventDefault();
      $.ajax({
-       url: 'http://localhost:3000/api/users/'+id,
+       url: '/api/users/'+id,
        type: 'DELETE',
        dataType: 'json',
        success: function (data, textStatus, xhr) {
@@ -76,7 +76,7 @@
     let $parent = $(this).parents('li');
     event.preventDefault();
      $.ajax({
-       url: 'http://localhost:3000/api/dishes/'+id,
+       url: '/api/dishes/'+id,
        type: 'DELETE',
        dataType: 'json',
        success: function (data, textStatus, xhr) {
