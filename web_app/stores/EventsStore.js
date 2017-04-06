@@ -26,7 +26,7 @@ const EventsStore = Object.assign({}, EventEmitter.prototype, {
     ajaxRequests = [];
   },
 
-  async fetchEvents(callback) {
+  async fetchEvents() {
     const token = localStorage.getItem('token');
     const response = await fetch('/api/events/', {
       method: 'GET',
@@ -40,6 +40,24 @@ const EventsStore = Object.assign({}, EventEmitter.prototype, {
     return responseData;
     ajaxRequests.push(response);
   },
+
+  async addEvent({place_id, name, description, datetime}) {
+    const token = localStorage.getItem('token');
+    const response = await fetch('/api/events', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization' : `Bearer: ${token}`
+      },
+      body: JSON.stringify({
+        placeid: place_id,
+        name,
+        description,
+        datetime
+      })
+    });
+  }
 
 
 });

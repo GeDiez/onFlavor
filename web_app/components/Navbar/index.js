@@ -7,7 +7,7 @@ const logout = () => {
   LoginStore.logout();
 browserHistory.push('/login');
 }
-const Login = () => (
+const Navbar = () => (
   <nav className="navbar navbar-default">
     <div className="container-fluid">
       <div className="navbar-header">
@@ -24,4 +24,4 @@ const Login = () => (
   </nav>
 );
 
-export default Login;
+export default Navbar;
