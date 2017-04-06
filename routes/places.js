@@ -16,7 +16,6 @@ api.get('/', function(req, res, next) {
   });
 });
 
-
 web.get('/new', function(req, res, next) {
     res.render('index');
 });

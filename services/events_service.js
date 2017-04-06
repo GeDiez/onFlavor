@@ -1,11 +1,13 @@
 const bookshelf = require('../bookshelf');
 const Event = require('../models/Event');
+const Place = require('../models/Place');
+const Group = require('../models/Group');
 const knex = bookshelf.knex;
 
 module.exports = {
   fetch: () => {
     return new Promise((resolve, reject)=>{
-      Event.fetchAll().then((events)=>{
+      Event.fetchAll({ withRelated: ['place', 'group'] }).then((events)=>{
         resolve(events.toJSON());
       });
     });

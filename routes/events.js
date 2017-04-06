@@ -4,10 +4,11 @@ const web = express.Router();
 const EventsService = require('../services/events_service');
 
 api.get('/', (req, res, next) => {
-  EventsService.fetch().then((orders)=> {
-    res.json(orders);
+  EventsService.fetch().then((events)=> {
+    res.json(events);
   }).catch();
 });
+
 web.get('/new', function(req, res, next) {
     res.render('../views/events/new');
 });
