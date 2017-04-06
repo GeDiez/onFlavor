@@ -23,11 +23,7 @@ api.post('/', helpers.requireAuthentication, (req, res, next) =>{
 });
 
 web.get('/', function(req, res, next) {
-    OrdersService.fetch().then((orders) => {
-      res.render('../views/orders/index', {
-        orders: orders,
-      });
-    });    
+  res.render('index');
 });
 
 web.get('/new', function(req, res, next) {
