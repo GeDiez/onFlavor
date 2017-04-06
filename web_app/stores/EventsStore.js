@@ -1,0 +1,47 @@
+import { EventEmitter } from 'events';
+import request from 'superagent';
+
+const CHANGE_EVENT = 'change';
+let ajaxRequests = [];
+
+const EventsStore = Object.assign({}, EventEmitter.prototype, {
+  emitChange: function emitChange() {
+    this.emit(CHANGE_EVENT);
+  },
+
+  addChangeListener: function addChangeListener(callback) {
+    this.on(CHANGE_EVENT, callback);
+  },
+
+  removeChangeListener: function removeChangeListener(callback) {
+    this.removeListener(CHANGE_EVENT, callback);
+  },
+
+  unsuscribe() {
+    ajaxRequests.forEach(req => {
+      if (req.hasOwnProperty('abort')) {
+        req.abort();
+      }
+    });
+    ajaxRequests = [];
+  },
+
+  async fetchEvents(callback) {
+    const token = localStorage.getItem('token');
+    const response = await fetch('http://localhost:3000/api/events/', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization' : `Bearer: ${token}`
+      }
+    });
+    const responseData = await response.json();
+    return responseData;
+    ajaxRequests.push(response);
+  },
+
+
+});
+
+export default EventsStore;

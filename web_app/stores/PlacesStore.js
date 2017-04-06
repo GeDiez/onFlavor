@@ -27,7 +27,6 @@ const PlacesStore = Object.assign({}, EventEmitter.prototype, {
   },
 
   fetchPlaces(callback) {
-    console.log('enojado:@');
     const token = localStorage.getItem('token');
     const ajaxReq = request
       .get(`/api/places/`)
