@@ -11,21 +11,19 @@ export default class Events extends React.Component {
     this.state = {
       events: [],
     };
-  }
-
-  componentWillMount() {
     this._updateEventFromStore();
   }
 
-  _updateEventFromStore(){
-    EventStore.fetchEvents((events) =>{
-      this.setState({events: events});
+  async _updateEventFromStore() {
+    const events = await EventsStore.fetchEvents();
+    this.setState({
+      events: events
     });
   }
 
   render() {
     let events = this.state.events.map(event => {
-      return <div key={event.id}> 
+      return <div key={event.id}>
         <span> {event.name} - {event.place.name} </span>
       </div>
     });
