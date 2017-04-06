@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 import request from 'superagent';
 
-const CHANGE_EVENT = 'change'; 
+const CHANGE_EVENT = 'change';
 let ajaxRequests = [];
 
 const PlacesStore = Object.assign({}, EventEmitter.prototype, {
@@ -17,9 +17,21 @@ const PlacesStore = Object.assign({}, EventEmitter.prototype, {
     this.removeListener(CHANGE_EVENT, callback);
   },
 
+  unsuscribe() {
+    ajaxRequests.forEach(req => {
+      if (req.hasOwnProperty('abort')) {
+        req.abort();
+      }
+    });
+    ajaxRequests = [];
+  },
+
   fetchPlaces(callback) {
-    let ajaxReq = request
+    console.log('enojado:@');
+    const token = localStorage.getItem('token');
+    const ajaxReq = request
       .get(`/api/places/`)
+      .set('Authorization', `Bearer: ${token}`)
       .end((err, res) => {
         if (err || !res.ok) {
           callback('error');
@@ -31,8 +43,10 @@ const PlacesStore = Object.assign({}, EventEmitter.prototype, {
   },
 
   fetchPlaceDishes(id, callback) {
-    let ajaxReq = request
+    const token = localStorage.getItem('token');
+    const ajaxReq = request
       .get(`/api/places/${id}/dishes`)
+      .set('Authorization', `Bearer: ${token}`)
       .end((err, res) => {
         if (err || !res.ok) {
           callback('error');
@@ -44,8 +58,10 @@ const PlacesStore = Object.assign({}, EventEmitter.prototype, {
   },
 
   getById(id, callback){
-    let ajaxReq = request
+    const token = localStorage.getItem('token');
+    const ajaxReq = request
     .get(`/api/places/${id}`)
+    .set('Authorization', `Bearer: ${token}`)
     .end((err, res) => {
       if (err || !res.ok) {
         callback('error');
@@ -57,9 +73,11 @@ const PlacesStore = Object.assign({}, EventEmitter.prototype, {
   },
 
   savePlace(place, callback){
-    let ajaxReq = request
+    const token = localStorage.getItem('token');
+    const ajaxReq = request
     .post(`/api/places`)
-    .send({ 
+    .set('Authorization', `Bearer: ${token}`)
+    .send({
       placeid: place.placeid,
       name: place.name,
       latitude: place.latitude,
@@ -76,18 +94,11 @@ const PlacesStore = Object.assign({}, EventEmitter.prototype, {
     ajaxRequests.push(ajaxReq);
   },
 
-  unsuscribe() {
-    ajaxRequests.forEach(req => {
-      if (req.hasOwnProperty('abort')) {
-        req.abort();
-      }
-    });
-    ajaxRequests = [];
-  },
-
   deletePlace(id, callback) {
-    let ajaxReq = request
+    const token = localStorage.getItem('token');
+    const ajaxReq = request
       .delete(`/api/places/${id}`)
+      .set('Authorization', `Bearer: ${token}`)
       .end((err, res) => {
         if (err || !res.ok) {
           callback('error');

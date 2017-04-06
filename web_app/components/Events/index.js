@@ -2,7 +2,7 @@ import React from 'react';
 import { browserHistory, Link } from 'react-router';
 
 import Navbar from '../Navbar';
-import LoginStore from '../../stores/LoginStore';
+import EventsStore from '../../stores/EventsStore';
 
 export default class Login extends React.Component {
 
@@ -10,7 +10,11 @@ export default class Login extends React.Component {
     return (
       <div>
         <Navbar />
-        Hello World!
+        <div className="container-fluid">
+          <div className="row">
+            <Link to="/events/new" className="btn btn-success col-md-1">Add</Link>
+          </div>
+        </div>
 			</div>
     );
   }
