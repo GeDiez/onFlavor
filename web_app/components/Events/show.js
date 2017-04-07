@@ -10,6 +10,7 @@ export default class ShowEvents extends React.Component {
       eventid: this.props.params.id,
       orders: [],
     };
+    this._updateOrdersFromStoreByEventId = this._updateOrdersFromStoreByEventId.bind(this);
   }
 
   componentWillMount() {
@@ -18,6 +19,7 @@ export default class ShowEvents extends React.Component {
 
   _updateOrdersFromStoreByEventId() {
     OrdersStore.fetchOrdersByEventId(this.state.eventid, (orders) => {
+      console.log(orders);
       this.setState({
         orders: orders, 
       });
@@ -25,16 +27,15 @@ export default class ShowEvents extends React.Component {
   }
 
   render() {
-    let orders = this.state.orders.map(order => {
-      <div key={order.id}> 
-        <span>Order</span>
+    /*let orders = this.state.orders.map(order => {
+      return <div key={order.id}> 
+        <span>hola</span> 
       </div>
-    });
+    });*/
 
     return <div> 
       <Navbar />
       <span>Hello</span>
-      <span> {orders} </span>
     </div>
   }
 }

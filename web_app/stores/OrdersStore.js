@@ -41,21 +41,36 @@ const OrdersStore = Object.assign({}, EventEmitter.prototype, {
     ajaxRequests.push(response);
   },
 
-  async fetchOrdersByEventId(id) {
+  // async fetchOrdersByEventId(id) {
+  //   const token = localStorage.getItem('token');
+  //   const response = await fetch(`/api/orders/${id}/events`, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Accept': 'application/json',
+  //       'Content-Type': 'application/json',
+  //       'Authorization' : `Bearer: ${token}`
+  //     }
+  //   });
+  //   const responseData = await response.json();
+  //   return responseData;
+  //   ajaxRequests.push(response);
+  // },
+
+  fetchOrdersByEventId(id, callback) {
     const token = localStorage.getItem('token');
-    const response = await fetch(`/api/orders/${id}/events`, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization' : `Bearer: ${token}`
-      }
-    });
-    const responseData = await response.json();
-    return responseData;
-    console.log(response);
-    ajaxRequests.push(response);
+    const ajaxReq = request
+      .get(`/api/orders/${id}/events`)
+      .set('Authorization', `Bearer: ${token}`)
+      .end((err, res) => {
+        if (err || !res.ok) {
+          callback('error');
+        } else {
+          callback(res.body);
+        }
+      });
+    ajaxRequests.push(ajaxReq);
   },
+
 });
 
 export default OrdersStore;
