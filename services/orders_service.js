@@ -16,7 +16,15 @@ module.exports = {
 
   fetchByEventId: (eventId) => {
     return new Promise((resolve, reject)=>{
-      Order.where('event_id', eventId).fetchAll({ withRelated: ['dish', 'event', 'user'] }).then((orders)=>{
+      Order
+      .where('event_id', eventId)
+      .fetchAll({ withRelated: [
+        {'dish': function(qb) {qb.column('id', 'name', 'price')}}, 
+        'event.place.dishes', 
+        {'user': function(qb) {qb.column('id', 'full_name')}}
+        ] 
+      })
+      .then((orders)=>{
         resolve(orders.toJSON());
       });
     });
