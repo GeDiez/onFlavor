@@ -7,7 +7,7 @@ const knex = bookshelf.knex;
 module.exports = {
   fetch: () => {
     return new Promise((resolve, reject)=>{
-      Event.fetchAll({ withRelated: ['place', 'group'] }).then((events)=>{
+      Event.fetchAll({ withRelated: ['place', 'group', 'order'] }).then((events)=>{
         resolve(events.toJSON());
       });
     });

@@ -7,6 +7,7 @@ import WellcomeContainer from './components/wellcome';
 import PlacesContainer from './components/places';
 import EditPlaces from './components/places/edit';
 import ShowPlaces from './components/places/show';
+import ShowEvents from './components/events/show';
 import Login from './components/Login';
 import Events from './components/Events';
 import Orders from './components/Orders';
@@ -36,5 +37,6 @@ ReactDOM.render((<Router history={browserHistory}>
   <Route path="/places/new" components={{content: EditPlaces}} onEnter={requireAuth} />
   <Route path="/places/:id" components={{content: ShowPlaces}} onEnter={requireAuth} />
   <Route path="/places/:id/edit" components={{content: EditPlaces}} onEnter={requireAuth} />
+  <Route path="/events/:id" components={{content: ShowEvents}} onEnter={requireAuth} />
 </Route>
 </Router>), document.getElementById('content'));

@@ -16,8 +16,9 @@ module.exports = {
 
   fetchByEventId: (eventId) => {
     return new Promise((resolve, reject)=>{
-      Order.where('event_id', eventId).fetchAll({ withRelated: ['user', 'dish'] }).then((dishes)=>{
-        resolve(dishes.toJSON());
+      Order.where('event_id', eventId).fetchAll({ withRelated: ['dish', 'event', 'user'] }).then((orders)=>{
+        console.log(orders);
+        resolve(orders.toJSON());
       });
     });
   },

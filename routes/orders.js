@@ -10,6 +10,8 @@ api.get('/', helpers.requireAuthentication, (req, res, next) => {
   }).catch();
 });
 
+
+
 api.post('/', helpers.requireAuthentication, (req, res, next) =>{
   const order = {
     event_id: Number(req.body.eventid),
@@ -63,13 +65,12 @@ web.get('/:id', (req, res, next) => {
     });    
 });
 
-// web.get('/:id', (req, res, next) => {
-//     OrdersService.fetchByEventId(Number(req.params.id)).then((orders) => {
-//       res.render('../views/orders/index', {
-//         orders: orders
-//       });
-//     });    
-// });
+api.get('/:id/events', helpers.requireAuthentication, (req, res, next) => {
+  OrdersService.fetchByEventId(req.params.id).then((orders)=> {
+    res.json(orders);
+  }).catch();
+});
+
 module.exports = {
     api: api,
     web: web
