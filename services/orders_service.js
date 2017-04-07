@@ -1,20 +1,31 @@
 const bookshelf = require('../bookshelf');
 const Order = require('../models/Order');
+const Dish = require('../models/Dish');
+const User = require('../models/User');
+const Event = require('../models/Event');
 const knex = bookshelf.knex;
 
 module.exports = {
-  fetch: () => {
+  fetchOrders: () => {
     return new Promise((resolve, reject)=>{
-      Order.fetchAll({ withRelated: ['user', 'dish'] }).then((dishes)=>{
-        resolve(dishes.toJSON());
+      Order.fetchAll({ withRelated: ['user', 'dish', 'event'] }).then((orders)=>{
+        resolve(orders.toJSON());
       });
     });
   },
 
   fetchByEventId: (eventId) => {
     return new Promise((resolve, reject)=>{
-      Order.where('event_id', eventId).fetchAll({ withRelated: ['user', 'dish'] }).then((dishes)=>{
-        resolve(dishes.toJSON());
+      Order
+      .where('event_id', eventId)
+      .fetchAll({ withRelated: [
+        {'dish': function(qb) {qb.column('id', 'name', 'price')}}, 
+        'event.place.dishes', 
+        {'user': function(qb) {qb.column('id', 'full_name')}}
+        ] 
+      })
+      .then((orders)=>{
+        resolve(orders.toJSON());
       });
     });
   },

@@ -1,6 +1,8 @@
 let bookshelf = require('../bookshelf');
 require('./Place');
 require('./Group');
+require('./Order');
+
 module.exports = bookshelf.model('Event', {
   tableName: 'events',
   hasTimestamps: true,
@@ -10,5 +12,8 @@ module.exports = bookshelf.model('Event', {
   },
   group: function() {
   	return this.belongsTo('Group')
+  },
+  orders: function() {
+  	return this.hasMany('Order')
   }
 });

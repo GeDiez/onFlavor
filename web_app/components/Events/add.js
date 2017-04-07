@@ -81,6 +81,7 @@ export default class AddEvent extends React.Component {
               <div className="form-group">
                 <label htmlFor="place">Place</label>
                 <select name="place_id" onChange={(ev) => this.onChange(ev)} className="form-control">
+                  <option value="-1"></option>
                   {placesOptions}
                 </select>
               </div>

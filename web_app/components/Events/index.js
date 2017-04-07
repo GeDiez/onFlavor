@@ -24,7 +24,9 @@ export default class Events extends React.Component {
   render() {
     let events = this.state.events.map(event => {
       return <div key={event.id}>
-        <span> {event.name} - {event.place.name} </span>
+        <Link to={'/events/'+event.id } className="">
+          {event.name} - {event.place.name}
+        </Link>
       </div>
     });
     return (

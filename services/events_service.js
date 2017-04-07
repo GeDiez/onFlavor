@@ -7,11 +7,13 @@ const knex = bookshelf.knex;
 module.exports = {
   fetch: () => {
     return new Promise((resolve, reject)=>{
-      Event.fetchAll({ withRelated: ['place', 'group'] }).then((events)=>{
+      Event.fetchAll({ withRelated: ['place', 'group', 'orders'] }).then((events)=>{
         resolve(events.toJSON());
       });
     });
   },
+
+
 
   createOrUpdateWithObj: (event) => {
     return new Promise((resolve, reject) => {
@@ -35,11 +37,13 @@ module.exports = {
   },
 
   getById: (id) => {
-    return new Promise((resolve, reject) => {
-      Event.where('id', id).fetch().then(event => {
-        resolve(event);
-      });
-    })
+    return Event.where('id', id).fetch({ withRelated: [
+      'place',
+      'place.dishes',
+      'orders',
+      'orders.dish',
+      'orders.user'
+    ]});
   },
 
   deleteById: (eventId) => {

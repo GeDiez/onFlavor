@@ -71,7 +71,6 @@ api.put('/:id', helpers.requireAuthentication, (req, res, next) => {
     name: req.body.name,
     price: req.body.price,
   };
-  console.log(dish);
   DishesService.createOrUpdateWithObj(dish).then((newDish) => {
     res.json(newDish)
   }).catch((error) => {
