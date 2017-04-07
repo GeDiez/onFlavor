@@ -19,7 +19,6 @@ export default class ShowEvents extends React.Component {
 
   _updateOrdersFromStoreByEventId() {
     OrdersStore.fetchOrdersByEventId(this.state.eventid, (orders) => {
-      //console.log(orders[0].dish.name);
       this.setState({
         orders: orders, 
       });
@@ -29,8 +28,7 @@ export default class ShowEvents extends React.Component {
   render() {
     return <div> 
       <Navbar />
-      <h2>Orders: </h2>
-      <span></span>
+      <span>Hello</span>
     </div>
   }
 }
