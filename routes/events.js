@@ -10,6 +10,14 @@ api.get('/', helpers.requireAuthentication, (req, res, next) => {
   }).catch();
 });
 
+api.get('/:id', helpers.requireAuthentication, (req, res) => {
+  const { id } = req.params;
+   EventsService.getById(id)
+    .then((event)=>{
+      res.json(event)
+    });
+})
+
 web.get('/new', function(req, res, next) {
     res.render('index');
 });

@@ -35,11 +35,13 @@ module.exports = {
   },
 
   getById: (id) => {
-    return new Promise((resolve, reject) => {
-      Event.where('id', id).fetch().then(event => {
-        resolve(event);
-      });
-    })
+    return Event.where('id', id).fetch({ withRelated: [
+      'place',
+      'place.dishes',
+      'orders',
+      'orders.dish',
+      'orders.user'
+    ]});
   },
 
   deleteById: (eventId) => {

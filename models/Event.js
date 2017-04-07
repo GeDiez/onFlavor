@@ -13,7 +13,7 @@ module.exports = bookshelf.model('Event', {
   group: function() {
   	return this.belongsTo('Group')
   },
-  order: function() {
+  orders: function() {
   	return this.hasMany('Order')
   }
 });

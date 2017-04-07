@@ -57,6 +57,21 @@ const EventsStore = Object.assign({}, EventEmitter.prototype, {
         datetime
       })
     });
+  },
+
+  async getEventById(id) {
+    const token = localStorage.getItem('token');
+    const response = await fetch('/api/events/' + id, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization' : `Bearer: ${token}`
+      }
+    });
+    const responseData = await response.json();
+    return responseData;
+    ajaxRequests.push(response);
   }
 
 
