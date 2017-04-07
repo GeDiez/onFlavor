@@ -14,9 +14,9 @@ api.get('/', helpers.requireAuthentication, (req, res, next) => {
 
 api.post('/', helpers.requireAuthentication, (req, res, next) =>{
   const order = {
-    event_id: Number(req.body.eventid),
-    dish_id: Number(req.body.dishid),
-    user_id: Number(req.body.userid),
+    event_id: Number(req.body.event_id),
+    dish_id: Number(req.body.dish_id),
+    user_id: Number(req.user.id),
     quantity: Number(req.body.quantity),
   };
   OrdersService.createOrUpdateWithObj(order).then((message) => {

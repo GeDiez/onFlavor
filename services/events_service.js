@@ -7,11 +7,13 @@ const knex = bookshelf.knex;
 module.exports = {
   fetch: () => {
     return new Promise((resolve, reject)=>{
-      Event.fetchAll({ withRelated: ['place', 'group', 'order'] }).then((events)=>{
+      Event.fetchAll({ withRelated: ['place', 'group', 'orders'] }).then((events)=>{
         resolve(events.toJSON());
       });
     });
   },
+
+
 
   createOrUpdateWithObj: (event) => {
     return new Promise((resolve, reject) => {

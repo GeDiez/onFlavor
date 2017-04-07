@@ -27,7 +27,6 @@ web.get('/', (req, res, next) => {
 });
 
 api.post('/', helpers.requireAuthentication, (req, res, next) =>{
-  console.log("DATA place group" + req.body.placeid+" "+ req.body.groupid );
   const event = {
     place_id: req.body.placeid,
     group_id: req.body.groupid,
@@ -35,7 +34,6 @@ api.post('/', helpers.requireAuthentication, (req, res, next) =>{
     description: req.body.description,
     date_time: req.body.datetime,
   };
-  console.log(event);
   EventsService.createOrUpdateWithObj(event).then((message) => {
     res.json(message);
   });
