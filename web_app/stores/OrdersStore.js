@@ -26,6 +26,26 @@ const OrdersStore = Object.assign({}, EventEmitter.prototype, {
     ajaxRequests = [];
   },
 
+  saveOrder(order, callback){
+    const token = localStorage.getItem('token');
+    const ajaxReq = request
+    .post(`/api/orders`)
+    .set('Authorization', `Bearer: ${token}`)
+    .send({
+      event_id: Number(order.event_id),
+      dish_id: Number(order.dish_id),
+      quantity: Number(order.quantity),
+    })
+    .end((err, res) => {
+        if (err || !res.ok) {
+          callback('error');
+        } else {
+          callback(res.body);
+        }
+      })
+    ajaxRequests.push(ajaxReq);
+  },
+
   async fetchOrders() {
     const token = localStorage.getItem('token');
     const response = await fetch('/api/orders/', {

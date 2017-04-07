@@ -18,7 +18,6 @@ const PlacesStore = Object.assign({}, EventEmitter.prototype, {
   },
 
   async register(values) {
-    console.log(values);
      if (values) {
       const response = await fetch('/api/users', {
         method: 'POST',

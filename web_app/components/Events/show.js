@@ -15,27 +15,67 @@ export default class ShowEvents extends React.Component {
       event: null
     };
     this.fetchEvent();
-    // this._updateOrdersFromStoreByEventId = this._updateOrdersFromStoreByEventId.bind(this);
+    this.addToOrder = this.addToOrder.bind(this);
+    this.subtractToOrder = this.subtractToOrder.bind(this);
+    this._saveButton = this._saveButton.bind(this);
   }
-
-  // componentWillMount() {
-  //   this._updateOrdersFromStoreByEventId();
-  // }
-
-  // _updateOrdersFromStoreByEventId() {
-  //   OrdersStore.fetchOrdersByEventId(this.state.eventid, (orders) => {
-  //     this.setState({
-  //       orders: orders,
-  //     });
-  //   });
-  // }
 
   async fetchEvent() {
     const { id } = this.props.params;
     const event = await EventsStore.getEventById(id);
-    console.log(event);
-    this.setState({ event });
+    const orders = event.place.dishes.map((dish) => (
+      {
+        dish,
+        quantity: 0
+      }
+    ))
+    this.setState({ event, orders });
   }
+
+  addToOrder(dishId) {
+    return () => {
+      const { orders } = this.state;
+      const newOrders = orders.map((order) => {
+        if (order.dish.id === dishId) {
+          return {...order, quantity: order.quantity + 1};
+        }
+        return order;
+      });
+      this.setState({
+        orders: newOrders
+      });
+    }
+  }
+
+  subtractToOrder(dishId) {
+    return () => {
+      const { orders } = this.state;
+      const newOrders = orders.map((order) => {
+        if (order.dish.id === dishId) {
+          return {...order, quantity: order.quantity < 1 ? 0 : order.quantity - 1};
+        }
+        return order;
+      });
+      this.setState({
+        orders: newOrders
+      });
+    }
+  }
+
+  _saveButton() {
+
+    let newOrder = this.state.orders.filter(order => order.quantity > 0).map(order => {
+      OrdersStore.saveOrder({
+        event_id: this.props.params.id,
+        dish_id: order.dish.id,
+        quantity: order.quantity,
+      }, (message) => {
+        this.fetchEvent();
+        this._hideModal();
+      })
+    });
+  }
+
   _openModal = () => {
     this.setState({
       isOpen: true
@@ -49,19 +89,36 @@ export default class ShowEvents extends React.Component {
   }
 
   render() {
-    let isEnabled = true//this.state.dishName.length > 0 && this.state.dishPrice.length > 0;
-    let orders = this.state.orders.map(order => {
+    const { event, orders: newOrders } = this.state;
+    const isEnabled = true//this.state.dishName.length > 0 && this.state.dishPrice.length > 0;
+    const orders = event ? event.orders : [];
+    const ordersComp = orders.map(order => {
       return <div key={order.id}>
         <span>{order.quantity} - </span>
         <span>{order.dish.name} - </span>
         <span>{order.dish.price} - </span>
         <span>{order.user.full_name}</span>
       </div>
-    })
+    });
+    const menu = newOrders.map(({dish, quantity}) => (
+      <div key={dish.id}>
+        <div className="col-md-6">
+          <span>{dish.name}</span>
+        </div>
+        <div className="col-md-3"> 
+          <i className="fa fa-minus" aria-hidden="true" onClick={this.subtractToOrder(dish.id)} />
+          {' '}
+          <i className="fa fa-plus" aria-hidden="true" onClick={this.addToOrder(dish.id)} />
+        </div>
+        <div className="col-md-3">{quantity}</div>
+      </div>
+    ));
     return <div>
       <Navbar />
+      <h2>{event && event.name}</h2>
+      <h4>{event && event.description}</h4>
       <h2>Orders:</h2>
-      {orders}
+      {ordersComp}
 
       {/* Modal form */}
       <div className="form-group">
@@ -74,48 +131,15 @@ export default class ShowEvents extends React.Component {
           <ModalBody>
             <div className="container-fluid">
               <div className="row">
-
                 <div className="col-md-6">
-                  <div className="row">
-                    <div className="col-md-8">
-                      <h3>Dish:</h3>
-                    </div>
-                    <div className="col-md-8">
-                      <span>Quesadillas (con queso)</span>
-                    </div>
-                    <div className="col-md-2">
-                      <span>botton</span>
-                    </div>
-                    <div className="col-md-8">
-                      <span>Tacos tuxpeños</span>
-                    </div>
-                    <div className="col-md-2">
-                      <span>botton</span>
-                    </div>
-                    <div className="col-md-8">
-                      <span>Torta milanesa</span>
-                    </div>
-                    <div className="col-md-2">
-                      <span>botton</span>
-                    </div>
-                  </div>
+                  <h3>Menu</h3>
                 </div>
-                <div className="col-md-6">
-                  <div className="row">
-                    <div className="col-md-6 col-md-offset-4">
-                      <h3>Quantity:</h3>
-                    </div>
-                    <div className="col-md-6 col-md-offset-4">
-                      <span>1</span>
-                    </div>
-                    <div className="col-md-6 col-md-offset-4">
-                      <span>2</span>
-                    </div>
-                    <div className="col-md-6 col-md-offset-4">
-                      <span>1</span>
-                    </div>
-                  </div>
+                <div className="col-md-3 col-md-offset-2">
+                  <h3>Quantity</h3>
                 </div>
+              </div>
+              <div className="row">
+                {menu}
               </div>
             </div>
           </ModalBody>
@@ -123,7 +147,7 @@ export default class ShowEvents extends React.Component {
             <button className='btn btn-default' onClick={this._hideModal}>
               Close
             </button>
-            <button className='btn btn-primary' disabled={!isEnabled}>
+            <button className='btn btn-primary' disabled={!isEnabled} onClick={this._saveButton}>
               Save dish
             </button>
           </ModalFooter>
