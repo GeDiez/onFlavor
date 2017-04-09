@@ -59,14 +59,14 @@ export default class EditPlaces extends React.Component {
               <label htmlFor="name">Name:</label>
               <input type="text" name="name" value={this.state.name} onChange={this._handleChange}/>
             </div>
-            <div className="form-group">
+            {/*<div className="form-group">
               <label htmlFor="latitude">Latitude:</label>
               <input type="text" name="latitude" value={this.state.latitude} onChange={this._handleChange}/>
             </div>
             <div className="form-group">
               <label htmlFor="longitude">Longitude:</label>
               <input type="text" name="longitude" value={this.state.longitude} onChange={this._handleChange}/>
-            </div>
+            </div>*/}
             <div className="form-group">
               <label htmlFor="description">Description:</label>
               <input type="text" name="description" value={this.state.description} onChange={this._handleChange}/>

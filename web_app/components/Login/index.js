@@ -33,15 +33,23 @@ export default class Login extends React.Component {
     if (ev) ev.preventDefault();
     const { login, username, password, name, email } = this.state;
     if(login) {
-      const token = await LoginStore.login({username, password});
+      const response = await LoginStore.login({username, password});
+      if (response.ok) {
+        browserHistory.push('/')
+      } else {
+        this.setState({
+          error: 'username or password incorrect',
+          password: ''
+        });
+      }
     } else {
       await LoginStore.register({name, email, username, password});
+      browserHistory.push('/');
     }
-    browserHistory.push('/');
   }
 
   render() {
-    const { login, name, email, username, password, confirmPassword } = this.state;
+    const { login, name, email, username, password, confirmPassword, error } = this.state;
     return (
       <div className="container-fluid ">
         <div className="col-sm-6 col-sm-offset-3">
@@ -49,7 +57,6 @@ export default class Login extends React.Component {
             <h1>On Flavor</h1>
           </div>
           <div className="row">
-            <div className="col-sm-6 col-sm-offset-3">
               <form>
                 { !login &&
                   <div className="form-group">
@@ -81,11 +88,17 @@ export default class Login extends React.Component {
                 <div className="login-register form-group">
                   <a href="" onClick={(ev) => this.toggleLogin(ev)}>{!login ? 'Login form' : 'Create an account'}</a>
                 </div>
+                {
+                  error && (
+                    <div className="alert alert-danger">
+                      {error}
+                    </div>
+                  )
+                }
               </form>
             </div>
           </div>
         </div>
-			</div>
     );
   }
 }
