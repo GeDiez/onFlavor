@@ -106,20 +106,20 @@ export default class ShowPlaces extends React.Component {
               <label htmlFor="name"> Name:</label>
               <span name="name"> {this.state.name} </span>
             </div>
-            <div className="form-group">
+            {/*<div className="form-group">
               <label htmlFor="latitude">Latitude:</label>
               <span name="latitude"> {this.state.latitude} </span>
             </div>
             <div className="form-group">
               <label htmlFor="longitude">Longitude:</label>
               <span name="longitude"> {this.state.longitude} </span>
-            </div>
+            </div>*/}
             <div className="form-group">
               <label htmlFor="description">Description:</label>
               <span name="description"> {this.state.description} </span>
             </div>
             <div className="form-group">
-              <label htmlFor="dishes">Dishes: </label>
+              <label htmlFor="dishes">Menu: </label>
               {dishes}
             </div>
             {/* -------- */}
