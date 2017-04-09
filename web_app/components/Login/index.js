@@ -43,8 +43,11 @@ export default class Login extends React.Component {
   render() {
     const { login, name, email, username, password, confirmPassword } = this.state;
     return (
-      <div className="col-sm-6 col-sm-offset-3">
-        <div className="container-fluid">
+      <div className="container-fluid ">
+        <div className="col-sm-6 col-sm-offset-3">
+          <div className="text-center">
+            <h1>On Flavor</h1>
+          </div>
           <div className="row">
             <div className="col-sm-6 col-sm-offset-3">
               <form>
@@ -68,15 +71,15 @@ export default class Login extends React.Component {
                   <label htmlFor="password">Password</label>
                   <input type="password" className="form-control" name="password" id="password" onChange={(ev) => this.onChange(ev)} value={password} placeholder="Enter your Password"/>
                 </div>
-                { !login &&
+                { /* !login &&
                   <div className="form-group">
                     <label htmlFor="confirmPassword">Confirm Password</label>
-                    <input type="text" className="form-control" name="confirmPassword" id="confirmPassword" onChange={(ev) => this.onChange(ev)} value={email} placeholder="Enter your Email"/>
-                  </div>
+                    <input type="text" className="form-control" name="confirmPassword" id="confirmPassword" onChange={(ev) => this.onChange(ev)} value={confirmPassword} placeholder="Enter your Email"/>
+                  </div> */
                 }
                 <input type="submit" value="Login" onClick={(ev) => this.register(ev)} className="btn btn-primary" />
-                <div className="login-register">
-                  <button className="btn btn-link" onClick={(ev) => this.toggleLogin(ev)}>{!login ? 'Login' : 'No account?'}</button>
+                <div className="login-register form-group">
+                  <a href="" onClick={(ev) => this.toggleLogin(ev)}>{!login ? 'Login form' : 'Create an account'}</a>
                 </div>
               </form>
             </div>
