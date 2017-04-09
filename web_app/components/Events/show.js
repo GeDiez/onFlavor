@@ -109,10 +109,10 @@ export default class ShowEvents extends React.Component {
     });
     const menu = newOrders.map(({dish, quantity}) => (
       <div key={dish.id}>
-        <div className="col-md-6">
+        <div className="col-md-6 one-line">
           <span>{dish.name}</span>
         </div>
-        <div className="col-md-3"> 
+        <div className="col-md-3">
           <i className="fa fa-minus" aria-hidden="true" onClick={this.subtractToOrder(dish.id)} />
           {' '}
           <i className="fa fa-plus" aria-hidden="true" onClick={this.addToOrder(dish.id)} />
