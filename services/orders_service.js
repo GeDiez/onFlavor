@@ -59,10 +59,11 @@ module.exports = {
     })
   },
 
-  deleteById: (orderId) => {
+  deleteById: (orderId, userId) => {
     return new Promise((resolve, reject) => {
       Order.where('id', orderId).fetch().then(order => {
-        if(order){
+        const jsonOrder = order.toJSON();
+        if(order && (jsonOrder.user_id == userId)){
           order.destroy();
           resolve({message: 'Order deleted'});
         }
