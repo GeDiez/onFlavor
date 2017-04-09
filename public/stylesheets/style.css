@@ -16,3 +16,7 @@ a {
 .navbar {
   margin: -50px;
 }
+
+.pointer {
+  cursor: pointer
+}
