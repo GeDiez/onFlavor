@@ -12,3 +12,7 @@ a {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.navbar {
+  margin: -50px;
+}
