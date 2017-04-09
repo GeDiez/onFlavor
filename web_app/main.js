@@ -4,10 +4,10 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 
 import WellcomeContainer from './components/wellcome';
-import PlacesContainer from './components/places';
-import EditPlaces from './components/places/edit';
-import ShowPlaces from './components/places/show';
-import ShowEvents from './components/events/show';
+import PlacesContainer from './components/Places';
+import EditPlaces from './components/Places/edit';
+import ShowPlaces from './components/Places/show';
+import ShowEvents from './components/Events/show';
 import Login from './components/Login';
 import Events from './components/Events';
 import Orders from './components/Orders';
