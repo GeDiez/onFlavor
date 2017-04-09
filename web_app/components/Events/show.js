@@ -18,6 +18,7 @@ export default class ShowEvents extends React.Component {
     this.addToOrder = this.addToOrder.bind(this);
     this.subtractToOrder = this.subtractToOrder.bind(this);
     this._saveButton = this._saveButton.bind(this);
+    this._deleteOrderButton = this._deleteOrderButton.bind(this);
   }
 
   async fetchEvent() {
@@ -62,6 +63,11 @@ export default class ShowEvents extends React.Component {
     }
   }
 
+  async _deleteOrderButton(orderid) {
+    await OrdersStore.deleteOrderById(orderid);
+    this.fetchEvent();
+  }
+
   _saveButton() {
 
     let newOrder = this.state.orders.filter(order => order.quantity > 0).map(order => {
@@ -98,6 +104,7 @@ export default class ShowEvents extends React.Component {
         <span>{order.dish.name} - </span>
         <span>{order.dish.price} - </span>
         <span>{order.user.full_name}</span>
+        <button className="btn btn-danger" onClick={() => this._deleteOrderButton(order.id)}>Delete</button>
       </div>
     });
     const menu = newOrders.map(({dish, quantity}) => (
@@ -148,7 +155,7 @@ export default class ShowEvents extends React.Component {
               Close
             </button>
             <button className='btn btn-primary' disabled={!isEnabled} onClick={this._saveButton}>
-              Save dish
+              Add Order
             </button>
           </ModalFooter>
         </Modal>
