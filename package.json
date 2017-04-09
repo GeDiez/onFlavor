@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node ./bin/www",
     "dev": "nodemon",
-    "postinstall": "webpack --config ./webpack.prod.config.js --progress"
+    "postinstall": "webpack --config ./webpack.prod.config.js --progress",
+    "migrate": "knex migrate:latest"
   },
   "dependencies": {
     "babel-core": "^6.9.1",
