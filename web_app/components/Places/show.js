@@ -82,16 +82,17 @@ export default class ShowPlaces extends React.Component {
   }
 
   render() {
-    let isEnabled = this.state.dishName.length > 0 && this.state.dishPrice.length > 0;
-
-    let dishes = this.state.dishes.map((dish) => {
-      return <div key={dish.id}>
-        <label htmlFor="Name">Name: </label>
-        <span> {dish.name}</span>
-        <label htmlFor="Price">Price: </label>
-        <span> {dish.price}</span>
-      </div>
+    const isEnabled = this.state.dishName.length > 0 && this.state.dishPrice.length > 0;
+    const formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 2,
     });
+    const dishes = this.state.dishes.map((dish) => (
+      <div key={dish.id}>
+        <p> {dish.name} - <span> {formatter.format(dish.price)}</span></p>
+      </div>
+    ));
 
     return <div>
       <Navbar />
