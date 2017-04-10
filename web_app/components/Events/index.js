@@ -21,19 +21,23 @@ export default class Events extends React.Component {
     });
   }
 
+  goToEvent(eventId) {
+    browserHistory.push('/events/'+eventId);
+  }
+
   render() {
     let events = this.state.events.map(event => {
-      return <div key={event.id} style={{ padding: '10px 0', fontSize: '1.2em'}}>
-        <Link to={'/events/'+event.id } className="">
-          {event.name} - {event.place.name}
-        </Link>
+      return <div key={event.id} onClick={() => this.goToEvent(event.id)} style={{ padding: '10px 5px', fontSize: '1.2em', border: '1px solid #ebebeb', cursor: 'pointer'}}>
+        <strong>{event.name}</strong> - {event.place.name}
       </div>
     });
     return (
       <div>
         <Navbar />
         <h2>Events:</h2>
-        {events}
+        <div style={{ marginBottom: '10px'}}>
+          {events}
+        </div>
         <div className="container-fluid">
           <div className="row">
             <Link to="/events/new" className="btn btn-success col-md-1">Add</Link>
