@@ -23,7 +23,7 @@ export default class Events extends React.Component {
 
   render() {
     let events = this.state.events.map(event => {
-      return <div key={event.id}>
+      return <div key={event.id} style={{ padding: '10px 0', fontSize: '1.2em'}}>
         <Link to={'/events/'+event.id } className="">
           {event.name} - {event.place.name}
         </Link>
@@ -32,7 +32,7 @@ export default class Events extends React.Component {
     return (
       <div>
         <Navbar />
-        Events:
+        <h2>Events:</h2>
         {events}
         <div className="container-fluid">
           <div className="row">

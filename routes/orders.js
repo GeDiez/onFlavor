@@ -66,7 +66,7 @@ web.get('/:id', (req, res, next) => {
 });
 
 api.delete('/:id', helpers.requireAuthentication, (req, res, next) => {
-  OrdersService.deleteById(req.params.id, req.user.id).then((message) => {
+  OrdersService.deleteById(req.params.id).then((message) => {
     res.json(message);
   }).catch();
 });

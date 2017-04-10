@@ -18,7 +18,7 @@ export default class ShowEvents extends React.Component {
     this.addToOrder = this.addToOrder.bind(this);
     this.subtractToOrder = this.subtractToOrder.bind(this);
     this._saveButton = this._saveButton.bind(this);
-    this._deleteOrderButton = this._deleteOrderButton.bind(this);
+    this.removeEvent = this.removeEvent.bind(this);
   }
 
   async fetchEvent() {
@@ -63,11 +63,6 @@ export default class ShowEvents extends React.Component {
     }
   }
 
-  async _deleteOrderButton(orderid) {
-    await OrdersStore.deleteOrderById(orderid);
-    this.fetchEvent();
-  }
-
   _saveButton() {
 
     let newOrder = this.state.orders.filter(order => order.quantity > 0).map(order => {
@@ -94,18 +89,35 @@ export default class ShowEvents extends React.Component {
     });
   }
 
+  removeEvent(orderId)  {
+    OrdersStore.removeOrder(orderId).then(data => {
+      console.log(this.state.orders);
+      let event = this.state.event;
+      event.orders = this.state.event.orders.filter(order => order.id != orderId);
+      console.log(event.orders);
+      this.setState({
+        event: event
+      });
+    });
+  }
+
   render() {
     const { event, orders: newOrders } = this.state;
     const isEnabled = true//this.state.dishName.length > 0 && this.state.dishPrice.length > 0;
     const orders = event ? event.orders : [];
+    const username = localStorage.getItem('username');
     const ordersComp = orders.map(order => {
-      return <div key={order.id}>
-        <span>{order.quantity} - </span>
-        <span>{order.dish.name} - </span>
-        <span>{order.dish.price} - </span>
-        <span>{order.user.full_name}</span>
-        <button className="btn btn-danger" onClick={() => this._deleteOrderButton(order.id)}>Delete</button>
-      </div>
+      return <tr key={order.id}>
+        <td>{order.dish.name}</td>
+        <td>{order.quantity}</td>
+        <td>{order.dish.price}</td>
+        <td>{order.user.full_name}</td>
+        <td>
+        { order.user.username == username &&
+          <a onClick={ () => this.removeEvent(order.id)}>Remove</a>
+        }
+        </td>
+      </tr>
     });
     const menu = newOrders.map(({dish, quantity}) => (
       <div key={dish.id}>
@@ -125,7 +137,21 @@ export default class ShowEvents extends React.Component {
       <h2>{event && event.name}</h2>
       <h4>{event && event.description}</h4>
       <h2>Orders:</h2>
-      {ordersComp}
+
+      <table className="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>Dish</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>User</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {ordersComp}
+        </tbody>
+      </table>
 
       {/* Modal form */}
       <div className="form-group">
