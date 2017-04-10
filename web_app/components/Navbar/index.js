@@ -18,7 +18,7 @@ const Navbar = () => (
         <li><Link to="/events">Events</Link></li>
       </ul>
       <ul className="nav navbar-nav navbar-right">
-        <li><Link onClick={logout}><span className="glyphicon glyphicon-log-in"></span> Logout</Link></li>
+        <li className="pointer"><Link onClick={logout}><span className="glyphicon glyphicon-log-in"></span> Logout</Link></li>
       </ul>
     </div>
   </nav>

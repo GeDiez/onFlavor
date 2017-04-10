@@ -62,13 +62,9 @@ module.exports = {
   deleteById: (orderId) => {
     return new Promise((resolve, reject) => {
       Order.where('id', orderId).fetch().then(order => {
-        if(order){
-          order.destroy();
-          resolve({message: 'Order deleted'});
-        }
-        else {
-          reject({error: 'Order not found'});
-        }
+        const jsonOrder = order.toJSON();
+        order.destroy();
+        resolve({message: 'Order deleted'});
       })
     })
   }

@@ -65,10 +65,10 @@ web.get('/:id', (req, res, next) => {
     });    
 });
 
-api.delete('/:id', (req, res, next) => {
-    OrdersService.deleteById(Number(req.params.id)).then((order) => {
-      res.json({ order: order });
-    });    
+api.delete('/:id', helpers.requireAuthentication, (req, res, next) => {
+  OrdersService.deleteById(req.params.id).then((message) => {
+    res.json(message);
+  }).catch();
 });
 
 api.get('/:id/events', helpers.requireAuthentication, (req, res, next) => {

@@ -51,15 +51,16 @@ const PlacesStore = Object.assign({}, EventEmitter.prototype, {
           password: values.password,
         })
       });
-      const responseData = await response.json();
-      localStorage.setItem('full_name', responseData.full_name);
-      localStorage.setItem('email', responseData.email);
-      localStorage.setItem('token', responseData.token);
-      localStorage.setItem('role', responseData.role);
-      localStorage.setItem('username', responseData.username)
-      this.emitChange();
-
-      return responseData
+      if(response.ok) {
+        const responseData = await response.json();
+        localStorage.setItem('full_name', responseData.full_name);
+        localStorage.setItem('email', responseData.email);
+        localStorage.setItem('token', responseData.token);
+        localStorage.setItem('role', responseData.role);
+        localStorage.setItem('username', responseData.username)
+        this.emitChange();
+      }
+      return response
     }
   },
 

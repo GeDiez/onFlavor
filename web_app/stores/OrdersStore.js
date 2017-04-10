@@ -61,20 +61,20 @@ const OrdersStore = Object.assign({}, EventEmitter.prototype, {
     ajaxRequests.push(response);
   },
 
-  // async fetchOrdersByEventId(id) {
-  //   const token = localStorage.getItem('token');
-  //   const response = await fetch(`/api/orders/${id}/events`, {
-  //     method: 'GET',
-  //     headers: {
-  //       'Accept': 'application/json',
-  //       'Content-Type': 'application/json',
-  //       'Authorization' : `Bearer: ${token}`
-  //     }
-  //   });
-  //   const responseData = await response.json();
-  //   return responseData;
-  //   ajaxRequests.push(response);
-  // },
+  async deleteOrderById(orderid) {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`/api/orders/${orderid}`, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization' : `Bearer: ${token}`
+      }
+    });
+    const responseData = await response.json();
+    return responseData;
+    ajaxRequests.push(response);
+  },
 
   fetchOrdersByEventId(id, callback) {
     const token = localStorage.getItem('token');

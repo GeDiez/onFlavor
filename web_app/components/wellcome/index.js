@@ -36,7 +36,7 @@ export default class WellcomeContainer extends React.Component {
           <div className="col-sm-12">
             <ul>
               <li><Link to={`/places`} activeClassName="active">Places</Link></li>
-
+              <li><Link to={`/events`} activeClassName="active">Events</Link></li>
             </ul>
           </div>
         </div>

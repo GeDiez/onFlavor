@@ -6,3 +6,17 @@ body {
 a {
   color: #00B7FF;
 }
+
+.one-line {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.navbar {
+  margin: -50px;
+}
+
+.pointer {
+  cursor: pointer
+}

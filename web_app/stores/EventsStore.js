@@ -73,6 +73,21 @@ const EventsStore = Object.assign({}, EventEmitter.prototype, {
     return responseData;
     ajaxRequests.push(response);
   },
+  
+  async deleteEventById(id) {
+    const token = localStorage.getItem('token');
+    const response = await fetch('/api/events/' + id, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization' : `Bearer: ${token}`
+      }
+    });
+    const responseData = await response.json();
+    return responseData;
+    ajaxRequests.push(response);
+  }
 
 });
 
