@@ -91,6 +91,21 @@ const OrdersStore = Object.assign({}, EventEmitter.prototype, {
     ajaxRequests.push(ajaxReq);
   },
 
+  async removeOrder(id) {
+    const token = localStorage.getItem('token');
+    const response = await fetch('/api/orders/' + id, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization' : `Bearer: ${token}`
+      }
+    });
+    const responseData = await response.json();
+    return responseData;
+    ajaxRequests.push(response);
+  }
+
 });
 
 export default OrdersStore;

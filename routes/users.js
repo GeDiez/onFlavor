@@ -97,10 +97,6 @@ api.post('/authorize', (req, res, next) => {
   });
 });
 
-function authorize(req, res, next) {
-
-}
-
 web.get('/logout', (req, res, next) => {
   req.session.destroy(err => {
     res.redirect('/users/login');

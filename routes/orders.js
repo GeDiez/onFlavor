@@ -65,6 +65,12 @@ web.get('/:id', (req, res, next) => {
     });    
 });
 
+api.delete('/:id', (req, res, next) => {
+    OrdersService.deleteById(Number(req.params.id)).then((order) => {
+      res.json({ order: order });
+    });    
+});
+
 api.get('/:id/events', helpers.requireAuthentication, (req, res, next) => {
   OrdersService.fetchByEventId(req.params.id).then((orders)=> {
     res.json(orders);

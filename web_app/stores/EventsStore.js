@@ -72,8 +72,7 @@ const EventsStore = Object.assign({}, EventEmitter.prototype, {
     const responseData = await response.json();
     return responseData;
     ajaxRequests.push(response);
-  }
-
+  },
 
 });
 

@@ -21,14 +21,18 @@ import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 
 function requireAuth (nextState, replace, callback) {
   const token = localStorage.getItem('token')
-  if (!token) replace('/login')
-  return callback()
+  if (!token || token == 'undefined') { 
+    browserHistory.push(`/login`);
+    //replace('/login');
+  } else {
+    return callback()
+  }
 }
 
 ReactDOM.render((<Router history={browserHistory}>
 
 <Route path="/" component={App}>
-  <IndexRoute components={{content: WellcomeContainer}} onEnter={requireAuth}/>
+  <IndexRoute components={{content: Events}} onEnter={requireAuth}/>
   <Route path="/wellcome" components={{content: WellcomeContainer}} onEnter={requireAuth} />
   <Route path="/login" components={{content: Login}} />
   <Route path="/events" components={{content: Events}} onEnter={requireAuth} />
