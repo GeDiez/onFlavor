@@ -1,0 +1,48 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.one-line {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.navbar {
+  margin: -50px;
+}
+
+.pointer {
+  cursor: pointer
+}
+
+.event-card {
+  padding: 10px 10px;
+  border: 1px solid #ebebeb;
+  cursor: pointer;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
+  margin-bottom: 14px;
+  .name {
+    font-size: 1.3em;
+    font-weight: bold;
+    display: block;
+    line-height: 2em;
+  }
+  .place {
+    font-size: 1.1em;
+    line-height: 1.6em;
+    color: #666;
+  }
+  .date-time {
+    color: #666;
+  }
+}
+
+table .actions a {
+  margin: auto 3px;
+}

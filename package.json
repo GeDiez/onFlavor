@@ -6,7 +6,9 @@
     "start": "node ./bin/www",
     "dev": "nodemon",
     "postinstall": "webpack --config ./webpack.prod.config.js --progress",
-    "migrate": "knex migrate:latest"
+    "migrate": "knex migrate:latest",
+    "build-css": "./bin/build-css",
+    "watch-css": "./bin/watch-css"
   },
   "dependencies": {
     "babel-core": "^6.9.1",

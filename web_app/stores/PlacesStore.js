@@ -100,7 +100,7 @@ const PlacesStore = Object.assign({}, EventEmitter.prototype, {
       .set('Authorization', `Bearer: ${token}`)
       .end((err, res) => {
         if (err || !res.ok) {
-          callback('error');
+          callback({ error: true });
         } else {
           callback(res.body);
         }

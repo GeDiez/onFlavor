@@ -136,11 +136,11 @@ export default class ShowPlaces extends React.Component {
                   <input type="hidden" name="placeid" value={this.state.placeid}/>
                   <div className="form-group">
                     <label htmlFor="dishName"> Name: </label>
-                    <input type="text" name="dishName" value={this.state.dishName} onChange={this._handleChange}/>
+                    <input type="text" name="dishName" value={this.state.dishName} onChange={this._handleChange} className="form-control"/>
                   </div>
                   <div className="form-group">
                     <label htmlFor="dishPrice"> Price: </label>
-                    <input type="number" name="dishPrice" value={this.state.dishPrice} onChange={this._handleChange}/>
+                    <input type="number" name="dishPrice" value={this.state.dishPrice} onChange={this._handleChange} className="form-control"/>
                   </div>
                 </ModalBody>
                 <ModalFooter>

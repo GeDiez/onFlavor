@@ -4,6 +4,7 @@ import { browserHistory, Link } from 'react-router';
 import Navbar from '../Navbar';
 import LoginStore from '../../stores/LoginStore';
 import EventsStore from '../../stores/EventsStore';
+import moment from 'moment';
 
 export default class Events extends React.Component {
   constructor(props) {
@@ -27,20 +28,27 @@ export default class Events extends React.Component {
 
   render() {
     let events = this.state.events.map(event => {
-      return <div key={event.id} onClick={() => this.goToEvent(event.id)} style={{ padding: '10px 5px', fontSize: '1.2em', border: '1px solid #ebebeb', cursor: 'pointer'}}>
-        <strong>{event.name}</strong> - {event.place.name}
+      return <div key={event.id} onClick={() => this.goToEvent(event.id)} className="event-card">
+        <span className="name">{event.name}</span>
+        <span className="place"><i className="fa fa-cutlery"></i> {event.place.name}</span>
+        <span className="date-time pull-right"><i className="fa fa-clock-o"></i> {moment(event.date_time).format('lll')}</span>
       </div>
     });
     return (
       <div>
         <Navbar />
-        <h2>Events:</h2>
-        <div style={{ marginBottom: '10px'}}>
-          {events}
-        </div>
         <div className="container-fluid">
           <div className="row">
-            <Link to="/events/new" className="btn btn-success col-md-1">Add</Link>
+            <div className="col-sm-12 text-center">
+              <h2>Events</h2>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-sm-12">
+              <div style={{ marginBottom: '10px', marginTop: '15px' }}>
+                {events}
+              </div>
+            </div>
           </div>
         </div>
 			</div>

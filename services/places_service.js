@@ -41,7 +41,7 @@ module.exports = {
           else {
             resolve({error: 'Place not found'});
           }
-        }).catch((error) => {reject(error)});
+        }).catch(error => { reject(error) });
       }
     });
   },
@@ -55,7 +55,7 @@ module.exports = {
         else {
           resolve({error: "Place not found"});
         }
-      }).catch((error) => {reject(error)});
+      }).catch(error => { reject(error) });
     })
   },
 
@@ -63,12 +63,11 @@ module.exports = {
     return new Promise((resolve, reject) => {
       Place.where({ id: placeId }).destroy().then(place => {
         if(place){
-          resolve({message: 'Place deleted'});
+          resolve({ message: 'Place deleted' });
+        } else {
+          resolve({ error: 'Place not found' });
         }
-        else {
-          resolve({error: 'Place not found'});
-        }
-      })
+      }).catch(error => { reject(error) });
     })
   }
 
