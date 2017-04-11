@@ -52,12 +52,12 @@ export default class EditPlaces extends React.Component {
       <Navbar />
       <div className="container-fluid">
         <div className="row">
-          <div className="col-sm-6">
+          <div className="col-sm-12">
             <h1>On flavor App:</h1>
             <input type="hidden" name="placeid" value={this.state.placeid}/>
             <div className="form-group">
               <label htmlFor="name">Name:</label>
-              <input type="text" name="name" value={this.state.name} onChange={this._handleChange}/>
+              <input type="text" name="name" value={this.state.name} onChange={this._handleChange} className="form-control"/>
             </div>
             {/*<div className="form-group">
               <label htmlFor="latitude">Latitude:</label>
@@ -69,7 +69,7 @@ export default class EditPlaces extends React.Component {
             </div>*/}
             <div className="form-group">
               <label htmlFor="description">Description:</label>
-              <input type="text" name="description" value={this.state.description} onChange={this._handleChange}/>
+              <input type="text" name="description" value={this.state.description} onChange={this._handleChange} className="form-control"/>
             </div>
             <input type="submit" value="Save" className="btn btn-primary" onClick={this._savePlace}/>
           </div>

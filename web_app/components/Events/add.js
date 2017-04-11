@@ -59,10 +59,15 @@ export default class AddEvent extends React.Component {
         <Navbar />
         <div className="container-fluid">
           <div className="row">
+            <div className="col-sm-12 text-center">
+              <h2>Event creation</h2>
+            </div>
+          </div>
+          <div className="row">
             <div className="col-sm-6 col-sm-offset-3">
               <form onSubmit={(ev) => ev.preventDefault()}>
                 <div className="form-group">
-                  <label htmlFor="name">Name</label>
+                  <label htmlFor="name">Event Name</label>
                   <input type="text" className="form-control" name="name" id="name" onChange={(ev) => this.onChange(ev)} value={name} placeholder="Enter the Name"/>
                 </div>
                 <div className="form-group">

@@ -10,7 +10,7 @@ export default class PlacesContainer extends React.Component {
     this.state = {
       places: [],
     };
-    this._deletePlace = this._deletePlace.bind(this);
+    this.deletePlace = this.deletePlace.bind(this);
     this._updatePlacesFromStore = this._updatePlacesFromStore.bind(this);
   }
 
@@ -24,33 +24,54 @@ export default class PlacesContainer extends React.Component {
     });
   }
 
-  _deletePlace(place_id) {
-    PlacesStore.deletePlace((place_id),(message)=>{
-      this._updatePlacesFromStore();
+  deletePlace(place_id) {
+    PlacesStore.deletePlace(place_id, response => {
+      if (!response.error) {
+        this.setState({
+          places: this.state.places.filter(place => place.id != place_id)
+        });
+      } else {
+        alert(`This place can't be deleted because is related to an event`);
+      }
     });
   }
 
   render() {
     let places = this.state.places.map(place =>{
-      return <div key={place.id} className="row">
-        <label className="col-md-2">{place.name}</label>
-        <Link to={'/places/'+place.id } className="btn btn-primary col-md-1">Show</Link>
-        <Link to={'/places/'+place.id+'/edit' } className="btn btn-info col-md-1">Edit</Link>
-        <button type="button" className="btn btn-danger col-md-1" onClick={() => this._deletePlace(place.id)} >Delete</button>
-      </div>
+      return <tr key={place.id}>
+        <td><label className="col-md-2">{place.name}</label></td>
+        <td className="actions">
+          <Link to={'/places/'+place.id }>Show</Link>
+          <Link to={'/places/'+place.id+'/edit' }>Edit</Link>
+          <a className="pointer" onClick={() => this.deletePlace(place.id)}>Delete</a>
+        </td>
+      </tr>
     });
 
     return <div>
       <Navbar />
       <div className="container-fluid">
         <div className="row">
-          <div className="col-md-6">
-            <h1>On flavor App:</h1>
+          <div className="col-md-12 text-center">
+            <h2>Places</h2>
           </div>
         </div>
-        {places}
+        <br />
         <div className="row">
-          <Link to={'/places/new' } className="btn btn-success col-md-1">New</Link>
+          <div className="col-sm-12">
+            <table className="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {places}
+              </tbody>
+            </table>
+            <Link to={'/places/new' } className="btn btn-success col-md-1">New</Link>
+          </div>
         </div>
       </div>
     </div>;

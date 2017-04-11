@@ -66,7 +66,7 @@ web.post('/edit/:id', (req, res, next) => {
 api.delete('/:id', helpers.requireAuthentication, (req, res, next) => {
   PlacesService.deleteById(req.params.id).then((placeDeleted) => {
     res.json(placeDeleted);
-  })
+  }).catch(error => res.json({ error }));
 });
 
 web.delete('/places/:id', helpers.requireAuthentication, (req, res, next) => {

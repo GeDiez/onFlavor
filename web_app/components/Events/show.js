@@ -134,59 +134,66 @@ export default class ShowEvents extends React.Component {
     ));
     return <div>
       <Navbar />
-      <h2>{event && event.name}</h2>
-      <h4>{event && event.description}</h4>
-      <h2>Orders:</h2>
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-sm-12">
+            <h2>{event && event.name}</h2>
+            <h4>{event && event.description}</h4>
+            <br />
+            <h4>Orders:</h4>
+          </div>
+        </div>
 
-      <table className="table table-striped table-bordered">
-        <thead>
-          <tr>
-            <th>Dish</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>User</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {ordersComp}
-        </tbody>
-      </table>
+        <table className="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Dish</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>User</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {ordersComp}
+          </tbody>
+        </table>
 
-      {/* Modal form */}
-      <div className="form-group">
-        <button type="button" className="btn btn-success col-md-2" onClick={this._openModal}>Add order</button>
-        <Modal isOpen={this.state.isOpen} onRequestHide={this._hideModal}>
-          <ModalHeader>
-            <ModalClose onClick={this._hideModal}/>
-            <ModalTitle>Menu</ModalTitle>
-          </ModalHeader>
-          <ModalBody>
-            <div className="container-fluid">
-              <div className="row">
-                <div className="col-md-6">
-                  <h3>Menu</h3>
+        {/* --- Modal form --- */}
+        <div className="form-group">
+          <button type="button" className="btn btn-success col-md-2" onClick={this._openModal}>Add order</button>
+          <Modal isOpen={this.state.isOpen} onRequestHide={this._hideModal}>
+            <ModalHeader>
+              <ModalClose onClick={this._hideModal}/>
+              <ModalTitle>Menu</ModalTitle>
+            </ModalHeader>
+            <ModalBody>
+              <div className="container-fluid">
+                <div className="row">
+                  <div className="col-md-6">
+                    <h3>Menu</h3>
+                  </div>
+                  <div className="col-md-3 col-md-offset-2">
+                    <h3>Quantity</h3>
+                  </div>
                 </div>
-                <div className="col-md-3 col-md-offset-2">
-                  <h3>Quantity</h3>
+                <div className="row">
+                  {menu}
                 </div>
               </div>
-              <div className="row">
-                {menu}
-              </div>
-            </div>
-          </ModalBody>
-          <ModalFooter>
-            <button className='btn btn-default' onClick={this._hideModal}>
-              Close
-            </button>
-            <button className='btn btn-primary' disabled={!isEnabled} onClick={this._saveButton}>
-              Add Order
-            </button>
-          </ModalFooter>
-        </Modal>
+            </ModalBody>
+            <ModalFooter>
+              <button className='btn btn-default' onClick={this._hideModal}>
+                Close
+              </button>
+              <button className='btn btn-primary' disabled={!isEnabled} onClick={this._saveButton}>
+                Add Order
+              </button>
+            </ModalFooter>
+          </Modal>
+        </div>
+        {/* ---End modal ---- */}
       </div>
-      {/* ---------------- */}
 
     </div>
   }
