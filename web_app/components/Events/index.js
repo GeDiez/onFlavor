@@ -28,10 +28,15 @@ export default class Events extends React.Component {
 
   render() {
     let events = this.state.events.map(event => {
-      return <div key={event.id} onClick={() => this.goToEvent(event.id)} className="event-card">
-        <span className="name">{event.name}</span>
-        <span className="place"><i className="fa fa-cutlery"></i> {event.place.name}</span>
-        <span className="date-time pull-right"><i className="fa fa-clock-o"></i> {moment(event.date_time).format('lll')}</span>
+      return <div key={event.id} onClick={() => this.goToEvent(event.id)} className="event-card row">
+        <div className="col-lg-1 col-sm-2">
+          <div className="tumbnail" style={{ backgroundImage: 'url(http://videisimo.net/sites/default/files/comida-mexicana-17.jpg)'}}></div>
+        </div>
+        <div className="col-lg-11 col-sm-10">
+          <span className="name">{event.name}</span>
+          <span className="place"><i className="fa fa-cutlery"></i> {event.place.name}</span>
+          <span className="date-time pull-right"><i className="fa fa-clock-o"></i> {moment(event.date_time).format('lll')}</span>
+        </div>
       </div>
     });
     return (

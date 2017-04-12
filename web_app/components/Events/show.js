@@ -4,7 +4,7 @@ import OrdersStore from '../../stores/OrdersStore';
 import EventsStore from '../../stores/EventsStore';
 import Navbar from '../Navbar';
 
-import {Modal, ModalHeader, ModalTitle, ModalClose, ModalBody, ModalFooter } from 'react-modal-bootstrap';
+import { Modal, ModalHeader, ModalTitle, ModalClose, ModalBody, ModalFooter } from 'react-modal-bootstrap';
 
 export default class ShowEvents extends React.Component {
   constructor(props) {
@@ -14,22 +14,27 @@ export default class ShowEvents extends React.Component {
       orders: [],
       event: null
     };
-    this.fetchEvent();
     this.addToOrder = this.addToOrder.bind(this);
     this.subtractToOrder = this.subtractToOrder.bind(this);
     this._saveButton = this._saveButton.bind(this);
-    this.removeEvent = this.removeEvent.bind(this);
+    this.removeOrder = this.removeOrder.bind(this);
+    this.fetchEvent = this.fetchEvent.bind(this);
+  }
+
+  componentDidMount() {
+    this.fetchEvent();
   }
 
   async fetchEvent() {
     const { id } = this.props.params;
     const event = await EventsStore.getEventById(id);
-    const orders = event.place.dishes.map((dish) => (
+    console.log(event);
+    const orders = event.place && event.place.dishes ? event.place.dishes.map((dish) => (
       {
         dish,
         quantity: 0
       }
-    ))
+    )) : [];
     this.setState({ event, orders });
   }
 
@@ -64,7 +69,6 @@ export default class ShowEvents extends React.Component {
   }
 
   _saveButton() {
-
     let newOrder = this.state.orders.filter(order => order.quantity > 0).map(order => {
       OrdersStore.saveOrder({
         event_id: this.props.params.id,
@@ -89,12 +93,10 @@ export default class ShowEvents extends React.Component {
     });
   }
 
-  removeEvent(orderId)  {
+  removeOrder(orderId)  {
     OrdersStore.removeOrder(orderId).then(data => {
-      console.log(this.state.orders);
       let event = this.state.event;
       event.orders = this.state.event.orders.filter(order => order.id != orderId);
-      console.log(event.orders);
       this.setState({
         event: event
       });
@@ -112,9 +114,9 @@ export default class ShowEvents extends React.Component {
         <td>{order.quantity}</td>
         <td>{order.dish.price}</td>
         <td>{order.user.full_name}</td>
-        <td>
+        <td className="text-center">
         { order.user.username == username &&
-          <a onClick={ () => this.removeEvent(order.id)}>Remove</a>
+          <a className="pointer" onClick={ () => this.removeOrder(order.id)}>Remove</a>
         }
         </td>
       </tr>
@@ -135,10 +137,18 @@ export default class ShowEvents extends React.Component {
     return <div>
       <Navbar />
       <div className="container-fluid">
+        <div className="place-image" style={{ backgroundImage: 'url(http://videisimo.net/sites/default/files/comida-mexicana-17.jpg)'}}>
+          <div className="info">
+            <div className="row">
+              <div className="col-sm-12">
+                <h2>{event && event.name}{event && event.place && ` - ${event.place.name}`}</h2>
+                <h4>{event && event.description}</h4>
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="row">
           <div className="col-sm-12">
-            <h2>{event && event.name}</h2>
-            <h4>{event && event.description}</h4>
             <br />
             <h4>Orders:</h4>
           </div>
@@ -159,41 +169,40 @@ export default class ShowEvents extends React.Component {
           </tbody>
         </table>
 
-        {/* --- Modal form --- */}
         <div className="form-group">
           <button type="button" className="btn btn-success col-md-2" onClick={this._openModal}>Add order</button>
-          <Modal isOpen={this.state.isOpen} onRequestHide={this._hideModal}>
-            <ModalHeader>
-              <ModalClose onClick={this._hideModal}/>
-              <ModalTitle>Menu</ModalTitle>
-            </ModalHeader>
-            <ModalBody>
-              <div className="container-fluid">
-                <div className="row">
-                  <div className="col-md-6">
-                    <h3>Menu</h3>
-                  </div>
-                  <div className="col-md-3 col-md-offset-2">
-                    <h3>Quantity</h3>
-                  </div>
-                </div>
-                <div className="row">
-                  {menu}
-                </div>
-              </div>
-            </ModalBody>
-            <ModalFooter>
-              <button className='btn btn-default' onClick={this._hideModal}>
-                Close
-              </button>
-              <button className='btn btn-primary' disabled={!isEnabled} onClick={this._saveButton}>
-                Add Order
-              </button>
-            </ModalFooter>
-          </Modal>
         </div>
-        {/* ---End modal ---- */}
       </div>
+      
+      <Modal isOpen={this.state.isOpen} onRequestHide={this._hideModal}>
+        <ModalHeader>
+          <ModalClose onClick={this._hideModal}/>
+          <ModalTitle>Menu</ModalTitle>
+        </ModalHeader>
+        <ModalBody>
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-md-6">
+                <h3>Menu</h3>
+              </div>
+              <div className="col-md-3 col-md-offset-2">
+                <h3>Quantity</h3>
+              </div>
+            </div>
+            <div className="row">
+              {menu}
+            </div>
+          </div>
+        </ModalBody>
+        <ModalFooter>
+          <button className='btn btn-default' onClick={this._hideModal}>
+            Close
+          </button>
+          <button className='btn btn-primary' disabled={!isEnabled} onClick={this._saveButton}>
+            Add Order
+          </button>
+        </ModalFooter>
+      </Modal>
 
     </div>
   }
