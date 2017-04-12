@@ -89,38 +89,44 @@ export default class ShowPlaces extends React.Component {
       minimumFractionDigits: 2,
     });
     const dishes = this.state.dishes.map((dish) => (
-      <div key={dish.id}>
-        <p> {dish.name} - <span> {formatter.format(dish.price)}</span></p>
-      </div>
+      <tr key={dish.id}>
+        <td>{dish.name}</td>
+        <td>{formatter.format(dish.price)}</td>
+      </tr>
     ));
 
     return <div>
       <Navbar />
       <div className="container-fluid">
         <div className="row">
+          <div className="col-sm-12 text-center">
+            <h2>Place information</h2>
+          </div>
+        </div>
+        <div className="row">
           <div className="col-sm-6">
-            <h1>On flavor App:</h1>
-
             {/* Place info */}
             <div className="form-group">
               <label htmlFor="name"> Name:</label>
               <span name="name"> {this.state.name} </span>
             </div>
-            {/*<div className="form-group">
-              <label htmlFor="latitude">Latitude:</label>
-              <span name="latitude"> {this.state.latitude} </span>
-            </div>
-            <div className="form-group">
-              <label htmlFor="longitude">Longitude:</label>
-              <span name="longitude"> {this.state.longitude} </span>
-            </div>*/}
             <div className="form-group">
               <label htmlFor="description">Description:</label>
               <span name="description"> {this.state.description} </span>
             </div>
             <div className="form-group">
               <label htmlFor="dishes">Menu: </label>
-              {dishes}
+              <table className="dishes-table">
+                <thead>
+                  <tr>
+                    <th>Dish</th>
+                    <th>Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {dishes}
+                </tbody>
+              </table>
             </div>
             {/* -------- */}
 

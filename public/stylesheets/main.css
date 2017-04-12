@@ -33,6 +33,29 @@ a {
     color: #666; }
   .event-card .date-time {
     color: #666; }
+  .event-card .tumbnail {
+    height: 100%;
+    min-height: 73px;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center; }
 
 table .actions a {
   margin: auto 3px; }
+
+.dishes-table {
+  min-width: 200px; }
+  .dishes-table td {
+    padding-right: 10px;
+    line-height: 1.7em; }
+
+.place-image {
+  height: 200px;
+  background: url(images/bg.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover; }
+  .place-image .info {
+    background: rgba(255, 255, 255, 0.7);
+    padding: 10px; }

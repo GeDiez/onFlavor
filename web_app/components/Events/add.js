@@ -1,6 +1,7 @@
 import React from 'react';
 import { browserHistory, Link } from 'react-router';
 import moment from 'moment';
+import { Modal, ModalHeader, ModalTitle, ModalClose, ModalBody, ModalFooter } from 'react-modal-bootstrap';
 import { TransitionView, Calendar, DateField } from 'react-date-picker'
 import 'react-date-picker/index.css';
 
@@ -20,6 +21,8 @@ export default class AddEvent extends React.Component {
       places: []
     }
     this.getPlaces();
+    this.handleChange = this.handleChange.bind(this);
+    this.savePlace = this.savePlace.bind(this);
   }
 
   async getPlaces() {
@@ -47,6 +50,41 @@ export default class AddEvent extends React.Component {
     const {name, description, dateString, place_id} = this.state;
     await EventsStore.addEvent({name, description, datetime: dateString, place_id});
     browserHistory.push('/events');
+  }
+
+  savePlace() {
+    PlacesStore.savePlace(({
+      name: this.state.placeName,
+      description: this.state.placeDescription,
+    }), (response) => {
+      if (response.error) {
+        alert(response.error);
+      } else {
+        this.setState({
+          places: [...this.state.places, response]
+        }, this.hideModal);
+      }
+    });
+  }
+
+  openModal = () => {
+    this.setState({
+      isOpen: true
+    });
+  }
+
+  hideModal = () => {
+    this.setState({
+      isOpen: false,
+      placeName: '',
+      placeDescription: ''
+    });
+  }
+
+  handleChange(e) {
+    var change = {}
+    change[e.target.name] = e.target.value
+    this.setState(change)
   }
 
   render() {
@@ -85,16 +123,40 @@ export default class AddEvent extends React.Component {
               </div>
               <div className="form-group">
                 <label htmlFor="place">Place</label>
+                <button className="btn btn-link" onClick={this.openModal}>+</button>
                 <select name="place_id" onChange={(ev) => this.onChange(ev)} className="form-control">
                   <option value="-1"></option>
                   {placesOptions}
                 </select>
               </div>
-              <input type="submit" value="Add!" onClick={(ev) => this.addEvent(ev)} className="btn btn-primary" />
+              <input type="submit" value="Create" onClick={(ev) => this.addEvent(ev)} className="btn btn-success" />
               </form>
             </div>
           </div>
         </div>
+
+        <Modal isOpen={this.state.isOpen} onRequestHide={this.hideModal}>
+          <ModalHeader>
+            <ModalClose onClick={this.hideModal}/>
+            <ModalTitle>New place</ModalTitle>
+          </ModalHeader>
+          <ModalBody>
+            <div className="container-fluid">
+              <div className="form-group">
+                <label htmlFor="placeName">Name: </label>
+                <input type="text" name="placeName" value={this.state.placeName} onChange={this.handleChange} className="form-control"/>
+              </div>
+              <div className="form-group">
+                <label htmlFor="placeDescription">Description: </label>
+                <input type="text" name="placeDescription" value={this.state.placeDescription} onChange={this.handleChange} className="form-control"/>
+              </div>
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <button className="btn btn-primary col-sm-12" onClick={this.savePlace}>Save</button>
+          </ModalFooter>
+        </Modal>
+
 			</div>
     );
   }
