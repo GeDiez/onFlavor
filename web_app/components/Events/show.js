@@ -3,6 +3,7 @@ import { browserHistory, Link } from 'react-router';
 import OrdersStore from '../../stores/OrdersStore';
 import EventsStore from '../../stores/EventsStore';
 import Navbar from '../Navbar';
+import moment from 'moment';
 
 import { Modal, ModalHeader, ModalTitle, ModalClose, ModalBody, ModalFooter } from 'react-modal-bootstrap';
 
@@ -112,7 +113,7 @@ export default class ShowEvents extends React.Component {
       return <tr key={order.id}>
         <td>{order.dish.name}</td>
         <td>{order.quantity}</td>
-        <td>{order.dish.price}</td>
+        <td>${order.dish.price}</td>
         <td>{order.user.full_name}</td>
         <td className="text-center">
         { order.user.username == username &&
@@ -121,6 +122,7 @@ export default class ShowEvents extends React.Component {
         </td>
       </tr>
     });
+
     const menu = newOrders.map(({dish, quantity}) => (
       <div key={dish.id}>
         <div className="col-md-6 one-line">
@@ -134,6 +136,7 @@ export default class ShowEvents extends React.Component {
         <div className="col-md-3">{quantity}</div>
       </div>
     ));
+
     return <div>
       <Navbar />
       <div className="container-fluid">
@@ -142,7 +145,8 @@ export default class ShowEvents extends React.Component {
             <div className="row">
               <div className="col-sm-12">
                 <h2>{event && event.name}{event && event.place && ` - ${event.place.name}`}</h2>
-                <h4>{event && event.description}</h4>
+                <h4><i className="fa fa-file-text-o"></i> {event && event.description}</h4>
+                <span><i className="fa fa-clock-o"></i> {event && moment(event.datetime).format('LLLL')}</span>
               </div>
             </div>
           </div>
@@ -150,7 +154,7 @@ export default class ShowEvents extends React.Component {
         <div className="row">
           <div className="col-sm-12">
             <br />
-            <h4>Orders:</h4>
+            <h4><i className="fa fa-cutlery"></i> Orders:</h4>
           </div>
         </div>
 
