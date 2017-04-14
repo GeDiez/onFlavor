@@ -2,8 +2,8 @@ import React from 'react';
 import { browserHistory, Link } from 'react-router';
 import moment from 'moment';
 import { Modal, ModalHeader, ModalTitle, ModalClose, ModalBody, ModalFooter } from 'react-modal-bootstrap';
-import { TransitionView, Calendar, DateField } from 'react-date-picker'
-import 'react-date-picker/index.css';
+import InputMoment from 'input-moment';
+import 'input-moment/dist/input-moment.css';
 
 import Navbar from '../Navbar';
 import EventsStore from '../../stores/EventsStore';
@@ -17,12 +17,17 @@ export default class AddEvent extends React.Component {
       description: '',
       datetime: '',
       place_id: '',
-      dateString: '',
-      places: []
+      // dateString: '',
+      places: [],
+      m: moment(),
+      showCalendar: false
     }
     this.getPlaces();
     this.handleChange = this.handleChange.bind(this);
     this.savePlace = this.savePlace.bind(this);
+    this.handleDateChange = this.handleDateChange.bind(this);
+    this.handleDateSave = this.handleDateSave.bind(this);
+    this.toggleCalendar = this.toggleCalendar.bind(this);
   }
 
   async getPlaces() {
@@ -38,17 +43,17 @@ export default class AddEvent extends React.Component {
     })
   }
 
-  onDateTimeChange(dateString) {
+  /*onDateTimeChange(dateString) {
     this.setState({
       dateString,
       datetime: moment(dateString)
     });
-  }
+  }*/
 
   async addEvent(ev) {
     if (ev) ev.preventDefault();
-    const {name, description, dateString, place_id} = this.state;
-    await EventsStore.addEvent({name, description, datetime: dateString, place_id});
+    const {name, description, m, place_id} = this.state;
+    await EventsStore.addEvent({name, description, datetime: m.format(), place_id});
     browserHistory.push('/events');
   }
 
@@ -87,11 +92,30 @@ export default class AddEvent extends React.Component {
     this.setState(change)
   }
 
+  handleDateSave() {
+    console.log('saved', this.state.m.format('llll'));
+    this.setState({
+      showCalendar: false
+    })
+  }
+
+  handleDateChange(m) {
+    this.setState({ m });
+  }
+
+  toggleCalendar() {
+    this.setState({
+      showCalendar: !this.state.showCalendar
+    })
+  }
+
   render() {
-    const { name, description, datetime, places } = this.state;
+    const { name, description, datetime, places, showCalendar } = this.state;
     const placesOptions = places.map(p => (
       <option key={p.id} value={p.id}>{p.name}</option>
     ));
+    let displayCalendar = showCalendar ? 'block' : 'none';
+
     return (
       <div>
         <Navbar />
@@ -114,12 +138,20 @@ export default class AddEvent extends React.Component {
                 </div>
               <div className="form-group">
                 <label htmlFor="datetime">When?</label>
-                <DateField
-                  className="form-control"
-                  dateFormat="YYYY-MM-DD HH:mm:ss"
-                  placeholder="Select the date"
-                  onChange={(ev) => this.onDateTimeChange(ev)}
-                />
+                <div className="input-group pointer">
+                  <input type="text" className="form-control pointer" value={this.state.m.format('lll')} readOnly={true} onClick={this.toggleCalendar} />
+                  <div className="input-group-addon" onClick={this.toggleCalendar}>
+                    <i className="glyphicon glyphicon-calendar"></i>
+                  </div>
+                </div>
+                <div style={{ position: 'relative', display: 'inline-block' }}>
+                  <InputMoment
+                    style={{ float: 'right', position: 'absolute', top: '0px', marginTop: '-12px', background: 'white', display: displayCalendar }}
+                    moment={this.state.m}
+                    onChange={this.handleDateChange}
+                    onSave={this.handleDateSave}
+                  />
+                </div>
               </div>
               <div className="form-group">
                 <label htmlFor="place">Place</label>
