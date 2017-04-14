@@ -145,7 +145,8 @@ export default class ShowEvents extends React.Component {
             <div className="row">
               <div className="col-sm-12">
                 <h2>{event && event.name}{event && event.place && ` - ${event.place.name}`}</h2>
-                <h4>{event && event.description}</h4><span><i className="fa fa-clock-o"></i> {event && moment(event.datetime).format('LLLL')}</span>
+                <h4><i className="fa fa-file-text-o"></i> {event && event.description}</h4>
+                <span><i className="fa fa-clock-o"></i> {event && moment(event.datetime).format('LLLL')}</span>
               </div>
             </div>
           </div>
@@ -153,7 +154,7 @@ export default class ShowEvents extends React.Component {
         <div className="row">
           <div className="col-sm-12">
             <br />
-            <h4>Orders:</h4>
+            <h4><i className="fa fa-cutlery"></i> Orders:</h4>
           </div>
         </div>
 
