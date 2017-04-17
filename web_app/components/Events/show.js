@@ -3,6 +3,7 @@ import { browserHistory, Link } from 'react-router';
 import OrdersStore from '../../stores/OrdersStore';
 import EventsStore from '../../stores/EventsStore';
 import Navbar from '../Navbar';
+import OrderItem from './OrderItem';
 import moment from 'moment';
 
 import { Modal, ModalHeader, ModalTitle, ModalClose, ModalBody, ModalFooter } from 'react-modal-bootstrap';
@@ -20,6 +21,7 @@ export default class ShowEvents extends React.Component {
     this._saveButton = this._saveButton.bind(this);
     this.removeOrder = this.removeOrder.bind(this);
     this.fetchEvent = this.fetchEvent.bind(this);
+    this.changeDetails = this.changeDetails.bind(this);
   }
 
   componentDidMount() {
@@ -33,7 +35,8 @@ export default class ShowEvents extends React.Component {
     const orders = event.place && event.place.dishes ? event.place.dishes.map((dish) => (
       {
         dish,
-        quantity: 0
+        quantity: 0,
+        details: ''
       }
     )) : [];
     this.setState({ event, orders });
@@ -69,11 +72,29 @@ export default class ShowEvents extends React.Component {
     }
   }
 
+  changeDetails(dishId, details) {
+    // return () => {
+      console.log(dishId, details);
+      const { orders } = this.state;
+      const newOrders = orders.map((order) => {
+        if (order.dish.id === dishId) {
+          return {...order, details: details };
+        }
+        return order;
+      });
+      console.log('newOrders', newOrders);
+      this.setState({
+        orders: newOrders
+      });
+    //}
+  }
+
   _saveButton() {
     let newOrder = this.state.orders.filter(order => order.quantity > 0).map(order => {
       OrdersStore.saveOrder({
         event_id: this.props.params.id,
         dish_id: order.dish.id,
+        details: order.details,
         quantity: order.quantity,
       }, (message) => {
         this.fetchEvent();
@@ -114,6 +135,7 @@ export default class ShowEvents extends React.Component {
         <td>{order.dish.name}</td>
         <td>{order.quantity}</td>
         <td>${order.dish.price}</td>
+        <td>{order.details}</td>
         <td>{order.user.full_name}</td>
         <td className="text-center">
         { order.user.username == username &&
@@ -124,17 +146,14 @@ export default class ShowEvents extends React.Component {
     });
 
     const menu = newOrders.map(({dish, quantity}) => (
-      <div key={dish.id}>
-        <div className="col-md-6 one-line">
-          <span>{dish.name}</span>
-        </div>
-        <div className="col-md-3">
-          <i className="fa fa-minus" aria-hidden="true" onClick={this.subtractToOrder(dish.id)} />
-          {' '}
-          <i className="fa fa-plus" aria-hidden="true" onClick={this.addToOrder(dish.id)} />
-        </div>
-        <div className="col-md-3">{quantity}</div>
-      </div>
+      <OrderItem
+        key={dish.id}
+        dish={dish}
+        quantity={quantity}
+        subtractToOrder={this.subtractToOrder}
+        addToOrder={this.addToOrder}
+        changeDetails={this.changeDetails}
+        />
     ));
 
     return <div>
@@ -164,6 +183,7 @@ export default class ShowEvents extends React.Component {
               <th>Dish</th>
               <th>Quantity</th>
               <th>Price</th>
+              <th>Details</th>
               <th>User</th>
               <th></th>
             </tr>

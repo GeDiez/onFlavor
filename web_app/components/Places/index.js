@@ -80,7 +80,7 @@ export default class PlacesContainer extends React.Component {
   render() {
     let places = this.state.places.map(place =>{
       return <tr key={place.id}>
-        <td><label className="col-md-2">{place.name}</label></td>
+        <td>{place.name}</td>
         <td className="actions">
           <Link to={'/places/'+place.id }>Show</Link>
           <Link to={'/places/'+place.id+'/edit' }>Edit</Link>
@@ -92,9 +92,8 @@ export default class PlacesContainer extends React.Component {
     return <div>
       <Navbar />
       <div className="container-fluid">
-        <div className="place-image" style={{ backgroundImage: 'url(http://videisimo.net/sites/default/files/comida-mexicana-17.jpg)'}}></div>
-        <div className="row">
-          <div className="col-md-12 text-center">
+        <div className="place-image text-center" style={{ backgroundImage: 'url(http://videisimo.net/sites/default/files/comida-mexicana-17.jpg)'}}>
+          <div className="info">
             <h2>Places</h2>
           </div>
         </div>
