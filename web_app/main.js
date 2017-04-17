@@ -11,7 +11,7 @@ import ShowPlaces from './components/Places/show';
 import ShowEvents from './components/Events/show';
 import Login from './components/Login';
 import Events from './components/Events';
-import MyEvents from './components/Events/MyEvents';
+import MyEvents from './components/Events/myevents';
 import Orders from './components/Orders';
 import AddEvents from './components/Events/add';
 
@@ -22,7 +22,7 @@ import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 
 function requireAuth (nextState, replace, callback) {
   const token = localStorage.getItem('token')
-  if (!token || token == 'undefined') { 
+  if (!token || token == 'undefined') {
     browserHistory.push(`/login`);
     //replace('/login');
   } else {
