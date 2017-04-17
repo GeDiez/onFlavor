@@ -10,6 +10,13 @@ api.get('/', helpers.requireAuthentication, (req, res, next) => {
   }).catch();
 });
 
+api.get('/myevents', helpers.requireAuthentication, (req, res, next) => {
+  EventsService.fetchByUser(req.user.id).then((events)=> {
+    res.json(events);
+  }).catch();
+});
+
+
 api.get('/:id', helpers.requireAuthentication, (req, res) => {
   const { id } = req.params;
    EventsService.getById(id)
@@ -33,6 +40,7 @@ api.post('/', helpers.requireAuthentication, (req, res, next) =>{
     name: req.body.name,
     description: req.body.description,
     date_time: req.body.datetime,
+    created_by: req.user.id
   };
   EventsService.createOrUpdateWithObj(event).then((message) => {
     res.json(message);
