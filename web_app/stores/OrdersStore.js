@@ -27,6 +27,7 @@ const OrdersStore = Object.assign({}, EventEmitter.prototype, {
   },
 
   saveOrder(order, callback){
+    console.log(order);
     const token = localStorage.getItem('token');
     const ajaxReq = request
     .post(`/api/orders`)
@@ -35,6 +36,7 @@ const OrdersStore = Object.assign({}, EventEmitter.prototype, {
       event_id: Number(order.event_id),
       dish_id: Number(order.dish_id),
       quantity: Number(order.quantity),
+      details: order.details
     })
     .end((err, res) => {
         if (err || !res.ok) {

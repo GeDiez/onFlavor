@@ -24,7 +24,7 @@ const Navbar = () => (
           <ul className="nav navbar-nav">
             <li><Link to="/places">Places</Link></li>
             <li className="dropdown">
-              <a id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" className="pointer">
                 Events
                 <span className="caret"></span>
               </a>

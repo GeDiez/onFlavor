@@ -3,13 +3,15 @@ const Event = require('../models/Event');
 const Place = require('../models/Place');
 const Group = require('../models/Group');
 const Order = require('../models/Order');
+const moment = require('moment');
 const knex = bookshelf.knex;
 
 module.exports = {
   fetch: () => {
     return new Promise((resolve, reject)=>{
       Event.query((qb) => {
-        qb.orderBy('created_at', 'DESC');
+        qb.where('date_time', '>', moment().subtract(1, 'days'))
+        qb.orderBy('date_time', 'DESC');
       }).fetchAll({ withRelated: ['place', 'group', 'orders'] }).then((events)=>{
         resolve(events.toJSON());
       });

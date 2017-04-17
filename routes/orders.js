@@ -18,6 +18,7 @@ api.post('/', helpers.requireAuthentication, (req, res, next) =>{
     dish_id: Number(req.body.dish_id),
     user_id: Number(req.user.id),
     quantity: Number(req.body.quantity),
+    details: req.body.details || null
   };
   OrdersService.createOrUpdateWithObj(order).then((message) => {
     res.json(message);
