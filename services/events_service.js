@@ -2,6 +2,7 @@ const bookshelf = require('../bookshelf');
 const Event = require('../models/Event');
 const Place = require('../models/Place');
 const Group = require('../models/Group');
+const Order = require('../models/Order');
 const knex = bookshelf.knex;
 
 module.exports = {
@@ -15,7 +16,16 @@ module.exports = {
     });
   },
 
-
+  fetchByUser(userId) {
+    return new Promise((resolve, reject)=>{
+      Event.query((qb) => {
+        qb.where({ created_by: userId });
+        qb.orderBy('created_at', 'DESC');
+      }).fetchAll({ withRelated: ['place', 'group', 'orders'] }).then((events)=>{
+        resolve(events.toJSON());
+      });
+    });
+  },
 
   createOrUpdateWithObj: (event) => {
     return new Promise((resolve, reject) => {
@@ -50,16 +60,17 @@ module.exports = {
 
   deleteById: (eventId) => {
     return new Promise((resolve, reject) => {
-      Event.where('id', eventId).fetch().then(event => {
-        if(event){
-          event.destroy();
-          resolve({message: 'Event deleted'});
-        }
-        else {
-          reject({error: 'Event not found'});
-        }
-      })
-    })
+      Order.where({ event_id: eventId }).destroy().then((data) => {
+        Event.where('id', eventId).fetch().then(event => {
+          if(event && !event.error){
+            event.destroy();
+            resolve({message: 'Event deleted'});
+          } else {
+            reject({error: 'Event not found'});
+          }
+        });
+      });
+    });
   }
 
 }
