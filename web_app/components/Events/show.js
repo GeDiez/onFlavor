@@ -31,7 +31,6 @@ export default class ShowEvents extends React.Component {
   async fetchEvent() {
     const { id } = this.props.params;
     const event = await EventsStore.getEventById(id);
-    console.log(event);
     const orders = event.place && event.place.dishes ? event.place.dishes.map((dish) => (
       {
         dish,
@@ -73,20 +72,18 @@ export default class ShowEvents extends React.Component {
   }
 
   changeDetails(dishId, details) {
-    // return () => {
-      console.log(dishId, details);
-      const { orders } = this.state;
-      const newOrders = orders.map((order) => {
-        if (order.dish.id === dishId) {
-          return {...order, details: details };
-        }
-        return order;
-      });
-      console.log('newOrders', newOrders);
-      this.setState({
-        orders: newOrders
-      });
-    //}
+    console.log(dishId, details);
+    const { orders } = this.state;
+    const newOrders = orders.map((order) => {
+      if (order.dish.id === dishId) {
+        return {...order, details: details };
+      }
+      return order;
+    });
+    console.log('newOrders', newOrders);
+    this.setState({
+      orders: newOrders
+    });
   }
 
   _saveButton() {
@@ -134,10 +131,10 @@ export default class ShowEvents extends React.Component {
       return <tr key={order.id}>
         <td>{order.dish.name}</td>
         <td>{order.quantity}</td>
-        <td>${order.dish.price}</td>
+        <td className="printer-hide">${order.dish.price}</td>
         <td>{order.details}</td>
         <td>{order.user.full_name}</td>
-        <td className="text-center">
+        <td className="text-center printer-hide">
         { order.user.username == username &&
           <a className="pointer" onClick={ () => this.removeOrder(order.id)}>Remove</a>
         }
@@ -165,7 +162,7 @@ export default class ShowEvents extends React.Component {
               <div className="col-sm-12">
                 <h2>{event && event.name}{event && event.place && ` - ${event.place.name}`}</h2>
                 <h4><i className="fa fa-file-text-o"></i> {event && event.description}</h4>
-                <span><i className="fa fa-clock-o"></i> {event && moment(event.datetime).format('LLLL')}</span>
+                <span><i className="fa fa-clock-o"></i> {event && moment(event.date_time).format('LLLL')}</span>
               </div>
             </div>
           </div>
@@ -182,10 +179,10 @@ export default class ShowEvents extends React.Component {
             <tr>
               <th>Dish</th>
               <th>Quantity</th>
-              <th>Price</th>
+              <th className="printer-hide">Price</th>
               <th>Details</th>
               <th>User</th>
-              <th></th>
+              <th className="printer-hide"></th>
             </tr>
           </thead>
           <tbody>

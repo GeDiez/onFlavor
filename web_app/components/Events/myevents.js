@@ -55,9 +55,12 @@ export default class MyEvents extends React.Component {
           <span className="date-time pull-right"><i className="fa fa-clock-o"></i> {moment(event.date_time).format('lll')}</span>
         </div>
         <div className="col-lg-1 col-sm-2 text-center">
-          <button className="btn btn-danger" onClick={() => this.removeAlert(event.id)}>
+          <button className="btn btn-danger" onClick={()=>this.removeAlert(event.id)}>
             Remove <i className="fa fa-trash"></i>
           </button>
+          <Link className="btn btn-primary" to={'/events/'+event.id+'/edit'}>
+            Edit <i className="fa fa-pencil"></i>
+          </Link>
         </div>
       </div>
     });
