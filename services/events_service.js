@@ -31,7 +31,8 @@ module.exports = {
 
   createOrUpdateWithObj: (event) => {
     return new Promise((resolve, reject) => {
-      if (!event.id) {
+      if (!event.id || event.id == null) {
+        delete event.id;
         new Event().save(event).then((event) => {
           resolve(event);
         });
