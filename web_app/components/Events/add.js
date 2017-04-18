@@ -31,13 +31,15 @@ export default class AddEvent extends React.Component {
 
   async componentDidMount() {
     const { id } = this.props.params;
-    const event = await EventsStore.getEventById(id);
-    this.setState({
-      name: event.name,
-      description: event.description,
-      place_id: event.place_id,
-      m: moment(event.date_time)
-    });
+    if (id) {
+      const event = await EventsStore.getEventById(id);
+      this.setState({
+        name: event.name,
+        description: event.description,
+        place_id: event.place_id,
+        m: moment(event.date_time)
+      });
+    }
   }
 
   async getPlaces() {
@@ -53,10 +55,16 @@ export default class AddEvent extends React.Component {
     })
   }
 
-  async addEvent(ev) {
+  async saveEvent(ev) {
     if (ev) ev.preventDefault();
     const {name, description, m, place_id} = this.state;
-    await EventsStore.addEvent({name, description, datetime: m.format(), place_id});
+    await EventsStore.addEvent({
+      name,
+      description,
+      datetime: m.format(),
+      place_id,
+      id: this.props.params.id || null
+    });
     browserHistory.push('/events');
   }
 
@@ -164,7 +172,7 @@ export default class AddEvent extends React.Component {
                   {placesOptions}
                 </select>
               </div>
-              <input type="submit" value="Create" onClick={(ev) => this.addEvent(ev)} className="btn btn-success" />
+              <input type="submit" value={this.props.params.id ? 'Save' : 'Create'} onClick={(ev) => this.saveEvent(ev)} className="btn btn-success" />
               </form>
             </div>
           </div>

@@ -40,12 +40,14 @@ api.post('/', helpers.requireAuthentication, (req, res, next) =>{
     name: req.body.name,
     description: req.body.description,
     date_time: req.body.datetime,
-    created_by: req.user.id
+    created_by: req.user.id,
+    id: req.body.id || null
   };
   EventsService.createOrUpdateWithObj(event).then((message) => {
     res.json(message);
   });
 });
+
 web.get('/edit/:id', (req, res, next) => {
   res.render('index');
 });
