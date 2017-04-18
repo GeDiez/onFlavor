@@ -39,11 +39,12 @@ ReactDOM.render((<Router history={browserHistory}>
   <Route path="/events" components={{content: Events}} onEnter={requireAuth} />
   <Route path="/myevents" components={{content: MyEvents}} onEnter={requireAuth} />
   <Route path="/orders" components={{content: Orders}} onEnter={requireAuth} />
-  <Route path="/events/new" components={{content: AddEvents}} onEnter={requireAuth} />
   <Route path="/places" components={{content: PlacesContainer}} onEnter={requireAuth} />
   <Route path="/places/new" components={{content: EditPlaces}} onEnter={requireAuth} />
   <Route path="/places/:id" components={{content: ShowPlaces}} onEnter={requireAuth} />
   <Route path="/places/:id/edit" components={{content: EditPlaces}} onEnter={requireAuth} />
+  <Route path="/events/new" components={{content: AddEvents}} onEnter={requireAuth} />
   <Route path="/events/:id" components={{content: ShowEvents}} onEnter={requireAuth} />
+  <Route path="/events/:id/edit" components={{content: AddEvents}} onEnter={requireAuth} />
 </Route>
 </Router>), document.getElementById('content'));

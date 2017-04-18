@@ -69,3 +69,21 @@ table .actions a {
     padding: 10px;
   }
 }
+
+@media print {
+  .printer-hide {
+    display: none !important;
+  }
+
+  .btn {
+    display: none;
+  }
+
+  .info h4 {
+    display: none;
+  }
+
+  .place-image {
+    height: auto;
+  }
+}

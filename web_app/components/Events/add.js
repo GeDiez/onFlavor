@@ -17,7 +17,6 @@ export default class AddEvent extends React.Component {
       description: '',
       datetime: '',
       place_id: '',
-      // dateString: '',
       places: [],
       m: moment(),
       showCalendar: false
@@ -28,6 +27,17 @@ export default class AddEvent extends React.Component {
     this.handleDateChange = this.handleDateChange.bind(this);
     this.handleDateSave = this.handleDateSave.bind(this);
     this.toggleCalendar = this.toggleCalendar.bind(this);
+  }
+
+  async componentDidMount() {
+    const { id } = this.props.params;
+    const event = await EventsStore.getEventById(id);
+    this.setState({
+      name: event.name,
+      description: event.description,
+      place_id: event.place_id,
+      m: moment(event.date_time)
+    });
   }
 
   async getPlaces() {
@@ -42,13 +52,6 @@ export default class AddEvent extends React.Component {
       [ev.target.name]: ev.target.value
     })
   }
-
-  /*onDateTimeChange(dateString) {
-    this.setState({
-      dateString,
-      datetime: moment(dateString)
-    });
-  }*/
 
   async addEvent(ev) {
     if (ev) ev.preventDefault();
@@ -122,7 +125,7 @@ export default class AddEvent extends React.Component {
         <div className="container-fluid">
           <div className="row">
             <div className="col-sm-12 text-center">
-              <h2>Event creation</h2>
+              <h2>{ this.props.params.id ? 'Edit event' : 'Event creation'}</h2>
             </div>
           </div>
           <div className="row">
@@ -156,7 +159,7 @@ export default class AddEvent extends React.Component {
               <div className="form-group">
                 <label htmlFor="place">Place</label>
                 <button className="btn btn-link" onClick={this.openModal}>+</button>
-                <select name="place_id" onChange={(ev) => this.onChange(ev)} className="form-control">
+                <select name="place_id" value={this.state.place_id} onChange={(ev) => this.onChange(ev)} className="form-control">
                   <option value="-1"></option>
                   {placesOptions}
                 </select>
