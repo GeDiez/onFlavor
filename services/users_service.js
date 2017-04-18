@@ -19,6 +19,14 @@ module.exports = {
     })
   },
 
+  getByEmail: (email) => {
+    return new Promise((resolve, reject) => {
+      User.where('email', email).fetch().then(user => {
+        resolve(user);
+      });
+    })
+  },
+
   createOrUpdateWithObj: (user) => {
     return new Promise((resolve, reject) => {
       if (!user.id) {

@@ -31,13 +31,15 @@ export default class AddEvent extends React.Component {
 
   async componentDidMount() {
     const { id } = this.props.params;
-    const event = await EventsStore.getEventById(id);
-    this.setState({
-      name: event.name,
-      description: event.description,
-      place_id: event.place_id,
-      m: moment(event.date_time)
-    });
+    if (id) {
+      const event = await EventsStore.getEventById(id);
+      this.setState({
+        name: event.name,
+        description: event.description,
+        place_id: event.place_id,
+        m: moment(event.date_time)
+      });
+    }
   }
 
   async getPlaces() {
