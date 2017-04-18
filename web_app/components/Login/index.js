@@ -108,7 +108,7 @@ export default class Login extends React.Component {
                   )
                 }
               </form>
-              <button className="btn btn-secondary" onClick={() => this.loginWithGoogle()}>With Google :D </button>
+              <button className="btn btn-google" onClick={() => this.loginWithGoogle()}><i className="fa fa-google" /> Google</button>
             </div>
           </div>
         </div>
