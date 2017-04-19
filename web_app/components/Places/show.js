@@ -71,10 +71,8 @@ export default class ShowPlaces extends React.Component {
   componentWillMount(){
     PlacesStore.getById(this.props.params.id, (place) => {
       this.setState({
+        place,
         name: place.name,
-        latitude: place.latitude,
-        longitude: place.longitude,
-        description: place.description,
         dishes: place.dishes,
 
       });
@@ -82,38 +80,36 @@ export default class ShowPlaces extends React.Component {
   }
 
   render() {
+    const { place } = this.state;
     const isEnabled = this.state.dishName.length > 0 && this.state.dishPrice.length > 0;
     const formatter = new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
       minimumFractionDigits: 2,
     });
-    const dishes = this.state.dishes.map((dish) => (
+    const dishes = place ? place.dishes.map((dish) => (
       <tr key={dish.id}>
         <td>{dish.name}</td>
         <td>{formatter.format(dish.price)}</td>
       </tr>
-    ));
+    )) : [];
 
     return <div>
       <Navbar />
       <div className="container-fluid">
-        <div className="row">
-          <div className="col-sm-12 text-center">
-            <h2>Place information</h2>
+        <div className="place-image" style={{ backgroundImage: `url(${place && place.image_url ? place.image_url : '/images/crockery.jpg'})`}}>
+          <div className="info">
+            <div className="row">
+              <div className="col-sm-12">
+                <h2>{place && place.name}</h2>
+                <h4><i className="fa fa-file-text-o"></i> {place && place.description}</h4>
+              </div>
+            </div>
           </div>
         </div>
         <div className="row">
           <div className="col-sm-6">
             {/* Place info */}
-            <div className="form-group">
-              <label htmlFor="name"> Name:</label>
-              <span name="name"> {this.state.name} </span>
-            </div>
-            <div className="form-group">
-              <label htmlFor="description">Description:</label>
-              <span name="description"> {this.state.description} </span>
-            </div>
             <div className="form-group">
               <label htmlFor="dishes">Menu: </label>
               <table className="dishes-table">
