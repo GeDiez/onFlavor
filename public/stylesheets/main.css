@@ -65,3 +65,12 @@ table .actions a {
     display: none; }
   .place-image {
     height: auto; } }
+
+.btn-google {
+  background-color: #C13C31;
+  color: white;
+}
+
+.btn-google:hover {
+  color: white;
+}

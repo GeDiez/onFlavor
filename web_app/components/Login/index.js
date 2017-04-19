@@ -48,6 +48,18 @@ export default class Login extends React.Component {
     }
   }
 
+  async loginWithGoogle() {
+    const response = await LoginStore.loginWithGoogle();
+    if (response.ok) {
+        browserHistory.push('/')
+      } else {
+        this.setState({
+          error: 'something gone wrong, sorry xoxo',
+          password: ''
+        });
+      }
+  }
+
   render() {
     const { login, name, email, username, password, confirmPassword, error } = this.state;
     return (
@@ -64,12 +76,12 @@ export default class Login extends React.Component {
                     <input type="text" className="form-control" name="name" id="name" onChange={(ev) => this.onChange(ev)} value={name} placeholder="Enter your Name"/>
                   </div>
                 }
-                { !login &&
+                {/*{ !login &&
                   <div className="form-group">
                     <label htmlFor="email">Email</label>
                     <input type="text" className="form-control" name="email" id="email" onChange={(ev) => this.onChange(ev)} value={email} placeholder="Enter your Email"/>
                   </div>
-                }
+                }*/}
                 <div className="form-group">
                   <label htmlFor="username">Username</label>
                   <input type="text" className="form-control" name="username" id="username" onChange={(ev) => this.onChange(ev)} value={username} placeholder="Enter your Username"/>
@@ -96,6 +108,7 @@ export default class Login extends React.Component {
                   )
                 }
               </form>
+              <button className="btn btn-google" onClick={() => this.loginWithGoogle()}><i className="fa fa-google" /> Google</button>
             </div>
           </div>
         </div>

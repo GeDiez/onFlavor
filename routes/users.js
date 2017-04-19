@@ -1,11 +1,12 @@
 const express = require('express');
-const web = express.Router();
-const api = express.Router();
+const request = require('superagent');
 const bcrypt = require('bcrypt');
 const authToken = require('../lib/auth-token');
 const bookshelf = require('../bookshelf');
-const knex = bookshelf.knex;
 const UsersService = require('../services/users_service');
+const web = express.Router();
+const api = express.Router();
+const knex = bookshelf.knex;
 
 
 /* GET users listing. */
@@ -95,6 +96,55 @@ api.post('/authorize', (req, res, next) => {
       }
     });
   });
+});
+
+api.post('/authorize/google', (req, res, next) => {
+  const { access_token: token } = req.body;
+  const urlUser = `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${token}`;
+  request
+    .get(urlUser)
+    .set('Accept', 'application/json')
+    .end((err, { body: user }) => {
+      if (err) {
+        res.status(401).json({errors: ['Invalid token']});
+      }
+      UsersService.getByEmail(user.email).then((localUser) => {
+        if(localUser) {
+          localUser = localUser.toJSON();
+          var token = authToken.encode({
+            user_id: localUser.id
+          });
+          return res.json({
+            id: localUser.id,
+            full_name: localUser.full_name,
+            email: localUser.email,
+            token: token,
+            role: localUser.role,
+            username: localUser.username
+          });
+        }
+        UsersService.createOrUpdateWithObj({
+          full_name: user.name,
+          username: user.email,
+          email: user.email,
+          role: user.role || null,
+        })
+        .then((userObj) => {
+          if (userObj.error) return next(userObj.error);
+          var token = authToken.encode({
+            user_id: userObj.id
+          });
+          return res.json({
+            id: userObj.id,
+            full_name: userObj.full_name,
+            email: userObj.email,
+            token: token,
+            role: userObj.role,
+            username: userObj.username
+          });
+        })
+      });
+    });
 });
 
 web.get('/logout', (req, res, next) => {
