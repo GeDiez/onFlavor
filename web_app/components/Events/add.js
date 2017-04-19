@@ -6,6 +6,7 @@ import InputMoment from 'input-moment';
 import 'input-moment/dist/input-moment.css';
 
 import Navbar from '../Navbar';
+import UploadImage from '../Shared/UploadImage';
 import EventsStore from '../../stores/EventsStore';
 import PlacesStore from '../../stores/PlacesStore';
 import ImagesStore from '../../stores/ImagesStore';
@@ -21,7 +22,11 @@ export default class AddEvent extends React.Component {
       place_id: '',
       places: [],
       m: moment(),
-      showCalendar: false
+      showCalendar: false,
+      fileName: '',
+      fileType: '',
+      url: '',
+      file: null,
     }
     this.getPlaces();
     this.handleChange = this.handleChange.bind(this);
@@ -59,13 +64,14 @@ export default class AddEvent extends React.Component {
 
   async saveEvent(ev) {
     if (ev) ev.preventDefault();
-    const {name, description, m, place_id} = this.state;
+    const {name, description, m, place_id, url} = this.state;
     await EventsStore.addEvent({
       name,
       description,
       datetime: m.format(),
       place_id,
-      id: this.props.params.id || null
+      id: this.props.params.id || null,
+      url
     });
     browserHistory.push('/events');
   }
@@ -122,22 +128,8 @@ export default class AddEvent extends React.Component {
     })
   }
 
-  onFileChange({target}) {
-    if (target.files.length > 0) {
-      const file = target.files[0];
-      this.setState({
-        file,
-        fileName: `${moment().format('x')}.${file.type.split('/')[1]}`,
-        fileType: file.type
-      }, () => {
-        const { file, fileName, fileType } = this.state;
-        ImagesStore.uploadImage(fileName, fileType, file);
-      })
-    }
-  }
-
   render() {
-    const { name, description, datetime, places, showCalendar } = this.state;
+    const { name, description, datetime, places, showCalendar, fileName } = this.state;
     const placesOptions = places.map(p => (
       <option key={p.id} value={p.id}>{p.name}</option>
     ));
@@ -189,8 +181,7 @@ export default class AddEvent extends React.Component {
                 </select>
               </div>
               <div className="form-group">
-                <input type="file" name="file" id="file" className="inputfile" accept="image/*" onChange={(ev) => this.onFileChange(ev) }/>
-                <label htmlFor="file"><i className="fa fa-upload" /> Choose a file</label>
+                <UploadImage onFileChange={(url) => this.setState({url})} />
               </div>
               <input type="submit" value={this.props.params.id ? 'Save' : 'Create'} onClick={(ev) => this.saveEvent(ev)} className="btn btn-success" />
               </form>

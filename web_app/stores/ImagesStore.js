@@ -26,23 +26,27 @@ const ImagesStore = Object.assign({}, EventEmitter.prototype, {
     ajaxRequests = [];
   },
 
-  async uploadImage(fileName, fileType, file) {
-    const { signedRequest, url } = await this.getSignedUrl(fileName, fileType);
+  uploadImage(fileName, fileType, file) {
+    return new Promise(async (res, rej) => {
+      const { signedRequest, url } = await this.getSignedUrl(fileName, fileType);
 
-    const xhr = new XMLHttpRequest();
-    xhr.open('PUT', signedRequest);
-    xhr.onreadystatechange = () => {
-      if(xhr.readyState === 4){
-        if(xhr.status === 200){
-          console.log(url);
-          console.log('yay!');
+      const xhr = new XMLHttpRequest();
+      xhr.open('PUT', signedRequest);
+      xhr.onreadystatechange = () => {
+        if(xhr.readyState === 4){
+          if(xhr.status === 200){
+            console.log(url);
+            console.log('yay!');
+            res(url);
+          }
+          else{
+            rej('Could not upload file.');
+          }
         }
-        else{
-          alert('Could not upload file.');
-        }
-      }
-    };
-    xhr.send(file);
+      };
+      xhr.send(file);
+
+    })
   },
 
   async getSignedUrl(fileName, fileType) {

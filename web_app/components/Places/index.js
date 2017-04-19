@@ -3,6 +3,7 @@ import { browserHistory, Link } from 'react-router';
 import { Modal, ModalHeader, ModalTitle, ModalClose, ModalBody, ModalFooter } from 'react-modal-bootstrap';
 
 import Navbar from '../Navbar';
+import UploadImage from '../Shared/UploadImage';
 import PlacesStore from '../../stores/PlacesStore';
 
 export default class PlacesContainer extends React.Component {
@@ -12,7 +13,10 @@ export default class PlacesContainer extends React.Component {
       places: [],
       isOpen: false,
       dishName: '',
-      dishPrice: ''
+      dishPrice: '',
+      url: '',
+      placeName: '',
+      placeDescription: ''
     };
     this.deletePlace = this.deletePlace.bind(this);
     this._updatePlacesFromStore = this._updatePlacesFromStore.bind(this);
@@ -46,12 +50,15 @@ export default class PlacesContainer extends React.Component {
     PlacesStore.savePlace(({
       name: this.state.placeName,
       description: this.state.placeDescription,
+      url: this.state.url
     }), (response) => {
       if (response.error) {
         alert(response.error);
       } else {
         this.setState({
-          places: [...this.state.places, response]
+          places: [...this.state.places, response],
+          placeName: '',
+          placeDescription: ''
         }, this.hideModal);
       }
     });
@@ -115,7 +122,7 @@ export default class PlacesContainer extends React.Component {
           </div>
         </div>
       </div>
-      
+
       <Modal isOpen={this.state.isOpen} onRequestHide={this.hideModal}>
         <ModalHeader>
           <ModalClose onClick={this.hideModal}/>
@@ -130,6 +137,9 @@ export default class PlacesContainer extends React.Component {
             <div className="form-group">
               <label htmlFor="placeDescription">Description: </label>
               <input type="text" name="placeDescription" value={this.state.placeDescription} onChange={this.handleChange} className="form-control"/>
+            </div>
+            <div className="form-group">
+              <UploadImage onFileChange={(url) => this.setState({url})} />
             </div>
           </div>
         </ModalBody>
