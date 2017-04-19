@@ -1,6 +1,7 @@
 require('dotenv').load();
 
 var express = require('express');
+const aws = require('aws-sdk');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -76,6 +77,32 @@ app.use('/events', eventsWeb);
 app.use('/groups', groupsWeb);
 app.use('/users', usersWeb);
 app.use('/dishes', dishesWeb);
+
+const S3_BUCKET = process.env.S3_BUCKET;
+app.post('/sign-s3', (req, res) => {
+  const s3 = new aws.S3();
+  const fileName = req.body['file-name'];
+  const fileType = req.body['file-type'];
+  const s3Params = {
+    Bucket: S3_BUCKET,
+    Key: fileName,
+    Expires: 60,
+    ContentType: fileType,
+    ACL: 'public-read'
+  };
+
+  s3.getSignedUrl('putObject', s3Params, (err, data) => {
+    if(err){
+      console.log(err);
+      return res.end();
+    }
+    const returnData = {
+      signedRequest: data,
+      url: `https://${S3_BUCKET}.s3.amazonaws.com/${fileName}`
+    };
+    res.json(returnData);
+  });
+});
 
 app.get('*', (req, res) => {
   res.render('index');
