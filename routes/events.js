@@ -41,7 +41,8 @@ api.post('/', helpers.requireAuthentication, (req, res, next) =>{
     description: req.body.description,
     date_time: req.body.datetime,
     created_by: req.user.id,
-    id: req.body.id || null
+    id: req.body.id || null,
+    image_url: req.body.url
   };
   EventsService.createOrUpdateWithObj(event).then((message) => {
     res.json(message);

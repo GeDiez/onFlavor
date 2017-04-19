@@ -82,6 +82,7 @@ const PlacesStore = Object.assign({}, EventEmitter.prototype, {
       latitude: place.latitude,
       longitude: place.longitude,
       description: place.description,
+      url: place.url
     })
     .end((err, res) => {
         if (err || !res.ok) {

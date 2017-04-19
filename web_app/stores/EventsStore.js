@@ -56,7 +56,7 @@ const EventsStore = Object.assign({}, EventEmitter.prototype, {
     ajaxRequests.push(response);
   },
 
-  async addEvent({place_id, name, description, datetime, id}) {
+  async addEvent({place_id, name, description, datetime, id, url}) {
     const token = localStorage.getItem('token');
     const response = await fetch('/api/events', {
       method: 'POST',
@@ -70,7 +70,8 @@ const EventsStore = Object.assign({}, EventEmitter.prototype, {
         name,
         description,
         datetime,
-        id
+        id,
+        url
       })
     });
   },
@@ -89,7 +90,7 @@ const EventsStore = Object.assign({}, EventEmitter.prototype, {
     return responseData;
     ajaxRequests.push(response);
   },
-  
+
   async deleteEventById(id) {
     const token = localStorage.getItem('token');
     const response = await fetch('/api/events/' + id, {

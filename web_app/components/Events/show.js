@@ -152,11 +152,10 @@ export default class ShowEvents extends React.Component {
         changeDetails={this.changeDetails}
         />
     ));
-
     return <div>
       <Navbar />
       <div className="container-fluid">
-        <div className="place-image" style={{ backgroundImage: 'url(http://videisimo.net/sites/default/files/comida-mexicana-17.jpg)'}}>
+        <div className="place-image" style={{ backgroundImage: `url(${event && event.image_url ? event.image_url : event && event.place.image_url ? event.place.image_url : '/images/crockery.jpg'})`}}>
           <div className="info">
             <div className="row">
               <div className="col-sm-12">
@@ -194,7 +193,7 @@ export default class ShowEvents extends React.Component {
           <button type="button" className="btn btn-success col-md-2" onClick={this._openModal}>Add order</button>
         </div>
       </div>
-      
+
       <Modal isOpen={this.state.isOpen} onRequestHide={this._hideModal}>
         <ModalHeader>
           <ModalClose onClick={this._hideModal}/>

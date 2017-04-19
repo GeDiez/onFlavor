@@ -30,7 +30,7 @@ export default class Events extends React.Component {
     let events = this.state.events.map(event => {
       return <div key={event.id} onClick={() => this.goToEvent(event.id)} className="event-card row">
         <div className="col-lg-1 col-sm-2">
-          <div className="tumbnail" style={{ backgroundImage: 'url(http://videisimo.net/sites/default/files/comida-mexicana-17.jpg)'}}></div>
+          <div className="tumbnail" style={{ backgroundImage: `url(${event.image_url ? event.image_url : event.place.image_url ? event.place.image_url : '/images/crockery.jpg'})`}}></div>
         </div>
         <div className="col-lg-11 col-sm-10">
           <span className="name">{event.name}</span>

@@ -26,6 +26,7 @@ api.post('/', helpers.requireAuthentication, (req, res, next) =>{
     latitude: req.body.latitude,
     longitude: req.body.longitude,
     description: req.body.description,
+    image_url: req.body.url,
     id: req.body.placeid,
   };
   PlacesService.createOrUpdateWithObj(place).then((message) => {
