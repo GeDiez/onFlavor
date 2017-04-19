@@ -16,7 +16,6 @@ api.get('/myevents', helpers.requireAuthentication, (req, res, next) => {
   }).catch();
 });
 
-
 api.get('/:id', helpers.requireAuthentication, (req, res) => {
   const { id } = req.params;
    EventsService.getById(id)

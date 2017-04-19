@@ -10,8 +10,6 @@ api.get('/', helpers.requireAuthentication, (req, res, next) => {
   }).catch();
 });
 
-
-
 api.post('/', helpers.requireAuthentication, (req, res, next) =>{
   const order = {
     event_id: Number(req.body.event_id),
@@ -20,8 +18,11 @@ api.post('/', helpers.requireAuthentication, (req, res, next) =>{
     quantity: Number(req.body.quantity),
     details: req.body.details || null
   };
-  OrdersService.createOrUpdateWithObj(order).then((message) => {
-    res.json(message);
+  OrdersService.createOrUpdateWithObj(order).then(savedOrder => {
+    OrdersService.getById(savedOrder.id).then((order) => {
+      res.io.emit('order:new', order.toJSON());
+    });    
+    res.json(savedOrder);
   });
 });
 
@@ -32,8 +33,6 @@ web.get('/', function(req, res, next) {
 web.get('/new', function(req, res, next) {
     res.render('../views/orders/new');
 });
-
-
 
 web.post('/edit/:id', (req, res, next) => {
   const order = {
@@ -59,11 +58,11 @@ web.get('/edit/:id', (req, res, next) => {
 });
 
 web.get('/:id', (req, res, next) => {
-    OrdersService.getById(Number(req.params.id)).then((order) => {
-      res.render('../views/orders/show', {
-         order: order.toJSON()
-      });
-    });    
+  OrdersService.getById(Number(req.params.id)).then((order) => {
+    res.render('../views/orders/show', {
+       order: order.toJSON()
+    });
+  });    
 });
 
 api.delete('/:id', helpers.requireAuthentication, (req, res, next) => {
