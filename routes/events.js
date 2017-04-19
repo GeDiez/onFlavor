@@ -16,7 +16,6 @@ api.get('/myevents', helpers.requireAuthentication, (req, res, next) => {
   }).catch();
 });
 
-
 api.get('/:id', helpers.requireAuthentication, (req, res) => {
   const { id } = req.params;
    EventsService.getById(id)
@@ -44,6 +43,11 @@ api.post('/', helpers.requireAuthentication, (req, res, next) =>{
     id: req.body.id || null
   };
   EventsService.createOrUpdateWithObj(event).then((message) => {
+    if (message.id) {
+      EventsService.getById(message.id).then(result => {
+        res.io.emit('events:new', result);
+      });
+    }
     res.json(message);
   });
 });
@@ -53,7 +57,10 @@ web.get('/edit/:id', (req, res, next) => {
 });
 
 api.delete('/:id', helpers.requireAuthentication, (req, res, next) => {
-  EventsService.deleteById(req.params.id).then((eventDeleted) => {
+  EventsService.deleteById(req.params.id).then(eventDeleted => {
+    if (!eventDeleted.error) {
+      res.io.emit('events:delete', { id: Number(req.params.id) });
+    }
     res.json(eventDeleted);
   })
 });

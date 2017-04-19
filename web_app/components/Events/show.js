@@ -5,6 +5,8 @@ import EventsStore from '../../stores/EventsStore';
 import Navbar from '../Navbar';
 import OrderItem from './OrderItem';
 import moment from 'moment';
+import io from 'socket.io-client'
+const socket = io(window.location.origin);
 
 import { Modal, ModalHeader, ModalTitle, ModalClose, ModalBody, ModalFooter } from 'react-modal-bootstrap';
 
@@ -26,6 +28,25 @@ export default class ShowEvents extends React.Component {
 
   componentDidMount() {
     this.fetchEvent();
+    socket.on('orders:new', order => {
+      if (Number(this.state.eventid) == order.event_id) {
+        let oldOrder = this.state.event.orders.find(ord => ord.id == order.id);
+        if (!oldOrder) {
+          let event = this.state.event;
+          event.orders = [...this.state.event.orders, order];
+          this.setState({
+            event: event
+          });
+        }
+      }
+    });
+    socket.on('orders:delete', order => {
+      let event = this.state.event;
+      event.orders = this.state.event.orders.filter(ord => ord.id != order.id);
+      this.setState({
+        event: event
+      });
+    });
   }
 
   async fetchEvent() {
@@ -72,7 +93,6 @@ export default class ShowEvents extends React.Component {
   }
 
   changeDetails(dishId, details) {
-    console.log(dishId, details);
     const { orders } = this.state;
     const newOrders = orders.map((order) => {
       if (order.dish.id === dishId) {
@@ -80,7 +100,6 @@ export default class ShowEvents extends React.Component {
       }
       return order;
     });
-    console.log('newOrders', newOrders);
     this.setState({
       orders: newOrders
     });
@@ -94,7 +113,7 @@ export default class ShowEvents extends React.Component {
         details: order.details,
         quantity: order.quantity,
       }, (message) => {
-        this.fetchEvent();
+        // this.fetchEvent();
         this._hideModal();
       })
     });

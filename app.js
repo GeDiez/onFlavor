@@ -7,7 +7,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var session = require('express-session')
+var session = require('express-session');
 
 var index = require('./routes/index');
 var foodcourt = require('./routes/foodcourt');
@@ -27,6 +27,8 @@ var ordersWeb = require('./routes/orders').web;
 var eventsWeb = require('./routes/events').web;
 
 var app = express();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
 
 const webpack = require('webpack');
 
@@ -39,9 +41,11 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }));
-app.use(function(req,res,next){
-    res.locals.session = req.session;
-    next();
+
+app.use(function(req, res, next){
+  res.locals.session = req.session;
+  res.io = io;
+  next();
 });
 
 if(!(process.env.NODE_ENV === 'production')) {
@@ -126,4 +130,11 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+io.on('connection', function (socket) {
+  socket.emit('news', { hello: 'world' });
+  socket.on('order:new', function (data) {
+    console.log(data);
+  });
+});
+
+module.exports = { app: app, server: server };

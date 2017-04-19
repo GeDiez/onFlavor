@@ -53,7 +53,7 @@ module.exports = {
 
   getById: (id) => {
     return new Promise((resolve, reject) => {
-      Order.where('id', id).fetch().then(order => {
+      Order.where('id', id).fetch({ withRelated: ['user', 'dish'] }).then(order => {
         resolve(order);
       });
     })
@@ -64,7 +64,7 @@ module.exports = {
       Order.where('id', orderId).fetch().then(order => {
         const jsonOrder = order.toJSON();
         order.destroy();
-        resolve({message: 'Order deleted'});
+        resolve({ message: 'Order deleted' });
       })
     })
   }
