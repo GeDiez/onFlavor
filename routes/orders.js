@@ -20,7 +20,7 @@ api.post('/', helpers.requireAuthentication, (req, res, next) =>{
   };
   OrdersService.createOrUpdateWithObj(order).then(savedOrder => {
     OrdersService.getById(savedOrder.id).then((order) => {
-      res.io.emit('order:new', order.toJSON());
+      res.io.emit('orders:new', order.toJSON());
     });    
     res.json(savedOrder);
   });
@@ -66,7 +66,10 @@ web.get('/:id', (req, res, next) => {
 });
 
 api.delete('/:id', helpers.requireAuthentication, (req, res, next) => {
-  OrdersService.deleteById(req.params.id).then((message) => {
+  OrdersService.deleteById(req.params.id).then(message => {
+    if (!message.error) {
+      res.io.emit('orders:delete', { id: Number(req.params.id) });
+    }
     res.json(message);
   }).catch();
 });

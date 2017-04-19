@@ -5,6 +5,8 @@ import Navbar from '../Navbar';
 import LoginStore from '../../stores/LoginStore';
 import EventsStore from '../../stores/EventsStore';
 import moment from 'moment';
+import io from 'socket.io-client'
+const socket = io(window.location.origin);
 
 export default class Events extends React.Component {
   constructor(props) {
@@ -13,6 +15,23 @@ export default class Events extends React.Component {
       events: [],
     };
     this._updateEventFromStore();
+  }
+
+  componentDidMount() {
+    socket.on('events:new', event => {
+      let oldEvent = this.state.events.find(ev => ev.id == event.id);
+      console.log(oldEvent);
+      if (!oldEvent) {
+        this.setState({
+          events: [event, ...this.state.events]
+        });
+      }
+    });
+    socket.on('events:delete', event => {
+      this.setState({
+        events: this.state.events.filter(ev => ev.id != event.id)
+      });
+    });
   }
 
   async _updateEventFromStore() {

@@ -6,7 +6,7 @@ import Navbar from '../Navbar';
 import OrderItem from './OrderItem';
 import moment from 'moment';
 import io from 'socket.io-client'
-let socket = io(`http://localhost:3000`);
+const socket = io(window.location.origin);
 
 import { Modal, ModalHeader, ModalTitle, ModalClose, ModalBody, ModalFooter } from 'react-modal-bootstrap';
 
@@ -28,7 +28,7 @@ export default class ShowEvents extends React.Component {
 
   componentDidMount() {
     this.fetchEvent();
-    socket.on('order:new', order => {
+    socket.on('orders:new', order => {
       if (Number(this.state.eventid) == order.event_id) {
         let oldOrder = this.state.event.orders.find(ord => ord.id == order.id);
         if (!oldOrder) {
@@ -39,6 +39,13 @@ export default class ShowEvents extends React.Component {
           });
         }
       }
+    });
+    socket.on('orders:delete', order => {
+      let event = this.state.event;
+      event.orders = this.state.event.orders.filter(ord => ord.id != order.id);
+      this.setState({
+        event: event
+      });
     });
   }
 
