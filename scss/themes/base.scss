@@ -59,7 +59,7 @@ table .actions a {
 
 .place-image {
   height: 200px;
-  background: url(images/bg.jpg) no-repeat center center fixed; 
+  background: url(images/bg.jpg) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -85,5 +85,42 @@ table .actions a {
 
   .place-image {
     height: auto;
+  }
+}
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.inputfile + label {
+  max-width: 80%;
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  display: inline-block;
+  overflow: hidden;
+  padding: 0.625rem 1.25rem;
+  color: #f1e5e6;
+  background-color: #d3394c;
+  &:focus, &:hover {
+    background-color: #722040;
+    outline: 1px dotted #000;
+	  outline: -webkit-focus-ring-color auto 5px;
+  }
+
+}
+
+.btn-google {
+  background-color: #C13C31;
+  color: white;
+  &:hover {
+    color: white;
   }
 }

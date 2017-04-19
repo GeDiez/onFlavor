@@ -8,6 +8,8 @@ import 'input-moment/dist/input-moment.css';
 import Navbar from '../Navbar';
 import EventsStore from '../../stores/EventsStore';
 import PlacesStore from '../../stores/PlacesStore';
+import ImagesStore from '../../stores/ImagesStore';
+
 
 export default class AddEvent extends React.Component {
   constructor(props) {
@@ -120,6 +122,20 @@ export default class AddEvent extends React.Component {
     })
   }
 
+  onFileChange({target}) {
+    if (target.files.length > 0) {
+      const file = target.files[0];
+      this.setState({
+        file,
+        fileName: `${moment().format('x')}.${file.type.split('/')[1]}`,
+        fileType: file.type
+      }, () => {
+        const { file, fileName, fileType } = this.state;
+        ImagesStore.uploadImage(fileName, fileType, file);
+      })
+    }
+  }
+
   render() {
     const { name, description, datetime, places, showCalendar } = this.state;
     const placesOptions = places.map(p => (
@@ -171,6 +187,10 @@ export default class AddEvent extends React.Component {
                   <option value="-1"></option>
                   {placesOptions}
                 </select>
+              </div>
+              <div className="form-group">
+                <input type="file" name="file" id="file" className="inputfile" accept="image/*" onChange={(ev) => this.onFileChange(ev) }/>
+                <label htmlFor="file"><i className="fa fa-upload" /> Choose a file</label>
               </div>
               <input type="submit" value={this.props.params.id ? 'Save' : 'Create'} onClick={(ev) => this.saveEvent(ev)} className="btn btn-success" />
               </form>
