@@ -39,18 +39,23 @@ export default class OrderItem extends React.Component {
           <span>{this.props.dish.name}</span>
         </div>
         <div className="col-md-3">
-          <i className="fa fa-minus" aria-hidden="true" onClick={this.props.subtractToOrder(this.props.dish.id)} />
-          {' '}
-          <i className="fa fa-plus" aria-hidden="true" onClick={this.props.addToOrder(this.props.dish.id)} />
+          <div className="btn" onClick={this.props.subtractToOrder(this.props.dish.id)}>
+            <i className="fa fa-minus" aria-hidden="true" />
+          </div>
+          <div className="btn" onClick={this.props.addToOrder(this.props.dish.id)}>
+            <i className="fa fa-plus" aria-hidden="true" />
+          </div>
         </div>
-        <div className="col-md-2">{this.props.quantity}</div>
+        <div className="col-md-2 order-quantity">{this.props.quantity}</div>
         <div className="col-md-1 text-right">
           <i className="fa fa-file-text-o fa-lg pointer" onClick={this.toggleDetails}></i>
         </div>
         { this.state.showDetails && 
           <div className="col-sm-12">
-            <label>Details</label>
+            <label>Include your order details</label>
             <textarea type="text" value={this.state.details} className="form-control" onChange={this.onDetailsChange}></textarea>
+            <br />
+            <br />
           </div>
         }
       </div>

@@ -18,7 +18,10 @@ const Navbar = () => (
             <span className="icon-bar"></span>
             <span className="icon-bar"></span>
           </button>
-          <Link className="navbar-brand" to="/">On Flavor</Link>
+          <Link className="navbar-brand" to="/">
+            <img src="/images/favicon/restaurant-15-120-260813.png" className="img-responsive nav-logo" alt=""/>
+            On Flavor
+          </Link>
         </div>
         <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul className="nav navbar-nav">
