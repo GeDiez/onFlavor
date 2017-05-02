@@ -70,6 +70,15 @@ table .actions a {
   }
 }
 
+.order-quantity {
+  font-size: 1.3em;
+}
+
+.nav-logo {
+  display: inline-block !important;
+  height: 100%;
+}
+
 @media print {
   .printer-hide {
     display: none !important;
