@@ -24,7 +24,6 @@ function requireAuth (nextState, replace, callback) {
   const token = localStorage.getItem('token')
   if (!token || token == 'undefined') {
     browserHistory.push(`/login`);
-    //replace('/login');
   } else {
     return callback()
   }

@@ -1,11 +1,11 @@
 var path = require('path');
 var webpack = require('webpack');
 require('babel-polyfill');
-// require('react-date-picker/index.css');
 
 module.exports = {
   entry: [
-    'babel-polyfill', './web_app/main'
+    'babel-polyfill',
+    './web_app/main'
   ],
   devtool: 'eval-source-map',
   output: {

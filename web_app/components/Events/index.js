@@ -64,7 +64,7 @@ export default class Events extends React.Component {
         <div className="container-fluid">
           <div className="row">
             <div className="col-sm-12 text-center">
-              <h2>Events</h2>
+              <h2>Events cahnge</h2>
             </div>
           </div>
           <div className="row">
