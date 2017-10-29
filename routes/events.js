@@ -1,22 +1,24 @@
+
 const express = require('express');
-const api = express.Router();
-const web = express.Router();
+const events = express.Router();
 const EventsService = require('../services/events_service');
 const helpers = require('../lib/helpers');
 
-api.get('/', helpers.requireAuthentication, (req, res, next) => {
+events.use(helpers.requireAuthentication);
+
+events.get('/', (req, res, next) => {
   EventsService.fetch().then((events)=> {
     res.json(events);
   }).catch();
 });
 
-api.get('/myevents', helpers.requireAuthentication, (req, res, next) => {
+events.get('/myevents', (req, res, next) => {
   EventsService.fetchByUser(req.user.id).then((events)=> {
     res.json(events);
   }).catch();
 });
 
-api.get('/:id', helpers.requireAuthentication, (req, res) => {
+events.get('/:id', (req, res) => {
   const { id } = req.params;
    EventsService.getById(id)
     .then((event)=>{
@@ -24,15 +26,7 @@ api.get('/:id', helpers.requireAuthentication, (req, res) => {
     });
 })
 
-web.get('/new', function(req, res, next) {
-    res.render('index');
-});
-
-web.get('/', (req, res, next) => {
-  res.render('index');
-});
-
-api.post('/', helpers.requireAuthentication, (req, res, next) =>{
+events.post('/', (req, res, next) =>{
   const event = {
     place_id: req.body.placeid,
     group_id: req.body.groupid,
@@ -53,11 +47,7 @@ api.post('/', helpers.requireAuthentication, (req, res, next) =>{
   });
 });
 
-web.get('/edit/:id', (req, res, next) => {
-  res.render('index');
-});
-
-api.delete('/:id', helpers.requireAuthentication, (req, res, next) => {
+events.delete('/:id', (req, res, next) => {
   EventsService.deleteById(req.params.id).then(eventDeleted => {
     if (!eventDeleted.error) {
       res.io.emit('events:delete', { id: Number(req.params.id) });
@@ -66,11 +56,4 @@ api.delete('/:id', helpers.requireAuthentication, (req, res, next) => {
   })
 });
 
-web.get('/:id', (req, res, next) => {
-  res.render('index');
-});
-
-module.exports = {
-    api: api,
-    web: web
-};
+module.exports = events;

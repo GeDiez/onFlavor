@@ -1,25 +1,17 @@
 const express = require('express');
-const api = express.Router();
-const web = express.Router();
+const dishes = express.Router()
 const DishesService = require('../services/dishes_service');
 const helpers = require('../lib/helpers');
-/* GET home page. */
-api.get('/', helpers.requireAuthentication, (req, res, next) => {
+
+dishes.use(helpers.requireAuthentication);
+
+dishes.get('/', (req, res, next) => {
   DishesService.fetch().then((dishes)=> {
     res.json(dishes);
   });
 });
 
-web.get('/', function(req, res, next) {
-    DishesService.fetch().then((dishes) => {
-      res.render('../views/dishes/index', {
-        dishes: dishes,
-      });
-    });    
-});
-
-
-api.post('/', helpers.requireAuthentication, (req, res, next) =>{
+dishes.post('/', (req, res, next) =>{
   const dish = {
     place_id: req.body.place_id,
     name: req.body.name,
@@ -30,24 +22,12 @@ api.post('/', helpers.requireAuthentication, (req, res, next) =>{
   });
 });
 
-web.get('/new', function(req, res, next) {
-    res.render('../views/dishes/new');
-});
-
-web.get('/:id', (req, res, next) => {
-  DishesService.getById(req.params.id).then((dish) => {
-    res.render('../views/dishes/show', {
-      dish: dish.toJSON()
-    });
-  });
-});
-
-web.post('/edit/:id', (req, res, next) => {
+dishes.put('/:id', (req, res, next) => {
   const dish = {
-    place_id: Number(req.body.place_id),
     id: Number(req.params.id),
+    place_id: Number(req.body.place_id),
     name: req.body.name,
-    price: req.body.price,
+    price: req.body.price
   };
   DishesService.createOrUpdateWithObj(dish).then((newDish) => {
     res.json(newDish)
@@ -56,41 +36,17 @@ web.post('/edit/:id', (req, res, next) => {
   })
 });
 
-web.get('/edit/:id', (req, res, next) => {
-  DishesService.getById(Number(req.params.id)).then((dish) => {
-    res.render('../views/dishes/edit', {
-      dish: dish.toJSON()
-    });
-  });
-});
-
-api.put('/:id', helpers.requireAuthentication, (req, res, next) => {
-  const dish = {
-    id: Number(req.params.id),
-    place_id: Number(req.body.place_id),
-    name: req.body.name,
-    price: req.body.price,
-  };
-  DishesService.createOrUpdateWithObj(dish).then((newDish) => {
-    res.json(newDish)
-  }).catch((error) => {
-    res.status(500).json(error);
-  })
-});
-
-api.delete('/:id', helpers.requireAuthentication, (req, res, next) => {
+dishes.delete('/:id', (req, res, next) => {
   DishesService.deleteById(req.params.id).then((dishDeleted) => {
     res.json(dishDeleted);
   })
 });
 
-api.get('/:id', helpers.requireAuthentication, (req, res, next) => {
+dishes.get('/:id', (req, res, next) => {
   DishesService.getById(req.params.id).then((response) => {
     res.json(response);
   })
 });
 
-module.exports = {
-    api: api,
-    web: web
-};
+
+module.exports = dishes;

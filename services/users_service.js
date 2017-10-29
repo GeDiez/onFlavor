@@ -1,8 +1,17 @@
-const bookshelf = require('../bookshelf');
 const User = require('../models/User');
-const knex = bookshelf.knex;
 
 module.exports = {
+  get(id) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const user = await User.where('id', id).fetch();
+        resolve(user.toJSON());
+      }
+      catch(error) {
+        reject(error);
+      }
+    });
+  },
   fetch: () => {
     return new Promise((resolve, reject) => {
       User.fetchAll().then((users) => {
@@ -48,7 +57,7 @@ module.exports = {
     })
   },
 
-    deleteById: (userId) => {
+  deleteById: (userId) => {
     return new Promise((resolve, reject) => {
       User.where('id', userId).fetch().then(user => {
         if(user){

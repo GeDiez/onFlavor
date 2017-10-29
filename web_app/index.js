@@ -1,6 +1,5 @@
 'use strict';
 
-// router file
 import ReactDOM from 'react-dom';
 import React from 'react';
 
@@ -15,8 +14,7 @@ import MyEvents from './components/Events/myevents';
 import Orders from './components/Orders';
 import AddEvents from './components/Events/add';
 
-
-import App from './App';
+import App from './app';
 
 import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 

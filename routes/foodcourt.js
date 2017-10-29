@@ -1,11 +1,11 @@
 const express = require('express');
-const router = express.Router();
+const foodcourt = express.Router();
 const PlacesService = require('../services/places_service');
-/* GET home page. */
-router.get('/currents', (req, res, next) => {
+
+foodcourt.get('/currents', (req, res, next) => {
   PlacesService.fetch().then((places)=>{
     res.json(places);
   });
 });
 
-module.exports = router;
+module.exports = foodcourt;

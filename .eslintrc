@@ -1,0 +1,44 @@
+{
+  "parser": "babel-eslint",
+  "env": {
+      "browser": true,
+      "node": true
+  },
+  "plugins": [
+      "react",
+      "prettier"
+      // "prettier/react"
+  ],
+  "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended"
+  ],
+  "rules": {
+      "prettier/prettier": ["error", {"singleQuote": true}],
+      "indent": [
+          "error",
+          2,
+          { "SwitchCase": 1 }
+      ],
+      "linebreak-style": [
+          "error",
+          "unix"
+      ],
+      "quotes": [
+          "error",
+          "single"
+      ],
+      "semi": [
+          "error",
+          "always"
+      ],
+      "no-useless-constructor": ["error"],
+      "react/jsx-uses-react": "error",
+      "react/jsx-uses-vars": "error",
+      "react/prop-types": "off"
+  },
+  "globals": {
+      "__DEV__": true,
+      "Promise": true
+  }
+}

@@ -1,26 +1,18 @@
 const express = require('express');
-const api = express.Router();
-const web = express.Router();
+const places = express.Router();
 const PlacesService = require('../services/places_service');
-var bookshelf = require('../bookshelf');
 const helpers = require('../lib/helpers');
-var Place = require('../models/Place');
+const Place = require('../models/Place');
 
-web.get('/', function(req, res, next) {
-  res.render('index');
-});
+places.use(helpers.requireAuthentication);
 
-api.get('/', helpers.requireAuthentication, function(req, res, next) {
+places.get('/', function(req, res, next) {
   Place.fetchAll().then(function(places){
     res.json(places);
   });
 });
 
-web.get('/new', function(req, res, next) {
-    res.render('index');
-});
-
-api.post('/', helpers.requireAuthentication, (req, res, next) =>{
+places.post('/', (req, res, next) =>{
   const place = {
     name: req.body.name,
     latitude: req.body.latitude,
@@ -34,7 +26,7 @@ api.post('/', helpers.requireAuthentication, (req, res, next) =>{
   });
 });
 
-api.put('/:id', helpers.requireAuthentication,(req, res, next) => {
+places.put('/:id',(req, res, next) => {
   const place = {
     name: req.body.name,
     latitude: req.body.latitude,
@@ -49,53 +41,16 @@ api.put('/:id', helpers.requireAuthentication,(req, res, next) => {
   })
 });
 
-web.post('/edit/:id', (req, res, next) => {
-  const place = {
-    name: req.body.name,
-    latitude: req.body.latitude,
-    longitude: req.body.longitude,
-    id: req.params.id,
-    description: req.body.description,
-  };
-  PlacesService.createOrUpdateWithObj(place).then((newPlace) => {
-    res.json(newPlace)
-  }).catch((error) => {
-    res.status(500).json(error);
-  })
-});
-
-api.delete('/:id', helpers.requireAuthentication, (req, res, next) => {
+places.delete('/:id', (req, res, next) => {
   PlacesService.deleteById(req.params.id).then((placeDeleted) => {
     res.json(placeDeleted);
   }).catch(error => res.json({ error }));
 });
 
-web.delete('/places/:id', helpers.requireAuthentication, (req, res, next) => {
-  PlacesService.deleteById(req.params.id).then((placeDeleted) => {
-    res.json(placeDeleted);
-  })
-});
-
-web.get('/edit/:id', helpers.requireAuthentication, (req, res, next) => {
-  PlacesService.getById(Number(req.params.id)).then((place) => {
-    res.render('../views/places/edit', {
-      place: place.toJSON()
-    });
-  });
-});
-
-api.get('/:id', helpers.requireAuthentication, (req, res, next) => {
+places.get('/:id', (req, res, next) => {
   PlacesService.getById(req.params.id).then((response) => {
     res.json(response);
   });
 });
 
-web.get('/:id', function(req, res, next) {
-    res.render('index');
-});
-
-//module.exports = api, web;
-module.exports = {
-    api: api,
-    web: web
-};
+module.exports = places;

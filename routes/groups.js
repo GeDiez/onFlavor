@@ -1,24 +1,17 @@
 const express = require('express');
-const api = express.Router();
-const web = express.Router();
+const groups = express.Router();
 const GroupsService = require('../services/groups_service');
 const helpers = require('../lib/helpers');
-/* GET home page. */
-api.get('/', helpers.requireAuthentication, (req, res, next) => {
+
+groups.use(helpers.requireAuthentication);
+
+groups.get('/', helpers.requireAuthentication, (req, res, next) => {
   GroupsService.fetch().then((groups)=> {
     res.json(groups);
   });
 });
 
-web.get('/', function(req, res, next) {
-    GroupsService.fetch().then((groups) => {
-      res.render('../views/groups/index', {
-        groups: groups,
-      });
-    });    
-});
-
-api.post('/', helpers.requireAuthentication, (req, res, next) =>{
+groups.post('/', helpers.requireAuthentication, (req, res, next) =>{
   const group = {
     name: req.body.name,
   };
@@ -27,48 +20,13 @@ api.post('/', helpers.requireAuthentication, (req, res, next) =>{
   });
 });
 
-
-web.get('/new', function(req, res, next) {
-    res.render('../views/groups/new');
-});
-
-web.get('/:id', (req, res, next) => {
-  GroupsService.getById(req.params.id).then((group) => {
-    res.render('../views/groups/show', {
-      group: group.toJSON()
-    });
-  });
-});
-
-web.get('/edit/:id', (req, res, next) => {
-  GroupsService.getById(Number(req.params.id)).then((group) => {
-    res.render('../views/groups/edit', {
-      group: group.toJSON()
-    });
-  });
-});
-
-web.post('/edit/:id', (req, res, next) => {
-  const group = {
-    name: req.body.name,
-    id: req.params.id,
-  };
-  GroupsService.createOrUpdateWithObj(group).then((newGroup) => {
-    res.json(newGroup)
-  }).catch((error) => {
-    res.status(500).json(error);
-  })
-});
-
-api.get('/:id', helpers.requireAuthentication, (req, res, next) => {
+groups.get('/:id', helpers.requireAuthentication, (req, res, next) => {
   GroupsService.getById(req.params.id).then((response) => {
     res.json(response);
   })
 });
 
-
-
-api.put('/:id', helpers.requireAuthentication, (req, res, next) => {
+groups.put('/:id', helpers.requireAuthentication, (req, res, next) => {
   const group = {
     id: req.params.id,
     name: req.body.name,
@@ -80,13 +38,10 @@ api.put('/:id', helpers.requireAuthentication, (req, res, next) => {
   })
 });
 
-api.delete('/:id', helpers.requireAuthentication, (req, res, next) => {
+groups.delete('/:id', helpers.requireAuthentication, (req, res, next) => {
   GroupsService.deleteById(req.params.id).then((groupDeleted) => {
     res.json(groupDeleted);
   })
 });
 
-module.exports = {
-    api: api,
-    web: web
-};
+module.exports = groups;

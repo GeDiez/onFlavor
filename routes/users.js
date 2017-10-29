@@ -1,38 +1,27 @@
 const express = require('express');
+const users = express.Router();
+const helpers = require('../lib/helpers');
+const authToken = require('../lib/auth-token');
+
 const request = require('superagent');
 const bcrypt = require('bcrypt');
-const authToken = require('../lib/auth-token');
 const bookshelf = require('../bookshelf');
-const UsersService = require('../services/users_service');
-const web = express.Router();
-const api = express.Router();
 const knex = bookshelf.knex;
+const UsersService = require('../services/users_service');
 
-
-/* GET users listing. */
-api.get('/', function(req, res, next) {
- UsersService.fetch().then((users)=> {
-   res.json(users);
- });
+users.get('/:id', helpers.requireAuthentication, async (req, res, next) => {
+  try {
+    const user = await UsersService.get(id);
+    res.contentType = 'application/json';
+    res.statusCode = '200';
+    res.json(user);
+  } catch (error) {
+    res.statusCode = '404';
+    res.statusMessage = 'User not exist';
+  }
 });
 
-web.get('/', function(req, res, next) {
-   UsersService.fetch().then((users) => {
-     res.render('../views/users/index', {
-       users: users,
-     });
-   });
-});
-
-web.get('/new', function(req, res, next) {
-   res.render('../views/users/new');
-});
-
-web.get('/login', (req, res, next) => {
-  res.render('../views/users/index');
-});
-
-api.post('/', function (req, res, next) {
+users.post('/', function (req, res, next) {
   if (req.user && req.user.is_staff && req.body.role == 'admin') {
     return next({ status: 409 });
   }
@@ -65,40 +54,40 @@ api.post('/', function (req, res, next) {
 
 });
 
-api.post('/authorize', (req, res, next) => {
-  knex('users').where({ username: req.body.username }).then((rows) => {
-    if (rows.error) return next(rows.error);
-    let user = rows[0];
-    if (!user) {
-      return res.status(401).json({ errors: ['Invalid username or password'] });
-    }
+users.post('/authorize', (req, res, next) => {
+  // knex('users').where({ username: req.body.username }).then((rows) => {
+  //   if (rows.error) return next(rows.error);
+  //   let user = rows[0];
+  //   if (!user) {
+  //     return res.status(401).json({ errors: ['Invalid username or password'] });
+  //   }
 
-    bcrypt.compare(req.body.password, user.password_digest, function (err, valid) {
-      if (err) return next(err);
-      if (valid) {
-        // if (!user.confirmed_at) {
-        //  res.status(409).json({ errors: ['Email not confirmed'] });
-        // } else {
-          var token = authToken.encode({
-            user_id: user.id
-          });
-          res.json({
-            id: user.id,
-            full_name: user.full_name,
-            email: user.email,
-            token: token,
-            role: user.role,
-            username: user.username
-          });
-        // }
-      } else {
-        res.status(401).json({ errors: ['Invalid email or password'] });
-      }
-    });
-  });
+  //   bcrypt.compare(req.body.password, user.password_digest, function (err, valid) {
+  //     if (err) return next(err);
+  //     if (valid) {
+  //       // if (!user.confirmed_at) {
+  //       //  res.status(409).json({ errors: ['Email not confirmed'] });
+  //       // } else {
+  //         var token = authToken.encode({
+  //           user_id: user.id
+  //         });
+  //         res.json({
+  //           id: user.id,
+  //           full_name: user.full_name,
+  //           email: user.email,
+  //           token: token,
+  //           role: user.role,
+  //           username: user.username
+  //         });
+  //       // }
+  //     } else {
+  //       res.status(401).json({ errors: ['Invalid email or password'] });
+  //     }
+  //   });
+  // });
 });
 
-api.post('/authorize/google', (req, res, next) => {
+users.post('/authorize/google', (req, res, next) => {
   const { access_token: token } = req.body;
   const urlUser = `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${token}`;
   request
@@ -147,13 +136,7 @@ api.post('/authorize/google', (req, res, next) => {
     });
 });
 
-web.get('/logout', (req, res, next) => {
-  req.session.destroy(err => {
-    res.redirect('/users/login');
-  });
-});
-
-api.put('/:id', (req, res, next) => {
+users.put('/:id', (req, res, next) => {
   const user = {
     id: req.params.id,
     name: req.body.name,
@@ -167,49 +150,16 @@ api.put('/:id', (req, res, next) => {
   })
 });
 
-web.post('/edit/:id', (req, res, next) => {
- const user = {
-   name: req.body.name,
-   username: req.body.username,
-   password: req.body.password,
-   id: req.params.id
- };
- UsersService.createOrUpdateWithObj(user).then((newUser) => {
-   res.json(newUser)
- }).catch((error) => {
-   res.status(500).json(error);
- })
-});
-
-api.delete('/:id', (req, res, next) => {
+users.delete('/:id', (req, res, next) => {
  UsersService.deleteById(req.params.id).then((userDeleted) => {
    res.json(userDeleted);
  })
 });
 
-web.get('/edit/:id', (req, res, next) => {
- UsersService.getById(Number(req.params.id)).then((user) => {
-   res.render('../views/users/edit', {
-     user: user.toJSON()
-   });
- });
-});
-
-api.get('/:id', (req, res, next) => {
+users.get('/:id', (req, res, next) => {
  UsersService.getById(req.params.id).then((response) => {
    res.json(response);
  })
 });
 
-web.get('/:id', (req, res, next) => {
- UsersService.getById(req.params.id).then((user) => {
-   res.render('../views/users/show', {
-     user: user.toJSON()
-   });
- });
-});
-
-module.exports = {
-  web: web,
-  api: api
-};
+module.exports = users
