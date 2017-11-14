@@ -5,7 +5,7 @@ require('babel-polyfill');
 module.exports = {
   entry: [
     'babel-polyfill',
-    './web_app/main'
+    './web_app/main.js'
   ],
   devtool: 'eval-source-map',
   output: {

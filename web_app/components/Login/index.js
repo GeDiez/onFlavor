@@ -76,12 +76,6 @@ export default class Login extends React.Component {
                     <input type="text" className="form-control" name="name" id="name" onChange={(ev) => this.onChange(ev)} value={name} placeholder="Enter your Name"/>
                   </div>
                 }
-                {/*{ !login &&
-                  <div className="form-group">
-                    <label htmlFor="email">Email</label>
-                    <input type="text" className="form-control" name="email" id="email" onChange={(ev) => this.onChange(ev)} value={email} placeholder="Enter your Email"/>
-                  </div>
-                }*/}
                 <div className="form-group">
                   <label htmlFor="username">Username</label>
                   <input type="text" className="form-control" name="username" id="username" onChange={(ev) => this.onChange(ev)} value={username} placeholder="Enter your Username"/>
@@ -90,12 +84,6 @@ export default class Login extends React.Component {
                   <label htmlFor="password">Password</label>
                   <input type="password" className="form-control" name="password" id="password" onChange={(ev) => this.onChange(ev)} value={password} placeholder="Enter your Password"/>
                 </div>
-                { /* !login &&
-                  <div className="form-group">
-                    <label htmlFor="confirmPassword">Confirm Password</label>
-                    <input type="text" className="form-control" name="confirmPassword" id="confirmPassword" onChange={(ev) => this.onChange(ev)} value={confirmPassword} placeholder="Enter your Email"/>
-                  </div> */
-                }
                 <input type="submit" value="Login" onClick={(ev) => this.register(ev)} className="btn btn-primary" />
                 <div className="login-register form-group">
                   <a href="" onClick={(ev) => this.toggleLogin(ev)}>{!login ? 'Login form' : 'Create an account'}</a>
