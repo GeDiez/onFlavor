@@ -1,8 +1,6 @@
 import React from 'react';
 import { browserHistory, Link } from 'react-router';
 
-import LoginStore from '../../stores/LoginStore';
-
 export default class Login extends React.Component {
   constructor(props) {
     super(props);

@@ -1,4 +1,3 @@
-var path = require('path');
 var webpack = require('webpack');
 require('babel-polyfill');
 
@@ -9,7 +8,7 @@ module.exports = {
   ],
   devtool: 'eval-source-map',
   output: {
-    path: __dirname,
+    path: __dirname + '/public/javascripts/',
     filename: 'bundle.js',
     publicPath: '/javascripts/'
   },
@@ -18,26 +17,37 @@ module.exports = {
       {
         test: /\.js?$/,
         exclude: /node_modules/,
-        loader: 'babel?presets[]=es2015,presets[]=react,presets[]=stage-0'
+        loader: 'babel-loader'
       },
       {
         test: /\.json$/,
         loader: 'json-loader'
       },
       {
-        test: /\.css$/, // Only .css files
-        loader: 'style!css' // Run both loaders
+        test: /\.css$/,
+        loader: 'style!css'
+      },
+      {
+        test: /\.(gif|png|jpe?g|svg)$/i,
+        use: [
+          'file-loader',
+          {
+            loader: 'image-webpack-loader',
+            options: {
+              bypassOnDebug: true,
+            },
+          },
+        ],
       }
     ]
   },
   resolve: {
-    extensions: ['', '.json', '.jsx', '.js']
+    extensions: ['.json', '.jsx', '.js']
   },
   plugins: [
     new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify('development')
-      }
+      'process.env': { 'NODE_ENV': JSON.stringify('DEVELOPMENT') }
     }),
+    new webpack.optimize.UglifyJsPlugin({ minimize: true }),
   ]
 };

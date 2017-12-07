@@ -1,87 +1,24 @@
 import React from 'react';
-import { browserHistory, Link } from 'react-router';
 
-import Navbar from '../Navbar';
-import LoginStore from '../../stores/LoginStore';
-import EventsStore from '../../stores/EventsStore';
-import moment from 'moment';
+import EventCard from "./EventCard";
 
-export default class MyEvents extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      events: [],
-    };
-    this._updateEventFromStore();
+const MyEvents = () => {
+  showAllEvents = () => {
+    return [
+      <EventCard key={1} eventName={'Evento 1'} description={'Taquitos y algo mas'} itemList={['tacos', 'jugos', 'refrescos']}/>  ,
+      <EventCard key={2} eventName={'Evento 1'} description={'tortas'} itemList={['jamon', 'quesillo', 'carne']}/>  ,
+      <EventCard key={3} eventName={'Evento 1'} description={'pizza'} itemList={['hawaiiana', 'carnes']}/>  ,
+      <EventCard key={4} eventName={'Evento 1'} description={'mas tacos'} itemList={['tacos cesar', 'tortas', 'consome']}/>  ,
+      <EventCard key={5} eventName={'Evento 1'} description={'carnes'} itemList={['invita aletsis']}/>  ,
+    ]
   }
 
-  async _updateEventFromStore() {
-    const events = await EventsStore.fetchMyEvents();
-    this.setState({
-      events: events
-    });
-  }
+  return (
+    <div>
+      <h1>All my events</h1>
+      {showAllEvents()}
+    </div>
+  );
+};
 
-  goToEvent(eventId) {
-    browserHistory.push('/events/'+eventId);
-  }
-
-  removeEvent(eventId) {
-    EventsStore.deleteEventById(eventId).then(data => {
-      if (!data.error) {
-        this.setState({
-          events: this.state.events.filter(e => e.id != eventId)
-        });
-      }
-    });
-  }
-
-  removeAlert(eventId) {
-    let remove = confirm('Do you want to remove this event?');
-    if (remove == true) {
-      this.removeEvent(eventId);
-    }
-  }
-
-  render() {
-    let events = this.state.events.map(event => {
-      return <div key={event.id} className="event-card row">
-        <div className="col-lg-1 col-sm-2">
-          <div className="tumbnail" style={{ backgroundImage: `url(${event.image_url ? event.image_url : '/images/crockery.jpg'})`}} onClick={()=>this.goToEvent(event.id)}></div>
-        </div>
-        <div className="col-lg-10 col-sm-8">
-          <span className="name">{event.name}</span>
-          <span className="place"><i className="fa fa-cutlery"></i> {event.place.name}</span>
-          <span className="date-time pull-right"><i className="fa fa-clock-o"></i> {moment(event.date_time).format('lll')}</span>
-        </div>
-        <div className="col-lg-1 col-sm-2 text-center">
-          <button className="btn btn-danger" onClick={()=>this.removeAlert(event.id)}>
-            Remove <i className="fa fa-trash"></i>
-          </button>
-          <Link className="btn btn-primary" to={'/events/'+event.id+'/edit'}>
-            Edit <i className="fa fa-pencil"></i>
-          </Link>
-        </div>
-      </div>
-    });
-    return (
-      <div>
-        <Navbar />
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-sm-12 text-center">
-              <h2>My Events</h2>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-sm-12">
-              <div style={{ marginBottom: '10px', marginTop: '15px' }}>
-                {events}
-              </div>
-            </div>
-          </div>
-        </div>
-			</div>
-    );
-  }
-}
+export default MyEvents;

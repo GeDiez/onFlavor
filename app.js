@@ -1,42 +1,43 @@
 var express = require('express');
 var app = express();
-var server = require('http').Server(app);
 
 var aws = require('aws-sdk');
 var path = require('path');
 var favicon = require('serve-favicon');
 var bodyParser = require('body-parser');
-var io = require('socket.io')(server);
+const logger = require('morgan');
+const webpack = require('webpack');
+const webPackMiddleware = require('webpack-dev-middleware');
 
 //Assign Middlewares
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(logger('dev'));
+if(!(process.env.NODE_ENV === 'production')) {
+  const config = require('./webpack.config.js');
+  const compiler = webpack(config);
+  app.use(webPackMiddleware(compiler, {
+    noInfo: true,
+    publicPath: config.output.publicPath
+  }));
+}
+
+app.use('*', (req, res) => {
+  res.redirect('/');
+})
 
 //Assign routes
-
 const users  = require('./routes/users');
-// const dishes = require('./routes/dishes');
-// const events = require('./routes/events');
-// const groups = require('./routes/groups');
-// const orders = require('./routes/orders');
-// const places = require('./routes/places');
-// const foodcourt = require('./routes/foodcourt');
-
 app.use('/api/users', users);
-// app.use('/api/places', places);
-// app.use('/api/dishes', dishes);
-// app.use('/api/groups', groups);
-// app.use('/api/orders', orders);
-// app.use('/api/events', events);
-// app.use('/api/foodcourts', foodcourt);
 
-//Listening conections via sockets
+//Sockets
 
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
 io.on('connection', function (socket) {
   socket.on('events', function (socket) {
-
   });
 });
 
