@@ -3,25 +3,25 @@ var app = express();
 
 var aws = require('aws-sdk');
 var path = require('path');
-var favicon = require('serve-favicon');
 var bodyParser = require('body-parser');
-const logger = require('morgan');
-const webpack = require('webpack');
-const webPackMiddleware = require('webpack-dev-middleware');
 
 //Assign Middlewares
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(logger('dev'));
+
 if(!(process.env.NODE_ENV === 'production')) {
+  const logger = require('morgan');
+  const webpack = require('webpack');
+  const webPackMiddleware = require('webpack-dev-middleware');
   const config = require('./webpack.config.js');
   const compiler = webpack(config);
   app.use(webPackMiddleware(compiler, {
     noInfo: true,
     publicPath: config.output.publicPath
   }));
+  app.use(logger('dev'));
 }
 
 app.use('*', (req, res) => {
