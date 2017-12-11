@@ -1,8 +1,9 @@
 #!/usr/bin/env node
-
-require('dotenv').load();
+if(process.env.NODE_ENV == 'DEVELOPMENT') {
+  require('dotenv').load();
+  const debug = require('debug')('on-flavor-api:server');
+}
 const app = require('../app').app;
-const debug = require('debug')('on-flavor-api:server');
 
 const server = require('../app').server;
 const port = process.env.PORT || '3000';

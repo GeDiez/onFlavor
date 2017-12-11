@@ -6,9 +6,7 @@
     "start": "node ./bin/www",
     "dev": "nodemon",
     "test": "jest",
-    "migrate": "knex migrate:latest",
-    "build-css": "./bin/build-css",
-    "watch-css": "./bin/watch-css"
+    "migrate": "knex migrate:latest"
   },
   "dependencies": {
     "aws-sdk": "^2.43.0",
