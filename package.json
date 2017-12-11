@@ -6,7 +6,8 @@
     "start": "node ./bin/www",
     "dev": "nodemon",
     "test": "jest",
-    "migrate": "knex migrate:latest"
+    "migrate": "knex migrate:latest",
+    "build": "webpack --config webpack.config.js"
   },
   "dependencies": {
     "aws-sdk": "^2.43.0",
@@ -67,7 +68,7 @@
     "prettier-eslint": "^8.2.5",
     "react-test-render": "^1.1.1",
     "style-loader": "^0.16.1",
-    "webpack": "^3.10.0",
-    "webpack-dev-middleware": "^1.9.0"
+    "webpack-dev-middleware": "^1.9.0",
+    "webpack": "^3.10.0"
   }
 }
