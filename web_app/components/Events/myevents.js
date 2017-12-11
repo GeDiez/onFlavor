@@ -1,24 +1,37 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import EventCard from "./EventCard";
 
-const MyEvents = () => {
-  showAllEvents = () => {
-    return [
-      <EventCard key={1} eventName={'Evento 1'} description={'Taquitos y algo mas'} itemList={['tacos', 'jugos', 'refrescos']}/>  ,
-      <EventCard key={2} eventName={'Evento 1'} description={'tortas'} itemList={['jamon', 'quesillo', 'carne']}/>  ,
-      <EventCard key={3} eventName={'Evento 1'} description={'pizza'} itemList={['hawaiiana', 'carnes']}/>  ,
-      <EventCard key={4} eventName={'Evento 1'} description={'mas tacos'} itemList={['tacos cesar', 'tortas', 'consome']}/>  ,
-      <EventCard key={5} eventName={'Evento 1'} description={'carnes'} itemList={['invita aletsis']}/>  ,
-    ]
-  }
+const MyEvents = ({myEvents}) => {
+  const showAllEvents = () =>
+    myEvents.map(event =>
+      <EventCard
+        key={event.idEvent}
+        eventName={event.name}
+        srcImage={event.srcImage}
+        description={event.description}
+        itemList={event.menu}
+        linksFooter={[
+          {text: 'edit', onClick: () => console.log('send action edit')},
+          {text: 'delete', onClick: () => console.log('send action delete')}
+        ]}
+      />
+    );
 
   return (
-    <div>
-      <h1>All my events</h1>
-      {showAllEvents()}
+    <div className="container">
+        <h1><small>All my events</small></h1>
+        <hr/>
+      <div className='row'>
+        {showAllEvents()}
+      </div>
     </div>
   );
 };
 
-export default MyEvents;
+const mapStateToProps = state => ({
+  myEvents: state.events.mine
+});
+
+export default connect(mapStateToProps)(MyEvents);

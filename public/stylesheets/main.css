@@ -80,3 +80,7 @@ body {
   justify-content: center;
   margin-top: 5%;
 }
+
+.hover-card:hover {
+  box-shadow: 0 0 20px rgba(66, 134, 244 , 0.3);
+}

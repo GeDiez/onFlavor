@@ -1,18 +1,20 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import Menu from '../Shared/Menu';
 import EventCard from './EventCard';
 
 class Events extends React.Component {
-  showAllEvents = () => {
-    return [
-      <EventCard key={1} eventName={'Evento 1'} description={'Taquitos y algo mas'} itemList={['tacos', 'jugos', 'refrescos']}/>  ,
-      <EventCard key={2} eventName={'Evento 1'} description={'tortas'} itemList={['jamon', 'quesillo', 'carne']}/>  ,
-      <EventCard key={3} eventName={'Evento 1'} description={'pizza'} itemList={['hawaiiana', 'carnes']}/>  ,
-      <EventCard key={4} eventName={'Evento 1'} description={'mas tacos'} itemList={['tacos cesar', 'tortas', 'consome']}/>  ,
-      <EventCard key={5} eventName={'Evento 1'} description={'carnes'} itemList={['invita aletsis']}/>  ,
-    ]
-  }
+  showAllEvents = () => this.props.events.map(event =>
+      <EventCard
+        key={event.idEvent}
+        eventName={event.name}
+        srcImage={event.srcImage}
+        description={event.description}
+        itemList={event.menu}
+        linksFooter={[{text: 'Join me', onClick: () => console.log('send action')}]}
+      />
+    );
 
   render() {
     return (
@@ -26,4 +28,8 @@ class Events extends React.Component {
   }
 }
 
-export default Events;
+const mapStateToProps = state => ({
+  events: state.events.events
+})
+
+export default connect(mapStateToProps)(Events);

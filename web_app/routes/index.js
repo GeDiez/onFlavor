@@ -6,7 +6,7 @@ import AuthenticateRoute from './AuthenticateRoute';
 import LayoutApp from '../components/Shared/LayoutApp';
 import Events from '../components/Events';
 import Places from '../components/Places';
-// import MyEvents from '../components/MyEvents';
+import MyEvents from '../components/Events/MyEvents';
 import Signin from '../components/Wellcome/Signin';
 import Signup from "../components/Wellcome/Signup";
 
@@ -21,7 +21,7 @@ const privatesRoutes = [
   },
   {
     path: '/onflavor/myevents',
-    component: Places
+    component: MyEvents
   }
 ];
 
