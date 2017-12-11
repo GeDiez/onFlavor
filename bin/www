@@ -1,19 +1,16 @@
 #!/usr/bin/env node
-
-require('dotenv').load();
+if(process.env.NODE_ENV == 'DEVELOPMENT') {
+  require('dotenv').load();
+  const debug = require('debug')('on-flavor-api:server');
+}
 const app = require('../app').app;
-const debug = require('debug')('on-flavor-api:server');
-const http = require('http');
-const webpack = require('webpack');
-const logger = require('morgan');
-const webPackMiddlware = require('webpack-dev-middleware');
 
-app.use(logger('dev'));
 const server = require('../app').server;
 const port = process.env.PORT || '3000';
 app.set('port', port);
 
 const onError = (error) => {
+  console.log(error)
   if (error.syscall !== 'listen') {
     throw error;
   }
@@ -39,15 +36,6 @@ const onListening = () => {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on port' + bind);
-}
-
-if(process.env.NODE_ENV === 'DEVELOPMENT') {
-  const config = require('../webpack.config');
-  const compiler = webpack(config);
-  app.use(webPackMiddlware(compiler, {
-    noInfo: true,
-    publicPath: config.output.publicPath
-  }));
 }
 
 server.listen(port);

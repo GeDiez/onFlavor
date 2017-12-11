@@ -5,11 +5,11 @@ require('babel-polyfill');
 module.exports = {
   entry: [
     'babel-polyfill',
-    './web_app/main'
+    './web_app/main.js'
   ],
   devtool: 'eval-source-map',
   output: {
-    path: './public/javascripts/',
+    path: '/public/javascripts/',
     filename: 'bundle.js',
     publicPath: '/javascripts/'
   },
@@ -43,7 +43,7 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       'process.env': {
-        'NODE_ENV': JSON.stringify('production')
+        'NODE_ENV': JSON.stringify('development')
       }
     }),
   ]

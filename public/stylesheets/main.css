@@ -1,105 +1,86 @@
 body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; }
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
 
-a {
-  color: #00B7FF; }
+.menu {
+  margin-top: 10px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-.one-line {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis; }
+.letters {
+  border-width: 0;
+  color: blue;
+}
 
-.pointer {
-  cursor: pointer; }
+.buttonPressed {
+  background: #87b5ff;
+  color: white;
+}
 
-.event-card {
-  padding: 10px 10px;
-  border: 1px solid #ebebeb;
-  cursor: pointer;
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
-  margin-bottom: 14px; }
-  .event-card .name {
-    font-size: 1.3em;
-    font-weight: bold;
-    display: block;
-    line-height: 2em; }
-  .event-card .place {
-    font-size: 1.1em;
-    line-height: 1.6em;
-    color: #666; }
-  .event-card .date-time {
-    color: #666; }
-  .event-card .tumbnail {
-    height: 100%;
-    min-height: 73px;
-    overflow: hidden;
-    background-size: cover;
-    background-position: center; }
+.wellcome-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 30%;
+  font-size: 2em;
+}
 
-table .actions a {
-  margin: auto 3px; }
+.btn-signin {
+  border: 1px solid blue;
+  background: blue;
+  color: white;
+  font-weight: 500;
+}
 
-.dishes-table {
-  min-width: 200px; }
-  .dishes-table td {
-    padding-right: 10px;
-    line-height: 1.7em; }
+.btn-signin {
+  border: 1px solid #121223;
+  background: #121223;
+  color: white;
+  font-weight: 500;
+}
 
-.place-image {
-  height: 200px;
-  background: url(images/bg.jpg) no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover; }
-  .place-image .info {
-    background: rgba(255, 255, 255, 0.7);
-    padding: 10px; }
+.btn-round {
+  position: fixed;
+  width: 80px;
+  height: 80px;
+  right: 30px;
+  bottom:30px;
+  border: 1px solid #d3233e;
+  border-radius: 50%;
+  box-shadow: -3px 3px 5px rgba(0, 0, 0, 0.2);
+  background: #d3233e;
+  color: white;
+  font-size: 2em
+}
 
-.order-quantity {
-  font-size: 1.3em; }
+.card {
+  padding: 10px;
+  box-shadow: -2px 2px 5px rgba(0, 0, 0, 0.2);
+  margin-bottom: 10px
+}
 
-.nav-logo {
-  display: inline-block !important;
-  height: 100%; }
+.btn-signin-google {
+  border: 1px solid #d3233e;
+  background: #d3233e;
+  color: white;
+}
 
-@media print {
-  .printer-hide {
-    display: none !important; }
-  .btn {
-    display: none; }
-  .info h4 {
-    display: none; }
-  .place-image {
-    height: auto; } }
+.link-signup {
+  color: blue;
+  font-size: small;
+  justify-content: right;
+}
 
-.inputfile {
-  width: 0.1px;
-  height: 0.1px;
-  opacity: 0;
-  overflow: hidden;
-  position: absolute;
-  z-index: -1; }
+.places {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5%;
+}
 
-.inputfile + label {
-  max-width: 80%;
-  font-size: 1.25rem;
-  font-weight: 700;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  cursor: pointer;
-  display: inline-block;
-  overflow: hidden;
-  padding: 0.625rem 1.25rem;
-  color: #f1e5e6;
-  background-color: #d3394c; }
-  .inputfile + label:focus, .inputfile + label:hover {
-    background-color: #722040;
-    outline: 1px dotted #000;
-    outline: -webkit-focus-ring-color auto 5px; }
-
-.btn-google {
-  background-color: #C13C31;
-  color: white; }
-  .btn-google:hover {
-    color: white; }
+.hover-card:hover {
+  box-shadow: 0 0 20px rgba(66, 134, 244 , 0.3);
+}

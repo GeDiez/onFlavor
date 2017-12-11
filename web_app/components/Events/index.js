@@ -1,81 +1,35 @@
 import React from 'react';
-import { browserHistory, Link } from 'react-router';
+import { connect } from 'react-redux';
 
-import Navbar from '../Navbar';
-import LoginStore from '../../stores/LoginStore';
-import EventsStore from '../../stores/EventsStore';
-import moment from 'moment';
-import io from 'socket.io-client'
-const socket = io(window.location.origin);
+import Menu from '../Shared/Menu';
+import EventCard from './EventCard';
 
-export default class Events extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      events: [],
-    };
-    this._updateEventFromStore();
-  }
-
-  componentDidMount() {
-    socket.on('events:new', event => {
-      let oldEvent = this.state.events.find(ev => ev.id == event.id);
-      console.log(oldEvent);
-      if (!oldEvent) {
-        this.setState({
-          events: [event, ...this.state.events]
-        });
-      }
-    });
-    socket.on('events:delete', event => {
-      this.setState({
-        events: this.state.events.filter(ev => ev.id != event.id)
-      });
-    });
-  }
-
-  async _updateEventFromStore() {
-    const events = await EventsStore.fetchEvents();
-    this.setState({
-      events: events
-    });
-  }
-
-  goToEvent(eventId) {
-    browserHistory.push('/events/'+eventId);
-  }
+class Events extends React.Component {
+  showAllEvents = () => this.props.events.map(event =>
+      <EventCard
+        key={event.idEvent}
+        eventName={event.name}
+        srcImage={event.srcImage}
+        description={event.description}
+        itemList={event.menu}
+        linksFooter={[{text: 'Join me', onClick: () => console.log('send action')}]}
+      />
+    );
 
   render() {
-    let events = this.state.events.map(event => {
-      return <div key={event.id} onClick={() => this.goToEvent(event.id)} className="event-card row">
-        <div className="col-lg-1 col-sm-2">
-          <div className="tumbnail" style={{ backgroundImage: `url(${event.image_url ? event.image_url : event.place.image_url ? event.place.image_url : '/images/crockery.jpg'})`}}></div>
-        </div>
-        <div className="col-lg-11 col-sm-10">
-          <span className="name">{event.name}</span>
-          <span className="place"><i className="fa fa-cutlery"></i> {event.place.name}</span>
-          <span className="date-time pull-right"><i className="fa fa-clock-o"></i> {moment(event.date_time).format('lll')}</span>
+    return (
+      <div className='container'>
+        <div className="row" style={{marginTop: '4em'}}>
+          {this.showAllEvents()}
+          <button className='btn-round'><span>+</span></button>
         </div>
       </div>
-    });
-    return (
-      <div>
-        <Navbar />
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-sm-12 text-center">
-              <h2>Events cahnge</h2>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-sm-12">
-              <div style={{ marginBottom: '10px', marginTop: '15px' }}>
-                {events}
-              </div>
-            </div>
-          </div>
-        </div>
-			</div>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  events: state.events.events
+})
+
+export default connect(mapStateToProps)(Events);
