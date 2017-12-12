@@ -10,7 +10,6 @@ const port = process.env.PORT || '3000';
 app.set('port', port);
 
 const onError = (error) => {
-  console.log(error)
   if (error.syscall !== 'listen') {
     throw error;
   }
