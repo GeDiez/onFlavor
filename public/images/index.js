@@ -1,11 +1,5 @@
-const logoMicheladaIo = require('./logoMichelada.png');
-const crockery = require('./crockery.jpg');
-const pizza = require('./pizza.jpeg');
-const hamburguer = require('./fast-food-meal.jpg');
+import logoMicheladaIo from "./logoMichelada.png";
 
 export default {
-  logoMicheladaIo,
-  crockery,
-  pizza,
-  hamburguer
+  logoMicheladaIo
 }

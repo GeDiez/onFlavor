@@ -8,9 +8,9 @@ module.exports = {
   ],
   devtool: 'eval-source-map',
   output: {
-    path: __dirname + '/public/javascripts/',
-    filename: 'bundle.js',
-    publicPath: '/javascripts/'
+    path: __dirname + '/public',
+    filename: './javascripts/bundle.js',
+    publicPath: '/public'
   },
   module: {
     loaders: [
@@ -30,13 +30,12 @@ module.exports = {
       {
         test: /\.(gif|png|jpe?g|svg)$/i,
         use: [
-          'file-loader',
           {
-            loader: 'image-webpack-loader',
+            loader: 'file-loader',
             options: {
-              bypassOnDebug: true,
-            },
-          },
+              name: "images/[hash].[ext]"
+            }
+          }
         ],
       }
     ]
