@@ -1,5 +1,7 @@
-import logoMicheladaIo from "./logoMichelada.png";
+import logoMicheladaIo from './logoMichelada.png';
+import crockery from './crockery.jpg';
 
 export default {
-  logoMicheladaIo
-}
+  logoMicheladaIo,
+  crockery,
+};

@@ -3,7 +3,7 @@ import { BrowserHistory, Link } from 'react-router-dom';
 import Images from '../../../public/images';
 
 const Header = () => (
-  <nav className="navbar navbar-default" style={{background: '#121223'}}>
+  <nav className="navbar navbar-default" style={{background: '#09081E'}}>
     <div className="container-fluid">
       <div className="navbar-header">
         <div className='row'>
