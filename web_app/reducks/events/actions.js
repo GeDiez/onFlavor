@@ -1,15 +1,16 @@
 import types from './types';
 
-const fetchEvents = events = ({
+const fetchEvents = events => ({
   type: types.fetchEvents,
-  events
+  events,
 });
 
-const fetchMyEvents = events = ({
+const fetchMyEvents = events => ({
   type: types.fetchMyEvents,
-  events
+  events,
 });
 
 export default {
-  fetchEvents
-}
+  fetchEvents,
+  fetchMyEvents,
+};

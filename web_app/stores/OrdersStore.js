@@ -26,25 +26,25 @@ const OrdersStore = Object.assign({}, EventEmitter.prototype, {
     ajaxRequests = [];
   },
 
-  saveOrder(order, callback){
+  saveOrder(order, callback) {
     console.log(order);
     const token = localStorage.getItem('token');
     const ajaxReq = request
-    .post(`/api/orders`)
-    .set('Authorization', `Bearer: ${token}`)
-    .send({
-      event_id: Number(order.event_id),
-      dish_id: Number(order.dish_id),
-      quantity: Number(order.quantity),
-      details: order.details
-    })
-    .end((err, res) => {
+      .post(`/api/orders`)
+      .set('Authorization', `Bearer: ${token}`)
+      .send({
+        event_id: Number(order.event_id),
+        dish_id: Number(order.dish_id),
+        quantity: Number(order.quantity),
+        details: order.details,
+      })
+      .end((err, res) => {
         if (err || !res.ok) {
           callback('error');
         } else {
           callback(res.body);
         }
-      })
+      });
     ajaxRequests.push(ajaxReq);
   },
 
@@ -53,10 +53,10 @@ const OrdersStore = Object.assign({}, EventEmitter.prototype, {
     const response = await fetch('/api/orders/', {
       method: 'GET',
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json',
-        'Authorization' : `Bearer: ${token}`
-      }
+        Authorization: `Bearer: ${token}`,
+      },
     });
     const responseData = await response.json();
     return responseData;
@@ -68,10 +68,10 @@ const OrdersStore = Object.assign({}, EventEmitter.prototype, {
     const response = await fetch(`/api/orders/${orderid}`, {
       method: 'DELETE',
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json',
-        'Authorization' : `Bearer: ${token}`
-      }
+        Authorization: `Bearer: ${token}`,
+      },
     });
     const responseData = await response.json();
     return responseData;
@@ -98,16 +98,15 @@ const OrdersStore = Object.assign({}, EventEmitter.prototype, {
     const response = await fetch('/api/orders/' + id, {
       method: 'DELETE',
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json',
-        'Authorization' : `Bearer: ${token}`
-      }
+        Authorization: `Bearer: ${token}`,
+      },
     });
     const responseData = await response.json();
     return responseData;
     ajaxRequests.push(response);
-  }
-
+  },
 });
 
 export default OrdersStore;

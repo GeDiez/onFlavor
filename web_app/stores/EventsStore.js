@@ -31,10 +31,10 @@ const EventsStore = Object.assign({}, EventEmitter.prototype, {
     const response = await fetch('/api/events/', {
       method: 'GET',
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json',
-        'Authorization' : `Bearer: ${token}`
-      }
+        Authorization: `Bearer: ${token}`,
+      },
     });
     const responseData = await response.json();
     return responseData;
@@ -46,24 +46,24 @@ const EventsStore = Object.assign({}, EventEmitter.prototype, {
     const response = await fetch('/api/events/myevents', {
       method: 'GET',
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json',
-        'Authorization' : `Bearer: ${token}`
-      }
+        Authorization: `Bearer: ${token}`,
+      },
     });
     const responseData = await response.json();
     return responseData;
     ajaxRequests.push(response);
   },
 
-  async addEvent({place_id, name, description, datetime, id, url}) {
+  async addEvent({ place_id, name, description, datetime, id, url }) {
     const token = localStorage.getItem('token');
     const response = await fetch('/api/events', {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json',
-        'Authorization' : `Bearer: ${token}`
+        Authorization: `Bearer: ${token}`,
       },
       body: JSON.stringify({
         placeid: place_id,
@@ -71,8 +71,8 @@ const EventsStore = Object.assign({}, EventEmitter.prototype, {
         description,
         datetime,
         id,
-        url
-      })
+        url,
+      }),
     });
   },
 
@@ -81,10 +81,10 @@ const EventsStore = Object.assign({}, EventEmitter.prototype, {
     const response = await fetch('/api/events/' + id, {
       method: 'GET',
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json',
-        'Authorization' : `Bearer: ${token}`
-      }
+        Authorization: `Bearer: ${token}`,
+      },
     });
     const responseData = await response.json();
     return responseData;
@@ -96,16 +96,15 @@ const EventsStore = Object.assign({}, EventEmitter.prototype, {
     const response = await fetch('/api/events/' + id, {
       method: 'DELETE',
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json',
-        'Authorization' : `Bearer: ${token}`
-      }
+        Authorization: `Bearer: ${token}`,
+      },
     });
     const responseData = await response.json();
     return responseData;
     ajaxRequests.push(response);
-  }
-
+  },
 });
 
 export default EventsStore;

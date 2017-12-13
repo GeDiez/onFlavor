@@ -10,15 +10,22 @@ export default class UploadImage extends Component {
     };
   }
 
-  async onFileChange({target}) {
+  async onFileChange({ target }) {
     if (target.files.length > 0) {
       const file = target.files[0];
-      this.setState({
-        fileName: file.name,
-      }, async () => {
-        const url = await ImagesStore.uploadImage(`${moment().format('x')}.${file.type.split('/')[1]}`, file.type, file);
-        this.props.onFileChange(url);
-      });
+      this.setState(
+        {
+          fileName: file.name,
+        },
+        async () => {
+          const url = await ImagesStore.uploadImage(
+            `${moment().format('x')}.${file.type.split('/')[1]}`,
+            file.type,
+            file,
+          );
+          this.props.onFileChange(url);
+        },
+      );
     }
   }
 
@@ -26,8 +33,17 @@ export default class UploadImage extends Component {
     const { fileName } = this.state;
     return (
       <div>
-        <input type="file" name="file" id="file" className="inputfile" accept="image/*" onChange={(ev) => this.onFileChange(ev) }/>
-        <label htmlFor="file"><i className="fa fa-upload" /> {fileName ? fileName : 'Choose a file'}</label>
+        <input
+          type="file"
+          name="file"
+          id="file"
+          className="inputfile"
+          accept="image/*"
+          onChange={ev => this.onFileChange(ev)}
+        />
+        <label htmlFor="file">
+          <i className="fa fa-upload" /> {fileName ? fileName : 'Choose a file'}
+        </label>
       </div>
     );
   }

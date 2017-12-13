@@ -28,45 +28,44 @@ const ImagesStore = Object.assign({}, EventEmitter.prototype, {
 
   uploadImage(fileName, fileType, file) {
     return new Promise(async (res, rej) => {
-      const { signedRequest, url } = await this.getSignedUrl(fileName, fileType);
+      const { signedRequest, url } = await this.getSignedUrl(
+        fileName,
+        fileType,
+      );
 
       const xhr = new XMLHttpRequest();
       xhr.open('PUT', signedRequest);
       xhr.onreadystatechange = () => {
-        if(xhr.readyState === 4){
-          if(xhr.status === 200){
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
             console.log(url);
             console.log('yay!');
             res(url);
-          }
-          else{
+          } else {
             rej('Could not upload file.');
           }
         }
       };
       xhr.send(file);
-
-    })
+    });
   },
 
   async getSignedUrl(fileName, fileType) {
     const response = await fetch('/sign-s3', {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         'file-name': fileName,
-        'file-type': fileType
-      })
+        'file-type': fileType,
+      }),
     });
     const responseData = await response.json();
     return responseData;
     ajaxRequests.push(response);
-
-  }
-
+  },
 });
 
 export default ImagesStore;

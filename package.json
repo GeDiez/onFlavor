@@ -7,7 +7,8 @@
     "dev": "nodemon",
     "test": "jest",
     "migrate": "knex migrate:latest",
-    "build": "webpack --config webpack.config.js"
+    "build": "webpack --config webpack.config.js",
+    "lint": "yarn eslint web_app/ --fix"
   },
   "dependencies": {
     "aws-sdk": "^2.43.0",

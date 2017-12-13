@@ -1,10 +1,8 @@
-import * as types from './types'
+import * as types from './types';
 
 const createSession = ({ session }) => ({
   type: types.CREATE_SESSION,
-  session
+  session,
 });
 
-export {
-  createSession
-};
+export { createSession };

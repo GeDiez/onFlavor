@@ -11,7 +11,6 @@ import {
   Input,
 } from 'reactstrap';
 
-import Menu from '../Shared/Menu';
 import EventCard from './EventCard';
 
 class Events extends React.Component {
