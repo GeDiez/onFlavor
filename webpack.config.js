@@ -1,31 +1,28 @@
-var webpack = require('webpack');
+let webpack = require('webpack');
 require('babel-polyfill');
 
 module.exports = {
-  entry: [
-    'babel-polyfill',
-    './web_app/main.js'
-  ],
+  entry: ['babel-polyfill', './web_app/main.js'],
   devtool: 'eval-source-map',
   output: {
-    path: __dirname + '/public',
-    filename: './javascripts/bundle.js',
-    publicPath: '/public'
+    path: __dirname + '/public/javascripts/',
+    filename: 'bundle.js',
+    publicPath: '/javascripts',
   },
   module: {
     loaders: [
       {
         test: /\.js?$/,
         exclude: /node_modules/,
-        loader: 'babel-loader'
+        loader: 'babel-loader',
       },
       {
         test: /\.json$/,
-        loader: 'json-loader'
+        loader: 'json-loader',
       },
       {
         test: /\.css$/,
-        loader: 'style!css'
+        loader: ['style-loader', 'css-loader'],
       },
       {
         test: /\.(gif|png|jpe?g|svg)$/i,
@@ -33,20 +30,20 @@ module.exports = {
           {
             loader: 'file-loader',
             options: {
-              name: "images/[hash].[ext]"
-            }
-          }
+              name: 'images/[hash].[ext]',
+            },
+          },
         ],
-      }
-    ]
+      },
+    ],
   },
   resolve: {
-    extensions: ['.json', '.jsx', '.js']
+    extensions: ['.json', '.jsx', '.js'],
   },
   plugins: [
     new webpack.DefinePlugin({
-      'process.env': { 'NODE_ENV': JSON.stringify('DEVELOPMENT') }
+      'process.env': { NODE_ENV: JSON.stringify('DEVELOPMENT') },
     }),
     new webpack.optimize.UglifyJsPlugin({ minimize: true }),
-  ]
+  ],
 };

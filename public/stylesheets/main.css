@@ -36,8 +36,8 @@ body {
 }
 
 .btn-signin {
-  border: 1px solid #121223;
-  background: #121223;
+  border: 1px solid #09081E;
+  background: #09081E;
   color: white;
   font-weight: 500;
 }
@@ -92,4 +92,14 @@ body {
   padding: 28px 0;
   font-size: 2em;
   color: white
+}
+
+.miche-btn {
+  background: #09081E;
+}
+
+.turnRight180 {
+  transition-duration: 5s;
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
 }

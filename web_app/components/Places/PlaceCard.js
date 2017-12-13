@@ -1,15 +1,14 @@
 import React from 'react';
 
-import Images from '../../../public/images';
-
-const PlaceCard = ({ name, description}) => {
+const PlaceCard = ({ data: { name, description, address, srcImage } }) => {
   return (
     <div className="card">
-      <img className="card-img-top" src={Images.crockery} alt="Card image cap" />
+      <img className="card-img-top" src={srcImage} alt="Card cap" />
       <div className="card-body">
-        <h4 className="card-title">Card title</h4>
-        <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        <a href="#" className="btn btn-primary">Go somewhere</a>
+        <h4 className="card-title">{name}</h4>
+        <p className="card-text">{description}</p>
+        <br />
+        <p>{address}</p>
       </div>
     </div>
   );
