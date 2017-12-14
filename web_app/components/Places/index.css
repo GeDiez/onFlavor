@@ -1,0 +1,22 @@
+.buttons-container {
+  width: 100%;
+}
+
+.btn-place-card {
+  width: 100%;
+  background: #0093D1;
+  border-color: #0093D1;
+}
+
+.btn-place-card:hover{
+  background: #EB3130;
+  border-color: #EB3130;
+}
+
+.places {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  margin-top: 5%;
+  height: 700px;
+}

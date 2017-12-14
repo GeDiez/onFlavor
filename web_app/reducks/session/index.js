@@ -1,7 +1,7 @@
 import reducers from './reducers';
 
-import * as types from './types';
-import * as operations from './operations';
+import types from './types';
+import operations from './operations';
 
 export { types, operations };
 

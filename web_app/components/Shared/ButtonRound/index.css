@@ -1,0 +1,14 @@
+.btn-round {
+  position: fixed;
+  width: 60px;
+  height: 60px;
+  right: 30px;
+  bottom:30px;
+  border: 1px solid #d3233e;
+  border-radius: 50%;
+  box-shadow: -3px 3px 5px rgba(0, 0, 0, 0.2);
+  background: #d3233e;
+  color: white;
+  font-size: 2em;
+  z-index: 1;
+}

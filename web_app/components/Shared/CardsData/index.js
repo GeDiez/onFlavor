@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import './CardsData.css';
+import './index.css';
 
 class CardsData extends Component {
   state = {
@@ -38,25 +38,21 @@ class CardsData extends Component {
     const { toggleCard, indexComp1, indexComp2 } = this.state;
     const { LayoutComponent, data } = this.props;
     return (
-      <div>
-        <div
-          id="card"
-          className={`${toggleCard ? 'front' : 'back'}`}
-          style={{ position: toggleCard ? 'relative' : 'absolute' }}
-        >
+      <div className="cards-container">
+        {React.Children.map(this.props.children, child =>
+          React.cloneElement(child, {
+            next: this.next,
+            previous: this.previous,
+          }),
+        )}
+        <div id="card" className={`${toggleCard ? 'front' : 'back'}`}>
           {/* component 1 toggle=true*/}
           <LayoutComponent {...this.props} data={data[indexComp1]} />
         </div>
-        <div
-          id="card"
-          className={`${toggleCard ? 'back' : 'front'}`}
-          style={{ position: toggleCard ? 'absolute' : 'relative' }}
-        >
+        <div id="card" className={`${toggleCard ? 'back' : 'front'}`}>
           {/* componen 2 toggle=false*/}
           <LayoutComponent {...this.props} data={data[indexComp2]} />
         </div>
-        <button onClick={this.previous}>Previous</button>
-        <button onClick={this.next}>Next</button>
       </div>
     );
   }

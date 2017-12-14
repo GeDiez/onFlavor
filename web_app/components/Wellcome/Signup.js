@@ -1,6 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-const Signup = ({ signinAction, signinGoogleAction, history }) => (
+const Signup = ({ signinAction, signinGoogleAction }) => (
   <div
     className="row"
     style={{ marginLeft: '5%', marginRight: '5%', marginTop: '10%' }}
@@ -54,12 +55,9 @@ const Signup = ({ signinAction, signinGoogleAction, history }) => (
               <span className="fa fa-google fa-4" /> Sign Un with Google
             </button>
           </div>
-          <button
-            className="btn link-signup"
-            onClick={() => history.push('/signin')}
-          >
+          <Link className="btn link-signup" to="/public/signin">
             Sign in
-          </button>
+          </Link>
         </div>
       </div>
     </div>

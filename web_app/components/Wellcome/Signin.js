@@ -1,9 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { Button } from 'reactstrap';
 
+import './Signin.css';
 import { operations } from '../../reducks/session';
 
-const Signin = ({ signinAction, signinGoogleAction, history }) => {
+const Signin = ({ signinAction, signinGoogleAction }) => {
   return (
     <div
       className="row"
@@ -38,12 +41,9 @@ const Signin = ({ signinAction, signinGoogleAction, history }) => {
               </div>
             </div>
             <div className="form-group">
-              <button
-                className="btn btn-signin"
-                onClick={() => history.push('/onflavor/events')}
-              >
-                Sign In
-              </button>
+              <Button outline className="btn-signin">
+                <Link to="/onflavor/events">Sign In</Link>
+              </Button>
             </div>
             <div className="form-group">
               <button
@@ -53,12 +53,9 @@ const Signin = ({ signinAction, signinGoogleAction, history }) => {
                 <span className="fa fa-google fa-4" /> Sign In with Google
               </button>
             </div>
-            <button
-              className="btn link-signup"
-              onClick={() => history.push('/signup')}
-            >
+            <Link className="btn link-signup" to="/public/signup">
               Sign Up
-            </button>
+            </Link>
           </div>
         </div>
       </div>
