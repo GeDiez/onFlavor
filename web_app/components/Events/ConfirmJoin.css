@@ -1,0 +1,13 @@
+.header-modal {
+  background: rgba(0, 100, 149, 0.6);
+  color: white;
+  display: flex;
+  justify-content: center;
+
+}
+
+.body-modal {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}

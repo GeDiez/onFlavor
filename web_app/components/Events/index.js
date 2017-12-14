@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import EventCard from './EventCard';
 import AddEvent from './AddEvent';
+import ConfirmJoin from './ConfirmJoin';
 import ButtonRound from '../Shared/ButtonRound';
 
 class Events extends React.Component {
@@ -10,35 +11,54 @@ class Events extends React.Component {
     super();
     this.state = {
       isAddEventModal: false,
+      isConfirmJoinModal: false,
     };
   }
 
   addEvent = () => {
-    //hace algo
+    //an action add event
+  };
+
+  joinmeEvent = () => {
+    //some action
   };
 
   showAllEvents = () =>
     this.props.events.map(event => (
-      <EventCard key={event.idEvent} event={event} />
+      <div className="col-sm-6 col-md-6 col-lg-4">
+        <EventCard
+          key={event.idEvent}
+          event={event}
+          onClickCard={this.toggleConfirmJoinModal}
+        />
+      </div>
     ));
 
-  toogleAddEventModal = () =>
+  toggleConfirmJoinModal = () => {
+    this.setState(state => ({ isConfirmJoinModal: !state.isConfirmJoinModal }));
+  };
+  toggleAddEventModal = () =>
     this.setState(state => ({ isAddEventModal: !state.isAddEventModal }));
 
   render() {
-    const { isAddEventModal } = this.state;
+    const { isAddEventModal, isConfirmJoinModal } = this.state;
     const { places } = this.props;
     return (
       <div className="container">
         <div className="row" style={{ marginTop: '4em' }}>
           {this.showAllEvents()}
-          <ButtonRound onClick={this.toogleAddEventModal} />
+          <ButtonRound onClick={this.toggleAddEventModal} />
         </div>
         <AddEvent
           isOpen={isAddEventModal}
-          closeModal={this.toogleAddEventModal}
+          closeModal={this.toggleAddEventModal}
           addEvent={this.addEvent}
           places={places}
+        />
+        <ConfirmJoin
+          isOpen={isConfirmJoinModal}
+          onClickCancel={this.toggleConfirmJoinModal}
+          onClickJoinme={this.joinmeEvent}
         />
       </div>
     );
