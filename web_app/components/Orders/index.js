@@ -9,7 +9,7 @@ export default class Orders extends React.Component {
       <div>
         <Navbar />
         <span> Hello world</span>
-			</div>
+      </div>
     );
   }
 }

@@ -3,5 +3,5 @@ const fetchMyEvents = 'FETCH_MY_EVENTS';
 
 export default {
   fetchEvents,
-  fetchMyEvents
-}
+  fetchMyEvents,
+};

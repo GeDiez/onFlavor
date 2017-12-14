@@ -1,1 +1,5 @@
-const CREATE_SESSION = 'CREATE_SESSION';
+const createSession = 'CREATE_SESSION';
+
+export default {
+  createSession,
+};

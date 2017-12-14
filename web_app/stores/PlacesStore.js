@@ -56,41 +56,41 @@ const PlacesStore = Object.assign({}, EventEmitter.prototype, {
     ajaxRequests.push(ajaxReq);
   },
 
-  getById(id, callback){
+  getById(id, callback) {
     const token = localStorage.getItem('token');
     const ajaxReq = request
-    .get(`/api/places/${id}`)
-    .set('Authorization', `Bearer: ${token}`)
-    .end((err, res) => {
-      if (err || !res.ok) {
-        callback('error');
-      } else {
-        callback(res.body);
-      }
-    });
-    ajaxRequests.push(ajaxReq);
-  },
-
-  savePlace(place, callback){
-    const token = localStorage.getItem('token');
-    const ajaxReq = request
-    .post(`/api/places`)
-    .set('Authorization', `Bearer: ${token}`)
-    .send({
-      placeid: place.placeid,
-      name: place.name,
-      latitude: place.latitude,
-      longitude: place.longitude,
-      description: place.description,
-      url: place.url
-    })
-    .end((err, res) => {
+      .get(`/api/places/${id}`)
+      .set('Authorization', `Bearer: ${token}`)
+      .end((err, res) => {
         if (err || !res.ok) {
           callback('error');
         } else {
           callback(res.body);
         }
+      });
+    ajaxRequests.push(ajaxReq);
+  },
+
+  savePlace(place, callback) {
+    const token = localStorage.getItem('token');
+    const ajaxReq = request
+      .post(`/api/places`)
+      .set('Authorization', `Bearer: ${token}`)
+      .send({
+        placeid: place.placeid,
+        name: place.name,
+        latitude: place.latitude,
+        longitude: place.longitude,
+        description: place.description,
+        url: place.url,
       })
+      .end((err, res) => {
+        if (err || !res.ok) {
+          callback('error');
+        } else {
+          callback(res.body);
+        }
+      });
     ajaxRequests.push(ajaxReq);
   },
 
@@ -107,8 +107,7 @@ const PlacesStore = Object.assign({}, EventEmitter.prototype, {
         }
       });
     ajaxRequests.push(ajaxReq);
-  }
-
+  },
 });
 
 export default PlacesStore;

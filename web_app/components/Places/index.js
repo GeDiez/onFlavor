@@ -1,28 +1,31 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-import Menu from '../Shared/Menu';
 import PlaceCard from './PlaceCard';
+import CardsData from '../Shared/CardsData';
 
-class Places extends Component{
+class Places extends Component {
   render() {
-    const { history } = this.props;
+    const { places } = this.props;
     return (
       <div>
         <div className="row places">
-          <div className="col-sm-3">
-            Previous
-          </div>
+          <div className="col-sm-3">Previous</div>
           <div className="col-sm-6">
-            <PlaceCard />
+            <CardsData LayoutComponent={PlaceCard} data={places} />
           </div>
-          <div className="col-sm-3">
-            Next
-          </div>
-          <button className='btn-round'><span>+</span></button>
+          <div className="col-sm-3">Next</div>
+          <button className="btn-round">
+            <span>+</span>
+          </button>
         </div>
       </div>
     );
   }
 }
 
-export default Places
+const mapStateToProps = state => ({
+  places: state.places.places,
+});
+
+export default connect(mapStateToProps)(Places);

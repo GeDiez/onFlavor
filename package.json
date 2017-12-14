@@ -7,12 +7,13 @@
     "dev": "nodemon",
     "test": "jest",
     "migrate": "knex migrate:latest",
-    "build": "webpack --config webpack.config.js"
+    "build": "webpack --config webpack.config.js",
+    "lint": "yarn eslint web_app/ --fix"
   },
   "dependencies": {
     "aws-sdk": "^2.43.0",
     "babel-core": "^6.26.0",
-    "babel-loader": "^6.2.4",
+    "babel-loader": "^7.1.2",
     "babel-plugin-react-transform": "^2.0.2",
     "babel-polyfill": "^6.23.0",
     "babel-preset-es2015": "^6.24.1",
@@ -27,6 +28,10 @@
     "css-loader": "^0.28.0",
     "debug": "~2.6.0",
     "dotenv": "^4.0.0",
+    "eslint-plugin-flowtype": "^2.40.1",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-prettier": "^2.3.1",
+    "eslint-plugin-react": "^7.5.1",
     "express": "~4.14.1",
     "input-moment": "^0.3.2",
     "jwt-simple": "^0.5.1",
@@ -39,16 +44,16 @@
     "react": "^16.2.0",
     "react-date-picker": "^5.3.28",
     "react-dom": "^16.2.0",
-    "react-modal-bootstrap": "^1.1.1",
     "react-redux": "^5.0.6",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
+    "react-transition-group": "^2.2.1",
+    "reactstrap": "^5.0.0-alpha.4",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
     "serve-favicon": "~2.3.2",
     "socket.io": "^1.7.3",
     "socket.io-client": "^1.7.3",
-    "style-loader": "^0.16.1",
     "superagent": "^3.5.2"
   },
   "devDependencies": {
@@ -68,7 +73,7 @@
     "prettier-eslint": "^8.2.5",
     "react-test-render": "^1.1.1",
     "style-loader": "^0.16.1",
-    "webpack-dev-middleware": "^1.9.0",
-    "webpack": "^3.10.0"
+    "webpack": "^3.10.0",
+    "webpack-dev-middleware": "^1.9.0"
   }
 }
