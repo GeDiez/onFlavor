@@ -1,14 +1,26 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import AuthenticateRoute from './AuthenticateRoute';
-import LayoutApp from '../components/Shared/LayoutApp';
+import LayoutApp from '../components/Layouts/LayoutApp';
+import LayoutWellcome from '../components/Layouts/LayoutWellcome';
 import Events from '../components/Events';
 import Places from '../components/Places';
 import MyEvents from '../components/Events/MyEvents';
 import Signin from '../components/Wellcome/Signin';
 import Signup from '../components/Wellcome/Signup';
+
+const publicRoutes = [
+  {
+    path: '/public/signin',
+    component: Signin,
+  },
+  {
+    path: '/public/signup',
+    component: Signup,
+  },
+];
 
 const privatesRoutes = [
   {
@@ -27,9 +39,17 @@ const privatesRoutes = [
 
 const Routes = ({ session: { isAuthenticate } }) => (
   <div>
-    <Route exact path="/" component={Signin} />
-    <Route path="/signin" component={Signin} />
-    <Route path="/signup" component={Signup} />
+    <Route
+      exact
+      path="/"
+      render={props =>
+        props.match.path === '/' ? <Redirect to="/public/signin" /> : null
+      }
+    />
+    <Route
+      path="/public"
+      render={props => <LayoutWellcome {...props} routes={publicRoutes} />}
+    />
     <AuthenticateRoute
       isAuthenticate={isAuthenticate}
       PrivateComponent={LayoutApp}

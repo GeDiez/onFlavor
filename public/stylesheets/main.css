@@ -1,23 +1,12 @@
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background: rgb(255, 255, 255);
+  color: black;
 }
 
-.menu {
-  margin-top: 10px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.letters {
-  border-width: 0;
-  color: blue;
-}
-
-.buttonPressed {
-  background: #87b5ff;
-  color: white;
+.content-layout {
+  height: 100%;
+  margin-bottom: 100px;
 }
 
 .wellcome-text {
@@ -29,37 +18,21 @@ body {
 }
 
 .btn-signin {
-  border: 1px solid blue;
-  background: blue;
-  color: white;
-  font-weight: 500;
-}
-
-.btn-signin {
   border: 1px solid #09081E;
   background: #09081E;
   color: white;
   font-weight: 500;
 }
 
-.btn-round {
-  position: fixed;
-  width: 80px;
-  height: 80px;
-  right: 30px;
-  bottom:30px;
-  border: 1px solid #d3233e;
-  border-radius: 50%;
-  box-shadow: -3px 3px 5px rgba(0, 0, 0, 0.2);
-  background: #d3233e;
-  color: white;
-  font-size: 2em
-}
-
 .card {
   padding: 10px;
   box-shadow: -2px 2px 5px rgba(0, 0, 0, 0.2);
-  margin-bottom: 10px
+  margin-bottom: 10px;
+  color: black;
+}
+
+.hover-card:hover {
+  box-shadow: 0 0 20px rgba(66, 134, 244 , 0.3);
 }
 
 .btn-signin-google {
@@ -74,32 +47,5 @@ body {
   justify-content: right;
 }
 
-.places {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 5%;
-}
 
-.hover-card:hover {
-  box-shadow: 0 0 20px rgba(66, 134, 244 , 0.3);
-}
 
-.titleHeader {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 28px 0;
-  font-size: 2em;
-  color: white
-}
-
-.miche-btn {
-  background: #09081E;
-}
-
-.turnRight180 {
-  transition-duration: 5s;
-  transform: rotateY(180deg);
-  backface-visibility: hidden;
-}

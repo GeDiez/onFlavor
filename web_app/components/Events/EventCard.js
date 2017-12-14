@@ -1,53 +1,46 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Button } from 'reactstrap';
 
 const EventCard = ({
-  eventName,
-  description,
-  srcImage,
-  itemList,
-  linkJointEvent,
-  linkEdit,
-  linksFooter,
-}) => {
-  const showMenuItems = itemList.map((item, index) => (
-    <li key={index} className="list-group-item">
-      {item}
-    </li>
-  ));
-
-  const linksFooterRender = () => {
-    if (!linksFooter) return;
-    return linksFooter.map((linkFooter, index) => {
-      if (linkFooter.link)
-        return (
-          <Link key={index} className="card-link" to={linkFooter.link}>
-            {linkFooter.text}
-          </Link>
-        );
-      if (linkFooter.onClick)
-        return (
-          <button key={index} className="btn btn-link">
-            {linkFooter.text}
-          </button>
-        );
-      return null;
-    });
-  };
-
-  return (
-    <div className="col-sm-6 col-md-6 col-lg-4">
-      <div className="card hover-card">
-        <img className="card-img-top" src={srcImage} alt="some event" />
-        <div className="card-body">
-          <h4 className="card-title">{eventName}</h4>
-          <p className="card-text">{description}</p>
-        </div>
-        <ul className="list-group list-group-flush">{showMenuItems}</ul>
-        <div className="card-body">{linksFooterRender()}</div>
+  event: { eventName, description, srcImage, menu, user },
+  clickJoinEvent,
+}) => (
+  <div className="col-sm-6 col-md-6 col-lg-4">
+    <div className="card hover-card">
+      <img
+        className="card-img-top"
+        src={srcImage}
+        height="300px"
+        alt="some event"
+      />
+      <div className="card-body">
+        <h4 className="card-title">{eventName}</h4>
+        <small className="card-text">
+          published by{' '}
+          <strong>
+            <span className="fa fa-user" />
+            {user.name}
+          </strong>
+        </small>
+      </div>
+      <ul className="list-group list-group-flush">
+        <li className="list-group-item">
+          <strong>Description: </strong>
+          {description}
+        </li>
+        <li className="list-group-item">
+          <strong>Menu:</strong>
+          {menu.reduce((vi, item) => `${vi} ${item},`, '')}
+        </li>
+      </ul>
+      <div className="card-body">
+        <Button color="link" onClick={clickJoinEvent}>
+          Join to Event
+        </Button>
       </div>
     </div>
-  );
-};
+  </div>
+);
 
 export default EventCard;

@@ -5,6 +5,7 @@
   will-change: transform;
   transition: transform 0.50s;
   transition-timing-function: ease-in-out;
+  position: absolute;
 }
 
 .back  {
@@ -13,14 +14,14 @@
 
 /* Stack front and back elements over each other */
 .front, .back {
-  position: absolute;
-  top: 0;
-  left: 0;
   backface-visibility: hidden;
 }
 
 .containerCard {
   perspective: 400px;
-  position: relative;
   z-index: 1;
+}
+
+.cards-container {
+  position: relative;
 }

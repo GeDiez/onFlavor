@@ -1,0 +1,16 @@
+.titleHeader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2em;
+  color: white
+}
+
+.navbar {
+  background: #0093D1;
+  padding: 10px;
+}
+
+.navbar-header {
+  width: 100%;
+}

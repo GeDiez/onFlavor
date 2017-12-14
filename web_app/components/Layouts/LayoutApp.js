@@ -1,8 +1,9 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 
-import Menu from './Menu';
-import Header from './Header';
+import Menu from '../Menu';
+import Header from '../Header';
+import Footer from '../Footer';
 
 const LayoutApp = ({ history, routes }) => (
   <div>
@@ -10,11 +11,13 @@ const LayoutApp = ({ history, routes }) => (
     <Menu history={history} />
     {routes.map((route, i) => (
       <Route
+        exact
         key={i}
         path={route.path}
         render={props => <route.component {...props} routes={route.routes} />}
       />
     ))}
+    <Footer />
   </div>
 );
 
