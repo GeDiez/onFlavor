@@ -1,53 +1,22 @@
-// Update with your config settings.
 module.exports = {
-  // export DATABASE_URL=postgres://scott:@127.0.0.1:5432/raspa
-  development: {
-    client: 'postgresql',
-    debug: false,
-    connection: process.env.DATABASE_URL || 'postgres://127.0.0.1:5432/on_flavor',
-    pool: {
-      min: 2,
-      max: 10
-    },
-    migrations: {
-      tableName: 'knex_migrations'
-    }
-  },
-
-  dev: {
-    client: 'postgresql',
-    connection: process.env.DATABASE_URL,
-    pool: {
-      min: 2,
-      max: 10
-    },
-    migrations: {
-      tableName: 'knex_migrations'
-    }
-  },
-
-  sandbox: {
-    client: 'postgresql',
-    connection: process.env.DATABASE_URL,
-    pool: {
-      min: 2,
-      max: 10
-    },
-    migrations: {
-      tableName: 'knex_migrations'
-    }
-  },
-
   production: {
-    client: 'postgresql',
-    connection: process.env.DATABASE_URL,
-    pool: {
-      min: 2,
-      max: 10
+    client: 'pg',
+    connection: {
+      host: process.env.HOST || 'localhost:5432',
+      user: process.env.USER,
+      password: process.env.PASSWORD,
+      database: '',
+      charset: 'utf8',
     },
-    migrations: {
-      tableName: 'knex_migrations'
-    }
-  }
-
+  },
+  development: {
+    client: 'pg',
+    connection: {
+      host: 'localhost',
+      user: 'postgres',
+      password: 'postgres',
+      database: 'on_flavor',
+      charset: 'utf8',
+    },
+  },
 };

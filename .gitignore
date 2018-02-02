@@ -1,5 +1,11 @@
-node_modules/
-.DS_Store
+#node
+/node_modules/
+.gitignore
+
+#production
+/build/
+modules-manifest.json
+
+#development
 .env
-.vscode/
-.eslintrc
+nodemon.json

@@ -1,7 +1,5 @@
-
 exports.up = function(knex, Promise) {
-  return knex.schema
-  .alterTable('users', (t)=> {
+  return knex.schema.alterTable('users', t => {
     t.dropColumn('password');
     t.dropColumn('name');
     t.string('full_name');
@@ -19,8 +17,7 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema
-  .alterTable('users', (t)=> {
+  return knex.schema.alterTable('users', t => {
     t.dropColumn('full_name');
     t.dropColumn('email');
     t.dropColumn('password_digest');

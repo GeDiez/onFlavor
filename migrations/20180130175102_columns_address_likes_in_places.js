@@ -1,11 +1,13 @@
 exports.up = function(knex) {
   return knex.schema.alterTable('places', t => {
-    t.string('image_url');
+    t.integer('likes');
+    t.text('address');
   });
 };
 
 exports.down = function(knex) {
   return knex.schema.alterTable('places', t => {
-    t.dropColumn('image_url');
+    t.dropColumn('likes');
+    t.dropColumn('address');
   });
 };

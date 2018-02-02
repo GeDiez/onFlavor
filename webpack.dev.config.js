@@ -1,17 +1,25 @@
 const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const webpack = require('webpack');
 const manifest = require('./modules-manifest.json');
 const htmlPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: { bundle: path.resolve(__dirname, 'web_app/main.js') },
+  entry: {
+    bundle: path.resolve(__dirname, 'web_app/main.js'),
+    rhl: 'react-hot-loader/patch',
+  },
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'javascript/[name].js',
-    chunkFilename: '[id].[chunkhash].js',
     publicPath: '/',
   },
+  devServer: {
+    open: true,
+    port: 9000,
+    contentBase: path.resolve(__dirname, 'build'),
+    hot: true,
+  },
+  watch: false,
   resolve: {
     alias: {
       '@assets': path.resolve(__dirname, 'assets'),
@@ -31,12 +39,7 @@ module.exports = {
       },
       {
         test: /(\.css)$/,
-        use: ExtractTextPlugin.extract({
-          use: {
-            loader: 'css-loader',
-            options: { minimize: true },
-          },
-        }),
+        loader: ['style-loader', 'css-loader'],
       },
       {
         test: /\.(png|jpe?g|gif)$/,
@@ -44,25 +47,34 @@ module.exports = {
           {
             loader: 'file-loader',
             options: {
-              name: 'images/[name][hash].[ext]',
+              name: 'images/[name]-[hash].[ext]',
             },
           },
         ],
       },
+      {
+        test: /\.(ttf|eot|woff|woff2)$/,
+        loader: 'file-loader',
+        options: {
+          name: 'fonts/[name]-[hash].[ext]',
+        },
+      },
     ],
   },
   plugins: [
+    new webpack.HotModuleReplacementPlugin(),
     new htmlPlugin({
+      chunks: ['signin', 'signup'],
+      filename: 'wellcome.html',
+      template: './assets/wellcome.html',
+    }),
+    new htmlPlugin({
+      chunks: ['bundle'],
       filename: 'index.html',
       template: './assets/index.html',
     }),
-    new ExtractTextPlugin('css/[name].[hash].css'),
     new webpack.DllReferencePlugin({
       manifest,
     }),
-    //evitar modulos duplicados cuando tienes mas de un entry point
-    /*new webpack.optimize.CommonsChunkPlugin({
-      name: 'common',
-    }),*/
   ],
 };

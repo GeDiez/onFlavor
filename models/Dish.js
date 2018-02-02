@@ -6,5 +6,5 @@ module.exports = bookshelf.model('Dish', {
   hasTimestamps: true,
   place() {
     return this.belongsTo(Place);
-  }
+  },
 });
