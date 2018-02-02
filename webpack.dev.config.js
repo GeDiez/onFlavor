@@ -66,7 +66,7 @@ module.exports = {
     new htmlPlugin({
       chunks: ['signin', 'signup'],
       filename: 'wellcome.html',
-      template: './assets/wellcome.html',
+      template: './assets/index.html',
     }),
     new htmlPlugin({
       chunks: ['bundle'],
