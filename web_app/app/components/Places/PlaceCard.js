@@ -1,21 +1,28 @@
 import React from 'react';
+import {
+  Col,
+  Card,
+  CardTitle,
+  CardText,
+  CardBody,
+  CardSubtitle,
+} from 'reactstrap';
+import restaurantDefault from '@assets/images/restaurant_default.jpg';
 
-const PlaceCard = ({ data: { name, description, address, srcImage } }) => {
+const PlaceCard = ({ place: { name, description, address, srcImage } }) => {
   return (
-    <div className="card">
-      <img
-        className="card-img-top"
-        src={srcImage}
-        height="300px"
-        alt="Card cap"
-      />
-      <div className="card-body">
-        <h4 className="card-title">{name}</h4>
-        <p className="card-text">{description}</p>
-        <br />
-        <p>{address}</p>
-      </div>
-    </div>
+    <Col sm="6" lg="3">
+      <Card>
+        <CardBody>
+          <CardTitle>{name}</CardTitle>
+          <CardSubtitle>{description}</CardSubtitle>
+        </CardBody>
+        <img width="100%" src={srcImage || restaurantDefault} alt="Card cap" />
+        <CardBody>
+          <CardText>{address || 'No se pudo cargar la dirección'}</CardText>
+        </CardBody>
+      </Card>
+    </Col>
   );
 };
 

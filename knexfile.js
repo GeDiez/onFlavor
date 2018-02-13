@@ -18,5 +18,8 @@ module.exports = {
       database: 'on_flavor',
       charset: 'utf8',
     },
+    migrations: {
+      tableName: 'migrations',
+    },
   },
 };

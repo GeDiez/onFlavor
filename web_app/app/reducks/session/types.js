@@ -1,5 +1,5 @@
-const createSession = 'CREATE_SESSION';
+const sessionPending = 'SESSION_PENDING';
+const sessionReject = 'SESSION_REJECT';
+const updateSession = 'UPDATE_SESSION';
 
-export default {
-  createSession,
-};
+export { sessionPending, sessionReject, updateSession };

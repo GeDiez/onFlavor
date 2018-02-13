@@ -37,6 +37,7 @@ class CardsData extends Component {
   render() {
     const { toggleCard, indexComp1, indexComp2 } = this.state;
     const { LayoutComponent, data } = this.props;
+    if (data.length === 0) return null;
     return (
       <div className="cards-container">
         {React.Children.map(this.props.children, child =>

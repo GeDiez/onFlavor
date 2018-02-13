@@ -28,11 +28,12 @@ const placeTable = bookshelf.Model.extend(
       } catch (error) {
         return {
           error:
-            'no se pudo crear el evento error: no contiene los campos especificados',
+            'no se pudo crear el evento error: no contiene los campos especificados' +
+            error,
         };
       }
     },
-    getPlaces: async function(options) {
+    getPlaces: async function() {
       try {
         const places = await this.fetchAll();
         return await places.toJSON();
@@ -48,7 +49,7 @@ const placeTable = bookshelf.Model.extend(
             error: 'no existe el evento con id :' + id,
           };
         }
-        const savePlace = await this.forge(place).save();
+        const savePlace = await findplace.save(place);
         return savePlace.toJSON();
       } catch (error) {
         return {

@@ -10,23 +10,23 @@ class Menu extends Component {
     return (
       <ButtonGroup className="menu">
         <Link
-          to="/onflavor/events"
-          className={`item-menu text-color ${itemMenuSelected ===
-            '/onflavor/events' && 'item-pressed'} btn btn-default`}
+          to="/"
+          className={`item-menu text-color ${itemMenuSelected === '/' &&
+            'item-pressed'} btn btn-default`}
         >
           Events
         </Link>
         <Link
-          to="/onflavor/places"
-          className={`item-menu text-color ${itemMenuSelected ===
-            '/onflavor/places' && 'item-pressed'} btn btn-default`}
+          to="/places"
+          className={`item-menu text-color ${itemMenuSelected === '/places' &&
+            'item-pressed'} btn btn-default`}
         >
           Places
         </Link>
         <Link
-          to="/onflavor/myEvents"
-          className={`item-menu text-color ${itemMenuSelected ===
-            '/onflavor/myEvents' && 'item-pressed'} btn btn-default`}
+          to="/myEvents"
+          className={`item-menu text-color ${itemMenuSelected === '/myEvents' &&
+            'item-pressed'} btn btn-default`}
         >
           My Events
         </Link>

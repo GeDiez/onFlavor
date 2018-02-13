@@ -1,6 +1,8 @@
 .menu {
-  margin-top: 10px;
-  width: 100%;
+  width: 50%;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  background-color: #292C52;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -11,14 +13,15 @@
 }
 
 .text-color {
-  color: black;
+  color: white;
 }
 
 .text-color:hover{
-  color: black;
+  background-color: #FFFFFF;
+  color: #292C52
 }
 
 .item-pressed {
-  background: #0093D1;
-  color: white;
+  background: #FFFFFF;
+  color: #292C52;
 }

@@ -1,41 +1,37 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, ButtonGroup } from 'reactstrap';
+import { Row } from 'reactstrap';
 
+import ButtonRound from '../Shared/ButtonRound';
 import PlaceCard from './PlaceCard';
-import CardsData from '../Shared/CardsData';
 import './index.css';
 
-const Buttons = props => (
-  <ButtonGroup className="buttons-container">
-    <Button className="btn-place-card" onClick={props.previous}>
-      Previous
-    </Button>
-    <Button className="btn-place-card" onClick={props.next}>
-      Next
-    </Button>
-  </ButtonGroup>
-);
+import PlacesRepository from '../../repository/places';
 
 class Places extends Component {
+  state = {
+    places: [],
+  };
+
+  componentDidMount() {
+    this.getPlaces();
+  }
+
+  getPlaces = async () => {
+    const places = await PlacesRepository().get();
+    this.setState({ places });
+  };
+
+  renderPlaces = () => {
+    return this.state.places.map(place => <PlaceCard place={place} />);
+  };
+
   render() {
-    const { places } = this.props;
     return (
-      <div>
-        <div className="row places">
-          <div className="col-sm-3" />
-          <div className="col-sm-6">
-            <CardsData LayoutComponent={PlaceCard} data={places}>
-              <Buttons />
-              <hr />
-            </CardsData>
-          </div>
-          <div className="col-sm-3" />
-          <button className="btn-round">
-            <span>+</span>
-          </button>
-        </div>
-      </div>
+      <Row className="places">
+        {this.renderPlaces()}
+        <ButtonRound />
+      </Row>
     );
   }
 }

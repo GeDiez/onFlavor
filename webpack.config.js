@@ -5,7 +5,9 @@ const manifest = require('./modules-manifest.json');
 const htmlPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: { bundle: path.resolve(__dirname, 'web_app/main.js') },
+  entry: {
+    bundle: path.resolve(__dirname, 'web_app/app.js'),
+  },
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'javascript/[name].js',
@@ -53,6 +55,7 @@ module.exports = {
   },
   plugins: [
     new htmlPlugin({
+      chunks: ['bundle'],
       filename: 'index.html',
       template: './assets/index.html',
     }),

@@ -5,8 +5,8 @@ const htmlPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: {
-    bundle: path.resolve(__dirname, 'web_app/main.js'),
     rhl: 'react-hot-loader/patch',
+    bundle: path.resolve(__dirname, 'web_app/app.js'),
   },
   output: {
     path: path.resolve(__dirname, 'build'),
@@ -32,9 +32,6 @@ module.exports = {
         exclude: /(node_modules)/,
         use: {
           loader: 'babel-loader',
-          options: {
-            presets: ['es2015', 'react', 'stage-2'],
-          },
         },
       },
       {
@@ -64,14 +61,21 @@ module.exports = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new htmlPlugin({
-      chunks: ['signin', 'signup'],
-      filename: 'wellcome.html',
-      template: './assets/index.html',
-    }),
-    new htmlPlugin({
-      chunks: ['bundle'],
+      chunks: ['rhl', 'bundle'],
       filename: 'index.html',
       template: './assets/index.html',
+      chunksSortMode: function(chunk1, chunk2) {
+        const orders = ['rhl', 'bundle'];
+        const order1 = orders.indexOf(chunk1.names[0]);
+        const order2 = orders.indexOf(chunk2.names[0]);
+        if (order1 > order2) {
+          return 1;
+        } else if (order1 < order2) {
+          return -1;
+        } else {
+          return 0;
+        }
+      },
     }),
     new webpack.DllReferencePlugin({
       manifest,

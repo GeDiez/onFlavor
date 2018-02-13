@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 const AuthenticatedRoute = ({
   isAuthenticate,
@@ -9,13 +9,9 @@ const AuthenticatedRoute = ({
 }) => (
   <Route
     path={path}
-    render={props =>
-      isAuthenticate ? (
-        <Component {...props} routes={routes} />
-      ) : (
-        <Redirect to="/signin" />
-      )
-    }
+    render={props => {
+      if (isAuthenticate) return <Component {...props} routes={routes} />;
+    }}
   />
 );
 

@@ -7,7 +7,8 @@
       "t": true,
       "translations": true,
       "createStore": true,
-      "initialState": true
+      "initialState": true,
+      "gapi": true,
     },
     "rules": {
       "prettier/prettier": ["error", {

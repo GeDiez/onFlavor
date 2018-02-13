@@ -1,102 +1,121 @@
 /*
   Implementation of interface Router with Expressjs
 */
-const path = require('path');
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+const { OAuth2Client } = require('google-auth-library');
 
-/* Le indicamos a express los assets del sitio web */
-app.use('/', express.static('build')));
+const Router = config => {
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: false }));
 
-/* Authentification with passport using Google+ --- START*/
-const User = require('../models/modelUsers');
-const passport = require('passport');
-const expressSession = require('express-session');
-app.use(expressSession({ secret: 'mySecretKey' }));
-passport.serializeUser(function(user, done) {
-  done(null, user.email);
-});
-passport.deserializeUser(async function(email, done) {
-  const user = await User.getProfileByEmail(email);
-  done(null, user);
-});
-app.use(passport.initialize());
-app.use(passport.session());
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID:
-        '131833217819-ik3ediak6ecr9972sst80v1sqbmamqje.apps.googleusercontent.com',
-      clientSecret: 'j3jJSqAqhe7oWaN9moFXBicY',
-      callbackURL: 'http://localhost:8080/auth/google/callback',
-    },
-    async function(token, tokenSecret, profile, done) {
-      const user = {
-        username: profile.name.givenName,
-        full_name: profile.displayName,
-        email: profile.emails[0].value,
-      };
-      const findUser = await User.getProfileByEmail({
-        email: profile.emails[0].value,
-      });
-      if (!findUser) {
-        const newUser = await User.create({ user, provider: 'google' });
-        return done(null, newUser);
-      }
-      return done(null, findUser);
-    },
-  ),
-);
-app.get(
-  '/auth/google',
-  passport.authenticate('google', {
-    scope: ['profile', 'email'],
-    session: false,
-  }),
-);
-app.get(
-  '/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  function(req, res) {
-    res.redirect('/onflavor');
-  },
-);
-app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, '../build/index.html'));
-});
-/* Authentification with passport using Google+ --- END*/
+  /* load web site public content */
+  app.use('/', express.static('build'));
+  /* load web site public content */
+  app.use('/onflavor/public', express.static('public'));
+  /*  CORS  */
+  app.use(function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header(
+      'Access-Control-Allow-Headers',
+      'X-Requested-With, Authorization, Content-Type, Accept',
+    );
+    next();
+  });
+  /*  CORS - END  */
 
-/*
-  Servir la carpeta con la aplicacion web
-*/
+  const User = require('../models/Users');
 
-/*
+  /* Authentification using Google+ --- START*/
+  app.post('/user/auth', async (req, res) => {
+    const { provider, token, id_token } = req.body;
+    if (!provider || !token) {
+      res.status(409).json({ error: 'se necesitan un provider y un token' });
+    }
+    switch (provider) {
+      case 'google':
+        const client = new OAuth2Client(
+          '131833217819-0oao54so79c56r86mkb80059qrd52qjh.apps.googleusercontent.com',
+          '',
+          '',
+        );
+        try {
+          const login = await client.verifyIdToken({
+            idToken: id_token,
+            audiance:
+              '131833217819-0oao54so79c56r86mkb80059qrd52qjh.apps.googleusercontent.com',
+            cert_uri: 'https://www.googleapis.com/oauth2/v1/certs',
+          });
+          const payload = login.getPayload();
+          const email = payload['email'];
+          const username = payload['given_name'] + new Date().getTime();
+          const fullname = payload['name'];
+          const image_url = payload['picture'];
+          const access_key = token;
+          const provider = 'google';
+          if (payload['hd'] !== 'michelada.io')
+            return res.status(401).json({
+              error:
+                'Esta version solo esta disponible para empleados de la empresa michelada.io',
+            });
+          const result = await User.getByEmail(email);
+          if (result.codeStatus === 200)
+            return res
+              .status(result.codeStatus)
+              .json({ user: result.data.user });
+          const resultCreate = await User.create({
+            email,
+            username,
+            fullname,
+            provider,
+            image_url,
+            access_key,
+          });
+          res.status(resultCreate.codeStatus).json({ user: resultCreate.user });
+        } catch (error) {
+          console.log(error);
+          res.status(500).json({ error: 'error en el servidor' + error });
+        }
+        return;
+      default:
+        break;
+    }
+  });
+
+  const authenticateUser = (req, res, next) => {
+    console.log(req.get('Authorization'));
+    next();
+  };
+
+  app.use(authenticateUser);
+
+  /* Authentification with passport using Google+ --- END*/
+
+  /*
   Implemantation of interface router using Expressjs
 */
 
-const Router = {
-  init: () => {
-    const PORT = process.env.PORT || '8080';
-    app.listen(PORT, () => {
-      console.info(`Server Express Runnig on port ${PORT}`);
-    });
-  },
-  get: (path, callback) => {
-    app.get(path, callback);
-  },
-  post: (path, callback) => {
-    app.post(path, callback);
-  },
-  put: (path, callback) => {
-    app.put(path, callback);
-  },
-  delete: (path, callback) => {
-    app.delete(path, callback);
-  },
+  return {
+    init: () => {
+      const PORT = process.env.PORT || '8080';
+      app.listen(PORT, () => {
+        console.info(`Server Express Runnig on port ${PORT}`);
+      });
+    },
+    get: (path, callback) => {
+      app.get(path, callback);
+    },
+    post: (path, callback) => {
+      app.post(path, callback);
+    },
+    put: (path, callback) => {
+      app.put(path, callback);
+    },
+    delete: (path, callback) => {
+      app.delete(path, callback);
+    },
+  };
 };
 
 module.exports = Router;

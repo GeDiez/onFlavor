@@ -12,4 +12,6 @@ const configureStore = (initialState = {}) => {
   return createStore(reducers, initialState, enhancer);
 };
 
-export default configureStore;
+const Store = configureStore();
+
+export default Store;

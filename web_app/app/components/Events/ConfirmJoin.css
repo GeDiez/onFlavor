@@ -11,3 +11,7 @@
   width: 100%;
   justify-content: space-around;
 }
+
+.buttonCheck:hover {
+  font-size: 35
+}

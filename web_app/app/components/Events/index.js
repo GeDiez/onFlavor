@@ -1,66 +1,86 @@
-import React from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 
 import EventCard from './EventCard';
 import AddEvent from './AddEvent';
-import ConfirmJoin from './ConfirmJoin';
 import ButtonRound from '../Shared/ButtonRound';
 
-class Events extends React.Component {
+import eventsRepository from '../../repository/events';
+import placesRepository from '../../repository/places';
+
+class Events extends Component {
   constructor() {
     super();
     this.state = {
       isAddEventModal: false,
       isConfirmJoinModal: false,
+      events: [],
+      places: [],
+      place: { dishes: [] },
     };
   }
 
-  addEvent = () => {
-    //an action add event
+  componentDidMount() {
+    this.loadEvents();
+  }
+
+  loadEvents = async () => {
+    const events = await eventsRepository().get();
+    this.setState({ events });
   };
 
-  joinmeEvent = () => {
-    //some action
+  loadPlaces = async () => {
+    const places = await placesRepository().get();
+    this.setState({ places });
+  };
+
+  loadPlace = async idPlace => {
+    const place = await placesRepository().getById(idPlace);
+    this.setState({ place });
+  };
+
+  toggleAddEventModal = async () => {
+    await this.loadPlaces();
+    this.setState(state => ({ isAddEventModal: !state.isAddEventModal }));
   };
 
   showAllEvents = () =>
-    this.props.events.map(event => (
-      <div className="col-sm-6 col-md-6 col-lg-4">
+    this.state.events.map(event => (
+      <div className="col-sm-6 col-md-6 col-lg-3">
         <EventCard
           key={event.idEvent}
           event={event}
           onClickCard={this.toggleConfirmJoinModal}
+          loadPlace={this.loadPlace}
+          place={this.state.place}
         />
       </div>
     ));
 
-  toggleConfirmJoinModal = () => {
-    this.setState(state => ({ isConfirmJoinModal: !state.isConfirmJoinModal }));
-  };
-  toggleAddEventModal = () =>
-    this.setState(state => ({ isAddEventModal: !state.isAddEventModal }));
-
   render() {
-    const { isAddEventModal, isConfirmJoinModal } = this.state;
-    const { places } = this.props;
+    const { isAddEventModal } = this.state;
+    const { places } = this.state;
     return (
-      <div className="container">
-        <div className="row" style={{ marginTop: '4em' }}>
+      <Fragment>
+        <div
+          className="row"
+          style={{
+            marginTop: '4em',
+            borderWidth: '1px',
+            borderColor: 'red',
+            overflowY: 'auto',
+          }}
+        >
           {this.showAllEvents()}
-          <ButtonRound onClick={this.toggleAddEventModal} />
         </div>
+        <ButtonRound onClick={this.toggleAddEventModal} />
         <AddEvent
           isOpen={isAddEventModal}
           closeModal={this.toggleAddEventModal}
           addEvent={this.addEvent}
           places={places}
         />
-        <ConfirmJoin
-          isOpen={isConfirmJoinModal}
-          onClickCancel={this.toggleConfirmJoinModal}
-          onClickJoinme={this.joinmeEvent}
-        />
-      </div>
+      </Fragment>
     );
   }
 }

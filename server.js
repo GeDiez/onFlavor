@@ -1,11 +1,15 @@
 const Router = require('./router/expressRouter');
 
-const routesEvents = require('./routes/routeEvents');
 const routesPlaces = require('./routes/routePlaces');
+const routesEvents = require('./routes/routeEvents');
 const routesUsers = require('./routes/routeUsers');
 
-routesEvents(Router);
-routesPlaces(Router);
-routesUsers(Router);
+const router = Router({
+  path: __dirname,
+});
 
-Router.init();
+routesPlaces(router);
+routesEvents(router);
+routesUsers(router);
+
+router.init();
