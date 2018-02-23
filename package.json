@@ -31,7 +31,9 @@
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
     "request": "^2.83.0",
-    "sequelize": "^4.32.1"
+    "sequelize": "^4.32.1",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "html-webpack-plugin": "^2.30.1"
   },
   "scripts": {
     "lint": "eslint ./webapp",
@@ -61,8 +63,6 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-prettier": "^2.4.0",
     "eslint-plugin-react": "^7.5.1",
-    "extract-text-webpack-plugin": "^3.0.2",
-    "html-webpack-plugin": "^2.30.1",
     "nodemon": "^1.14.10",
     "prettier": "^1.9.2",
     "react": "^16.2.0",

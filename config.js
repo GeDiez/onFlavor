@@ -1,6 +1,15 @@
 const config = {
   production: {
-    host: '',
+    host: 'on-flavor.herokuapp.com',
+    port_server: process.env.PORT,
+    db: {
+      client: 'pg',
+      port: 5432,
+      user: 'postgres',
+      password: 'postgres',
+      database: 'on_flavor',
+      charset: 'utf8',
+    },
   },
   development: {
     host: 'localhost',
