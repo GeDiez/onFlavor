@@ -7,6 +7,7 @@ import Signin from '../Signin';
 import Signup from '../Signup';
 import Header from '../Header';
 import Footer from '../Footer';
+import LoadingFullPage from '../Shared/LoadingFullPage';
 
 class Layout extends React.Component {
   state = {
@@ -21,6 +22,7 @@ class Layout extends React.Component {
     return (
       <div>
         <Header />
+        <LoadingFullPage visible={this.props.isLoading} />
         <div className="content-layout" />
         {this.state.nameView === 'SIGNIN' && (
           <Signin

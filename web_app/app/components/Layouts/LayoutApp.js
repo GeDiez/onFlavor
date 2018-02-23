@@ -5,7 +5,6 @@ import { Row, Col } from 'reactstrap';
 import Menu from '../Menu';
 import Header from '../Header';
 import UserMenu from '../UserMenu';
-import Footer from '../Footer';
 
 import Background from '@assets/images/foamichelada_red_one_up.png';
 

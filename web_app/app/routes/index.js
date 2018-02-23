@@ -29,14 +29,19 @@ const privatesRoutes = [
 ];
 
 class Routes extends Component {
+  state = {
+    loading: false,
+  };
+
   componentDidMount() {
     this.loadUserStored();
   }
 
   loadUserStored = async () => {
+    this.setState({ loading: true });
     await Gapi.init();
     const user = userRepository().getCurrentUserToken();
-    if (!user) return;
+    if (!user) return this.setState({ loading: false });
     const AuthenticatedWithOnFlavor = await userRepository().authenticateOnFlavor(
       user,
     );
@@ -45,7 +50,6 @@ class Routes extends Component {
       AuthenticatedWithOnFlavor.status === 201
     ) {
       const userAuth = AuthenticatedWithOnFlavor.data.user;
-      console.log(userAuth);
       this.props.createSession({
         token: user.token,
         providerSession: user.provider,
@@ -57,11 +61,12 @@ class Routes extends Component {
         },
       });
     }
+    this.setState({ loading: false });
   };
 
   render() {
     const { session: { isAuthenticate } } = this.props;
-    if (!isAuthenticate) return <Wellcome />;
+    if (!isAuthenticate) return <Wellcome isLoading={this.state.loading} />;
     return (
       <AuthenticateRoute
         isAuthenticate={isAuthenticate}

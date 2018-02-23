@@ -34,7 +34,7 @@ const Events = Bookshelf.Model.extend(
       return this.belongsToMany(Users)
         .through(EventUser)
         .withPivot(['role'])
-        .query({ where: { role: 'owner' } });
+        .query({ where: { role: 'admin' } });
     },
     orders: function() {
       const Orders = require('./Orders');
@@ -97,14 +97,19 @@ const Events = Bookshelf.Model.extend(
         return resFormat(500, 'Error en el servidor: ' + error);
       }
     },
-    addAdmin: async function({ uuidEvent, uuidUser, uuidUser2 }) {
+    addAdmin: async function({ uuidEvent, uuidUser }) {
       try {
         const findEvent = await this.forge({ id: uuidEvent }).fetch();
         if (!findEvent) return resFormat(404, 'evento no existente');
         const usersAdmin = await findEvent.usersAdmin().fetch();
-        if (!usersAdmin.get(uuidUser2))
-          await findEvent.users().attach({ user_id: uuidUser2, role: 'Admin' });
-        return resFormat(201, null, 'Se ha agregado como Admin al usuario');
+        if (usersAdmin.get(uuidUser))
+          return resFormat(201, null, {
+            msg: 'El usario ya es administrador',
+          });
+        await findEvent.users().attach({ user_id: uuidUser, role: 'admin' });
+        return resFormat(201, null, {
+          msg: 'Se ha agregado como Admin al usuario',
+        });
       } catch (error) {
         return resFormat(500, 'Error en el servidor: ' + error);
       }
@@ -116,7 +121,7 @@ const Events = Bookshelf.Model.extend(
           validateEvent.dateTimeRange,
           validateEvent.fieldsRequireds,
         )({ event, msgs: [] });
-        if (validate.msgs.length > 0) return resFormat(400, validate.msgs);
+        if (validate.msgs.length > 0) return resFormat(200, validate.msgs);
         const newEvent = await this.forge(event, {
           hasTimestamps: true,
         }).save();
@@ -131,12 +136,22 @@ const Events = Bookshelf.Model.extend(
         return resFormat(500, 'Error en el servidor: ' + error);
       }
     },
-    update: async function({ uuidEvent, uuidUser, event }) {
+    update: async function({ uuidEvent, event }) {
       try {
         const findEvent = await this.forge({ id: uuidEvent }).fetch();
         if (!findEvent) return resFormat(404, 'evento no existente');
         await findEvent.save(event, { patch: true, method: 'update' });
         return resFormat(201, null, { event: findEvent });
+      } catch (error) {
+        return resFormat(500, 'Error en el servidor: ' + error);
+      }
+    },
+    deleteById: async function(eventId) {
+      try {
+        const findEvent = await this.forge({ id: eventId }).fetch();
+        if (!findEvent) return resFormat(404, 'evento no existente');
+        await findEvent.destroy();
+        return resFormat(201, null, { msg: 'message deleted' });
       } catch (error) {
         return resFormat(500, 'Error en el servidor: ' + error);
       }

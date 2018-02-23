@@ -5,8 +5,8 @@ exports.up = knex =>
       t.string('name', 50);
       t.string('phone_number', 15);
       t.string('address');
-      t.string('latitude', 11);
-      t.string('longitude', 11);
+      t.string('latitude', 20);
+      t.string('longitude', 20);
       t.text('image_url');
       t.timestamps();
     })

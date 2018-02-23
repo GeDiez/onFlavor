@@ -1,51 +1,58 @@
 import axios from 'axios';
+import config from '../../config';
 import store from '../App/reducks/store';
 
-const headersConf = () => {
+const headersConf = others => {
   const session = store.getState().session;
+  if (others)
+    return {
+      ...others,
+      Authorization: session.token,
+    };
   return {
     Authorization: session.token,
   };
 };
 
-const host = 'http://localhost:8080';
-
-const GET = (url, body) => {
-  const headers = headersConf();
+const host = config.port_server
+  ? 'http://' + config.host + ':' + config.port_server
+  : 'http://' + config.host;
+const GET = (url, data, _headers) => {
+  const headers = headersConf(_headers);
   return axios({
     url: host + url,
     method: 'GET',
-    params: body,
+    params: data,
     headers,
   });
 };
 
-const POST = (url, body) => {
-  const headers = headersConf();
+const POST = (url, data, _headers) => {
+  const headers = headersConf(_headers);
   return axios({
     url: host + url,
     method: 'POST',
-    body,
+    data,
     headers,
   });
 };
 
-const PUT = (url, body) => {
-  const headers = headersConf();
+const PUT = (url, data, _headers) => {
+  const headers = headersConf(_headers);
   return axios({
     url: host + url,
     method: 'PUT',
-    body,
+    data,
     headers,
   });
 };
 
-const DELETE = (url, body) => {
-  const headers = headersConf();
+const DELETE = (url, data, _headers) => {
+  const headers = headersConf(_headers);
   return axios({
     url: host + url,
     method: 'DELETE',
-    params: body,
+    params: data,
     headers,
   });
 };

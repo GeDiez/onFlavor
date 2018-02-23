@@ -1,4 +1,4 @@
-import axios from 'axios';
+import apiOnFlavor from '../../../utils/apiOnFlavor';
 
 const userRepository = () => {
   const getCurrentUserToken = () => {
@@ -30,18 +30,25 @@ const userRepository = () => {
   const authenticateOnFlavor = async ({ token, provider, idToken }) => {
     //User is authenticate through OnFlavor server's
     try {
-      const response = await axios({
-        method: 'POST',
-        url: 'http://localhost:8080/user/auth',
-        data: {
-          provider,
-          token,
-          id_token: idToken,
-        },
+      const response = apiOnFlavor.POST('/user/auth', {
+        provider,
+        token,
+        id_token: idToken,
       });
       return response;
     } catch (error) {
       return error;
+    }
+  };
+
+  const getAll = async () => {
+    try {
+      const response = await apiOnFlavor.GET(`/users`);
+      return response.data.errors ? response.data : response.data.users;
+    } catch (error) {
+      return {
+        errors: ['ha ocurrido un error en la petición ' + error],
+      };
     }
   };
 
@@ -50,6 +57,7 @@ const userRepository = () => {
     authenticateWithGoogle,
     getCurrentUserToken,
     logout,
+    getAll,
   };
 };
 

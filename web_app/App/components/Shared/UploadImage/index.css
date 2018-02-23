@@ -1,0 +1,12 @@
+.form-file {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.label-file {
+  border: 1px solid brown;
+  display: flex;
+  justify-content: center
+}

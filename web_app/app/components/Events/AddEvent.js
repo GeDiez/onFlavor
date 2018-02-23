@@ -8,6 +8,7 @@ import {
   FormGroup,
   Button,
   Input,
+  Label,
 } from 'reactstrap';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -15,7 +16,8 @@ import { indigo900 } from 'material-ui/styles/colors';
 import DatePicker from 'material-ui/DatePicker';
 import TimePicker from 'material-ui/TimePicker';
 import Notification from '../Shared/Notification';
-import eventRepository from '../../repository/events';
+// import UploadImage from '../Shared/UploadImage/index';
+import Dropzone from 'react-dropzone';
 
 const MAX_HOUR = 20;
 const MIN_HOUR = 7;
@@ -30,31 +32,35 @@ class AddEvent extends Component {
     }
     this.state = {
       minDate: initDate,
-      name: '',
       decription: '',
       datetime: initDate,
       placeId: '',
+      eventId: '',
+      file: { name: '', preview: '' },
     };
   }
-
-  onChangeName = ev => {
-    this.setState({ name: ev.target.value });
+  //save image file on component's state
+  onDrop = files => {
+    const file = files[0];
+    this.setState({ file });
   };
 
-  onChangeDescription = description => {
-    this.setState({ description });
+  //handle text inputs
+  handleChange = name => ev => {
+    this.setState({ [name]: ev.target.value });
   };
 
-  onChangeDate = datetime => {
-    this.setState({ datetime: datetime.target.value });
-  };
-
-  onChangePlace = place => {
-    this.setState({ placeId: place.target.value });
-  };
-
-  onClickAddEvent = () => {
-    eventRepository.create(this.state);
+  onClickAddEvent = async () => {
+    const { placeId, datetime, description } = this.state;
+    this.props.createEvent(
+      {
+        place_id: placeId,
+        date_time: datetime,
+        description,
+        image_url: '',
+      },
+      this.state.file,
+    );
   };
 
   onChangeDate = date => {
@@ -97,11 +103,11 @@ class AddEvent extends Component {
   render() {
     const { props, state } = this;
     return (
-      <Form>
-        <Modal
-          isOpen={props.isOpen}
-          style={{ borderColor: '#292C52', borderWidht: '5px' }}
-        >
+      <Modal
+        isOpen={props.isOpen}
+        style={{ borderColor: '#292C52', borderWidht: '5px' }}
+      >
+        <Form>
           <ModalHeader
             style={{
               background: '#292C52',
@@ -109,43 +115,34 @@ class AddEvent extends Component {
               justifyContent: 'center',
             }}
           >
-            <label>Add a new Event</label>
+            <Label>Add a Event</Label>
           </ModalHeader>
           <ModalBody>
             <FormGroup>
-              <label>Event's name: </label>
+              <Label>Some description about it: </Label>
               <Input
                 type="text"
-                placeholder="ex. Pizzas of little Cessar"
-                value={state.name}
-                onChange={this.onChangeName}
+                placeholder="some description about this"
+                value={state.description}
+                onChange={this.handleChange('description')}
                 required
               />
             </FormGroup>
             <FormGroup>
-              <label>Some description about it: </label>
-              <Input
-                type="text"
-                placeholder="Why do you do it?"
-                value={state.name}
-                onChange={this.onChangeName}
-                required
-              />
-            </FormGroup>
-            <FormGroup>
-              <label>place: </label>
+              <Label>place: </Label>
               <Input
                 type="select"
                 placeholder="ex. delivery service food"
-                onChange={this.onChangePlace}
+                onChange={this.handleChange('placeId')}
               >
+                <option value="">select a place</option>
                 {props.places.map(place => (
                   <option value={place.id}>{place.name}</option>
                 ))}
               </Input>
             </FormGroup>
             <FormGroup>
-              <label>date and time: </label>
+              <Label>date and time: </Label>
               <MuiThemeProvider
                 muiTheme={getMuiTheme({
                   palette: {
@@ -189,6 +186,39 @@ class AddEvent extends Component {
                 </div>
               </MuiThemeProvider>
             </FormGroup>
+            <FormGroup
+              style={{
+                widht: '100%',
+                display: 'flex',
+                justifyContent: 'space-around',
+              }}
+            >
+              <Dropzone
+                onDrop={this.onDrop}
+                style={{
+                  width: '100%',
+                  height: '200px',
+                  borderWidth: '2px',
+                  borderColor: 'rgb(102, 102, 102)',
+                  borderStyle: 'dashed',
+                  borderRadius: '5px',
+                  padding: '10px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                {!state.file.name && <Label>upload image (optional)</Label>}
+                <img
+                  src={state.file.preview}
+                  alt=""
+                  width="200px"
+                  height="150px"
+                />
+                <small>{state.file.name}</small>
+              </Dropzone>
+            </FormGroup>
           </ModalBody>
           <ModalFooter>
             <Button color="default" onClick={props.closeModal}>
@@ -197,49 +227,15 @@ class AddEvent extends Component {
             <Button
               color="primary"
               className="miche-btn"
-              onSubmit={props.addEvent}
+              onClick={this.onClickAddEvent}
             >
               Add
             </Button>
           </ModalFooter>
-        </Modal>
-      </Form>
+        </Form>
+      </Modal>
     );
   }
 }
 
 export default AddEvent;
-
-// class ModalChida extends Component {
-//   state = {
-//     isOpened: false,
-//   };
-
-//   toggleModal = () => {
-//     this.setState(state => ({ isOpened: !state.isOpened }));
-//   };
-
-//   render() {
-//     return (
-//       <Modal>
-//         {React.Children.map(this.props.children, child =>
-//           React.cloneElement(child, { toggleModal: this.toggleModal }),
-//         )}
-//       </Modal>
-//     );
-//   }
-// }
-
-// class ButtonToggleModal extends Component {
-//   render() {
-//     return (
-//       <Button onClick={this.props.ToggleModal}>{this.props.children}</Button>
-//     );
-//   }
-// }
-
-// <ModalChida>
-//   <ModalHeader>Header</ModalHeader>
-//   <ModalBody>body</ModalBody>
-//   <ButtonToggleModal>OpenModal</ButtonToggleModal>
-// </ModalChida>;

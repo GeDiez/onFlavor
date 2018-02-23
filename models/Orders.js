@@ -26,6 +26,23 @@ const Orders = Bookshelf.Model.extend(
     },
   },
   {
+    getById: async function(orderId) {
+      try {
+        const order = await this.forge({ id: orderId }).fetch();
+        if (!order)
+          return resFormat(200, null, {
+            msg: 'no existe la orden',
+          });
+        const orderWithDishes = await order
+          .dishes()
+          .fetch({ columns: ['name', 'price', 'quantity', 'details'] });
+        return resFormat(200, null, {
+          order: orderWithDishes.toJSON({ omitPivot: true }),
+        });
+      } catch (error) {
+        return resFormat(500, 'Error en el servidor: ' + error);
+      }
+    },
     create: async function({ uuidEvent, uuidUser, dishes }) {
       try {
         //search for user in event
@@ -36,9 +53,8 @@ const Orders = Bookshelf.Model.extend(
         if (findOrder)
           return resFormat(200, null, {
             msg:
-              'Ya tienes una orden en este evento, puede revisar tus ordernes y editarla',
+              'Ya tienes una orden en este evento, revisar tus ordernes y editarla',
           });
-        //
         const order = await this.forge(
           {
             event_id: uuidEvent,
@@ -52,7 +68,7 @@ const Orders = Bookshelf.Model.extend(
         return resFormat(500, 'Error en el servidor: ' + error);
       }
     },
-    update: async function({ uuidEvent, uuidUser, uuidOrder, dishes }) {
+    update: async function({ uuidEvent, uuidOrder, dishes }) {
       try {
         const order = await this.forge(
           { id: uuidOrder },
@@ -71,16 +87,25 @@ const Orders = Bookshelf.Model.extend(
         return resFormat(500, 'Error en el servidor: ' + error);
       }
     },
+    getByEvent: async function(eventId) {
+      try {
+        const orders = await this.where('event_id', eventId).fetchAll({
+          withRelated: [
+            { users: q => q.columns(['id', 'username']) },
+            {
+              dishes: q => q.columns(['name', 'price', 'quantity', 'details']),
+            },
+          ],
+          columns: ['id', 'event_id', 'created_at', 'user_id'],
+        });
+        return resFormat(200, null, {
+          orders: orders.toJSON({ omitPivot: true }),
+        });
+      } catch (error) {
+        return resFormat(500, 'Error en el servidor: ' + error);
+      }
+    },
   },
 );
-
-// const modelOrders = {
-//   create: async ({ userId, eventId, order }) => {
-//     return await dataSource.create({ userId, eventId, order });
-//   },
-//   delete: async ({ orderId, eventId }) => {
-//     return await dataSource.delete({ orderId, eventId });
-//   },
-// };
 
 module.exports = Orders;

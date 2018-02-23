@@ -1,10 +1,7 @@
 const _knex = require('knex');
 const deleteOnCascade = require('bookshelf-cascade-delete');
 
-const knexfile =
-  process.env.NODE_ENV !== 'development'
-    ? require('./knexfile').development
-    : require('./knexfile').production;
+const knexfile = require('./knexfile');
 const knex = _knex(knexfile);
 const bookshelf = require('bookshelf')(knex);
 

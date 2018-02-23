@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
+import { Alert } from 'reactstrap';
 
 import EventCard from './EventCard';
 import AddEvent from './AddEvent';
@@ -13,15 +14,20 @@ class Events extends Component {
     super();
     this.state = {
       isAddEventModal: false,
-      isConfirmJoinModal: false,
       events: [],
       places: [],
       place: { dishes: [] },
+      alert: {
+        visible: false,
+        type: '',
+        msg: '',
+      },
     };
   }
 
   componentDidMount() {
     this.loadEvents();
+    this.loadPlaces();
   }
 
   loadEvents = async () => {
@@ -30,7 +36,7 @@ class Events extends Component {
   };
 
   loadPlaces = async () => {
-    const places = await placesRepository().get();
+    const places = await placesRepository().getAll();
     this.setState({ places });
   };
 
@@ -39,29 +45,99 @@ class Events extends Component {
     this.setState({ place });
   };
 
-  toggleAddEventModal = async () => {
-    await this.loadPlaces();
-    this.setState(state => ({ isAddEventModal: !state.isAddEventModal }));
+  createOrder = userId => eventId => async dishes => {
+    const response = await eventsRepository().createOrder(
+      userId,
+      eventId,
+      dishes,
+    );
+    if (response.status === 201)
+      return this.notify('success', 'se ha creado la orden');
+    if (response.status === 200)
+      this.notify('success', 'se ha creado la orden exitosamente');
   };
 
-  showAllEvents = () =>
-    this.state.events.map(event => (
+  createEvent = userId => async (_event, file) => {
+    const event = await eventsRepository().create(userId, _event);
+    if (event.errors) return this.notify('danger', 'Error: ' + event.errors);
+    if (file) await eventsRepository().uploadImage(event.id, file);
+    this.notify('success', 'Se ha creado un nuevo evento ');
+    this.toggleModal('isAddEventModal')();
+    this.loadEvents();
+  };
+
+  uploadImage = (eventId, file) => {
+    eventsRepository().uploadImage(eventId, file);
+  };
+
+  getOrderOfUser = async eventId => {
+    const order = await eventsRepository().getOrdersOfUser(
+      eventId,
+      this.props.user.id,
+    );
+    if (order.errors) return false;
+    return order;
+  };
+
+  removeOrder = eventId => async orderId => {
+    const result = await eventsRepository().removeOrder(
+      this.props.user.id,
+      eventId,
+      orderId,
+    );
+    if (result.errors)
+      return this.notify('danger', 'no se pudo eliminar la orden');
+    this.notify('success', 'se ha eliminado la orden exitosamente');
+  };
+
+  //open modal
+  toggleModal = variable => () => {
+    this.setState(state => ({ [variable]: !state[variable] }));
+  };
+
+  closeNotifier = () => {
+    this.setState(state => ({
+      alert: { type: '', msg: '', visible: !state.alert.visible },
+    }));
+  };
+
+  notify = (type, msg) => {
+    this.setState(state => ({
+      alert: {
+        visible: !state.alert.visible,
+        type,
+        msg,
+      },
+    }));
+  };
+
+  showAllEvents = () => {
+    return this.state.events.map(event => (
       <div className="col-sm-6 col-md-6 col-lg-3">
         <EventCard
           key={event.idEvent}
           event={event}
-          onClickCard={this.toggleConfirmJoinModal}
           loadPlace={this.loadPlace}
           place={this.state.place}
+          getOrderOfUser={this.getOrderOfUser}
+          removeOrder={this.removeOrder}
+          createOrder={this.createOrder(this.props.user.id)}
         />
       </div>
     ));
+  };
 
   render() {
-    const { isAddEventModal } = this.state;
-    const { places } = this.state;
+    const { isAddEventModal, places } = this.state;
     return (
       <Fragment>
+        <Alert
+          color={this.state.alert.type}
+          isOpen={this.state.alert.visible}
+          toggle={this.closeNotifier}
+        >
+          {this.state.alert.msg}
+        </Alert>
         <div
           className="row"
           style={{
@@ -73,12 +149,13 @@ class Events extends Component {
         >
           {this.showAllEvents()}
         </div>
-        <ButtonRound onClick={this.toggleAddEventModal} />
+        <ButtonRound onClick={this.toggleModal('isAddEventModal')} />
         <AddEvent
           isOpen={isAddEventModal}
-          closeModal={this.toggleAddEventModal}
-          addEvent={this.addEvent}
+          closeModal={this.toggleModal('isAddEventModal')}
           places={places}
+          createEvent={this.createEvent(this.props.user.id)}
+          uploadImage={this.uploadImage}
         />
       </Fragment>
     );
@@ -86,8 +163,7 @@ class Events extends Component {
 }
 
 const mapStateToProps = state => ({
-  events: state.events.events,
-  places: state.places.places,
+  user: state.session.user,
 });
 
 export default connect(mapStateToProps)(Events);

@@ -15,7 +15,7 @@ const Signin = ({ changeView, signInGoogle }) => {
         <div className="card">
           <form className="card-body">
             <div className="card-text">
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label>Email address</label>
                 <input
                   type="email"
@@ -34,28 +34,33 @@ const Signin = ({ changeView, signInGoogle }) => {
                   className="form-control"
                   placeholder="Password"
                 />
-              </div>
+              </div> */}
+              <i>
+                Wellcome. to access to On Flavor, you need that you account
+                belongs to Gmail and is might have as domain @michelada.io
+              </i>
             </div>
-            <div className="form-group">
+            {/* <div className="form-group">
               <Button outline className="btn-signin">
                 Sign In
               </Button>
-            </div>
+            </div> */}
             <div className="form-group">
               <Button
                 style={{
                   backgroundColor: '#EA3434',
                   borderColor: '#EA3434',
                   cursor: 'pointer',
+                  marginTop: '10px',
                 }}
                 onClick={signInGoogle}
               >
-                <span className="fa fa-google fa-lg" /> Sign with Google
+                <span className="fab fa-google fa-2x" /> Sign with Google
               </Button>
             </div>
-            <Button onClick={() => changeView('SIGNUP')}>
+            {/* <Button onClick={() => changeView('SIGNUP')}>
               Signup on onflavor
-            </Button>
+            </Button> */}
           </form>
         </div>
       </div>

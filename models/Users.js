@@ -50,6 +50,12 @@ const Users = Bookshelf.Model.extend(
       if (!user) return resFormat(404, { error: 'user not found' });
       return resFormat(200, null, { user });
     },
+    getAll: async function() {
+      const users = await this.fetchAll({
+        columns: ['id', 'fullname', 'username', 'email'],
+      });
+      return resFormat(200, null, { users });
+    },
     getEvents: async function(uuidUser) {
       try {
         const user = await this.forge({ id: uuidUser }).fetch();
@@ -72,30 +78,35 @@ const Users = Bookshelf.Model.extend(
         return resFormat(500, 'Error en el servidor: ' + error);
       }
     },
+    getOrderByEvent: async function(userId, eventId) {
+      try {
+        const user = await this.forge({ id: userId }).fetch();
+        const orders = await user.myOrders().fetch();
+        const order = orders.where({ event_id: eventId })[0];
+        if (!order) return resFormat(404, 'no tiene ordenes');
+        const orderDishes = await order.dishes().fetch({
+          columns: ['order_id', 'name', 'price', 'quantity', 'details'],
+        });
+        return resFormat(200, null, {
+          order: orderDishes.toJSON({ omitPivot: true }),
+        });
+      } catch (error) {
+        return resFormat(500, 'Error en el servidor: ' + error);
+      }
+    },
+    deleteOrder: async function(userId, orderId) {
+      try {
+        const user = await this.forge({ id: userId }).fetch();
+        const orders = await user.myOrders().fetch();
+        const order = orders.where({ id: orderId })[0];
+        if (!order) return resFormat(404, 'no tiene ordenes');
+        await order.destroy();
+        return resFormat(200, null, { msg: 'order delete' });
+      } catch (error) {
+        return resFormat(500, 'Error en el servidor: ' + error);
+      }
+    },
   },
 );
-
-// const modelUsers = {
-//   model: dataSource,
-//   verifyUser: async password_digest => {
-//     const user = await dataSource.verifyUser(password_digest);
-//     return user;
-//   },
-//   getById: async userId => {
-//     return await dataSource.getById(userId);
-//   },
-//   getEvents: async userId => {
-//     return await dataSource.getEvents(userId);
-//   },
-//   deleteEvent: async ({ userId, eventId }) => {
-//     return await dataSource.deleteEvent({ userId, eventId });
-//   },
-//   getProfileByEmail: async ({ email }) => {
-//     return await dataSource.getProfileByEmail({ email });
-//   },
-//   create: async ({ user, provider, order }) => {
-//     return await dataSource.create({ user, provider, order });
-//   },
-// };
 
 module.exports = Users;

@@ -3,12 +3,14 @@
 */
 const express = require('express');
 const app = express();
+const fileUpload = require('express-fileupload');
 const bodyParser = require('body-parser');
 const { OAuth2Client } = require('google-auth-library');
 
-const Router = config => {
+const Router = () => {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(fileUpload());
 
   /* load web site public content */
   app.use('/', express.static('build'));
@@ -17,6 +19,10 @@ const Router = config => {
   /*  CORS  */
   app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
+    res.header(
+      'Access-Control-Allow-Methods',
+      'GET, POST, OPTIONS, PUT, DELETE',
+    );
     res.header(
       'Access-Control-Allow-Headers',
       'X-Requested-With, Authorization, Content-Type, Accept',
@@ -54,11 +60,11 @@ const Router = config => {
           const image_url = payload['picture'];
           const access_key = token;
           const provider = 'google';
-          if (payload['hd'] !== 'michelada.io')
-            return res.status(401).json({
-              error:
-                'Esta version solo esta disponible para empleados de la empresa michelada.io',
-            });
+          // if (payload['hd'] !== 'michelada.io')
+          //   return res.status(401).json({
+          //     error:
+          //       'Esta version solo esta disponible para empleados de la empresa michelada.io',
+          //   });
           const result = await User.getByEmail(email);
           if (result.codeStatus === 200)
             return res
@@ -74,7 +80,6 @@ const Router = config => {
           });
           res.status(resultCreate.codeStatus).json({ user: resultCreate.user });
         } catch (error) {
-          console.log(error);
           res.status(500).json({ error: 'error en el servidor' + error });
         }
         return;
@@ -84,7 +89,7 @@ const Router = config => {
   });
 
   const authenticateUser = (req, res, next) => {
-    console.log(req.get('Authorization'));
+    // console.log(req.get('Authorization'));
     next();
   };
 

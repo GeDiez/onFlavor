@@ -18,7 +18,7 @@ import './ConfirmJoin.css';
 class ConfirmJoin extends Component {
   state = {
     order: [],
-    currentDish: {},
+    currentDish: '',
     currentQuantity: '',
     currentDetails: '',
   };
@@ -40,22 +40,12 @@ class ConfirmJoin extends Component {
   };
 
   onClickCheckDish = () => {
-    const { currentDish, order } = this.state;
+    const { currentDish } = this.state;
     if (!currentDish) return;
-    const findDishInOrder = order.find(dish => dish.dish_id === currentDish);
-    if (findDishInOrder) {
-      const order = this.state.order.map(
-        dish =>
-          dish.dish_id === currentDish
-            ? {
-                dish_id: dish.dish_id,
-                quantity: this.state.currentQuantity,
-                details: this.state.currentDetails,
-              }
-            : dish,
-      );
-      return this.setState({ order });
-    }
+    const findInOrder = this.state.order.find(
+      dish => dish.dish_id === currentDish,
+    );
+    if (findInOrder) return this.setState({ msj: 'dish was selected already' });
     this.setState(state => ({
       order: [
         ...state.order,
@@ -68,11 +58,22 @@ class ConfirmJoin extends Component {
     }));
   };
 
+  removeDishFromOrder = dishId => {
+    const order = this.state.order.filter(dish => dish.dish_id !== dishId);
+    this.setState({ order });
+  };
+
   totalOrder = () => {
     return this.state.order.reduce((vi, _dish) => {
       const dish = this.findDish(_dish.dish_id);
       return vi + dish.price * _dish.quantity;
     }, 0);
+  };
+
+  createOrder = () => {
+    this.props.createOrder(this.state.order);
+    this.setState({ order: [] });
+    this.props.onClickCancel();
   };
 
   renderDishes = () => {
@@ -85,15 +86,22 @@ class ConfirmJoin extends Component {
           <td>{dish.name}</td>
           <td>{dish.price}</td>
           <td>{_dish.details || '-'}</td>
+          <td>
+            <span
+              className="fa fa-close"
+              style={{ color: 'red' }}
+              onClick={() => this.removeDishFromOrder(_dish.dish_id)}
+            />
+          </td>
         </tr>
       );
     });
   };
 
   render() {
-    const { isOpen, onClickCancel, onClickJoinme, place } = this.props;
+    const { isOpen, onClickCancel, place } = this.props;
     return (
-      <Modal isOpen={isOpen}>
+      <Modal isOpen={isOpen} toggle={onClickCancel}>
         <ModalHeader
           style={{
             background: 'rgb(26, 35, 126)',
@@ -136,9 +144,16 @@ class ConfirmJoin extends Component {
                 justifyContent: 'center',
               }}
             >
-              <Button color="link" onClick={this.onClickCheckDish}>
+              <Button
+                color={
+                  this.state.currentDish &&
+                  this.state.currentQuantity &&
+                  'success'
+                }
+                onClick={this.onClickCheckDish}
+              >
                 <span
-                  style={{ fontSize: 30, color: 'green' }}
+                  style={{ fontSize: 30 }}
                   className="buttonCheck fa fa-check-circle"
                 />
               </Button>
@@ -162,7 +177,7 @@ class ConfirmJoin extends Component {
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Quantity</th>
+                  <th>Qty</th>
                   <th>Dish</th>
                   <th>Price</th>
                   <th>Details</th>
@@ -175,6 +190,7 @@ class ConfirmJoin extends Component {
                   <td />
                   <th scope="row">Total</th>
                   <td>{this.totalOrder()}</td>
+                  <td />
                 </tr>
               </tbody>
             </Table>
@@ -186,7 +202,12 @@ class ConfirmJoin extends Component {
           <Button outline color="danger" onClick={onClickCancel}>
             <span className="fa fa-close" /> i don't
           </Button>
-          <Button outline color="success" onClick={onClickJoinme}>
+          <Button
+            outline
+            color="success"
+            disabled={(this.state.order.length === 0 && true) || false}
+            onClick={this.createOrder}
+          >
             <span className="fa fa-users" /> join me
           </Button>
         </ModalFooter>

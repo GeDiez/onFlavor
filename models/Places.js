@@ -61,7 +61,7 @@ const Places = bookshelf.Model.extend(
         return resFormat(500, 'error en el servidor: ' + error);
       }
     },
-    update: async function({ uuid, place }) {
+    update: async function({ placeId, place }) {
       //Apply validations
       const validate = compose(validationPlaces.fieldPlace)({
         place,
@@ -70,14 +70,32 @@ const Places = bookshelf.Model.extend(
       if (validate.msgs.length > 0) return resFormat(400, validate.msgs);
       //try update place
       try {
-        const findPlace = await this.where('id', uuid).fetch();
-        if (!findPlace)
+        const findPlace = await this.where('id', placeId).fetch();
+        if (findPlace === null) {
           return resFormat(404, 'no existe un lugar con ese uuid');
+        }
         const updatedPlace = await findPlace.save(place, {
           method: 'update',
           patch: true,
         });
         return resFormat(200, null, { place: updatedPlace });
+      } catch (error) {
+        return resFormat(500, 'error en el servidor: ' + error);
+      }
+    },
+    deleteById: async function(placeId) {
+      try {
+        const findPlace = await this.where('id', placeId).fetch();
+        if (findPlace === null)
+          return resFormat(404, 'no existe un lugar con ese id');
+        const events = await findPlace.events().fetch();
+        if (events.length > 0)
+          return resFormat(
+            200,
+            'existen eventos para este lugar, no se puede eliminar',
+          );
+        await findPlace.destroy();
+        return resFormat(200, null, { place: findPlace });
       } catch (error) {
         return resFormat(500, 'error en el servidor: ' + error);
       }
@@ -122,26 +140,23 @@ const Places = bookshelf.Model.extend(
         return resFormat(500, 'error en el servidor: ' + error);
       }
     },
+    removeDish: async function(idPlace, idDish) {
+      try {
+        const place = await this.forge({ id: idPlace }).fetch();
+        if (!place)
+          return resFormat(
+            404,
+            'el lugar o place no existe en la base de datos',
+          );
+        const dishes = await place.dishes().fetch();
+        const dish = dishes.get(idDish);
+        if (dishes.get(idDish)) await dish.destroy();
+        return resFormat(200, null, { msg: 'dish eliminado del place' });
+      } catch (error) {
+        return resFormat(500, 'error en el servidor: ' + error);
+      }
+    },
   },
 );
-
-// const Places = {
-//   getPlaceById: async id => {
-//     const place = await dataSource.getPlaceById(id);
-//     return place;
-//   },
-//   getPlaces: async () => {
-//     return await dataSource.getPlaces();
-//   },
-//   updatePlace: async ({ id, place }) => {
-//     return await dataSource.updatePlace({ id, place });
-//   },
-//   createPlace: async place => {
-//     return await dataSource.createPlace(place);
-//   },
-//   deletePlace: async id => {
-//     return await dataSource.deletePlace(id);
-//   },
-// };
 
 module.exports = Places;
