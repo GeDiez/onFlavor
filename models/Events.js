@@ -1,4 +1,4 @@
-const Bookshelf = require('../Bookshelf');
+const Bookshelf = require('../bookshelf');
 
 const compose = require('../utils/compose');
 const resFormat = require('../utils/responseFormat');
