@@ -13,7 +13,7 @@ const config = {
     },
   },
   development: {
-    host: 'localhost',
+    host: 'http://localhost',
     port_server: 8080,
     port_webapp: 9000,
     db: {

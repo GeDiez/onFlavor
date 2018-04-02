@@ -15,8 +15,8 @@ const headersConf = others => {
 };
 
 const host = config.port_server
-  ? 'http://' + config.host + ':' + config.port_server
-  : 'http://' + config.host;
+  ? config.host + ':' + config.port_server
+  : config.host;
 const GET = (url, data, _headers) => {
   const headers = headersConf(_headers);
   return axios({
