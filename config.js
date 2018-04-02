@@ -1,6 +1,6 @@
 const config = {
   production: {
-    host: 'ec2-54-235-146-184.compute-1.amazonaws.com',
+    host: 'https://on-flavor.herokuapp.com',
     port_server: process.env.PORT,
     db: {
       client: 'pg',
