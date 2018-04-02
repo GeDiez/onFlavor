@@ -3,7 +3,7 @@ const config = {
     host: 'https://on-flavor.herokuapp.com',
     port_server: process.env.PORT,
     db: {
-      host: 'localhost',
+      host: 'ec2-54-235-146-184.compute-1.amazonaws.com',
       client: 'pg',
       port: 5432,
       user: 'qvmfuovptjgblm',
