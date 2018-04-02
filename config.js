@@ -3,6 +3,7 @@ const config = {
     host: 'https://on-flavor.herokuapp.com',
     port_server: process.env.PORT,
     db: {
+      host: 'localhost',
       client: 'pg',
       port: 5432,
       user: 'qvmfuovptjgblm',
@@ -13,9 +14,7 @@ const config = {
     },
   },
   development: {
-    host: 'http://localhost',
-    port_server: 8080,
-    port_webapp: 9000,
+    host: 'http://localhost:8080',
     db: {
       client: 'pg',
       port: 5432,
