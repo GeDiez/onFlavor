@@ -53,6 +53,7 @@
   },
   "scripts": {
     "heroku-postbuild": "webpack -p --config ./webpack.dll.js && webpack -p --config ./webpack.config.js",
+    "start": "node server.js",
     "lint": "eslint ./webapp",
     "migrate": "knex migrate:latest",
     "server:dev": "nodemon server.js",
